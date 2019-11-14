@@ -52,13 +52,14 @@
                     <div class="form-group">
                       <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">{{$I->terapi}}</label>
 
-                      <div class="col-sm-2">
+                      <div class="col-sm-2"><!--
                         <div class="input-group date">
                           <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                           </div>
                           <input type="text" class="form-control pull-right" value="" id="datepicker" placeholder="tanggal" name="tgl[]" required>
-                        </div>
+                        </div>-->
+                        <input type="date" class="form-control" name="tgl[]" required>
                       </div>
                       <div class="col-sm-2">
                           <input type="time" class="form-control pull-right" value="" placeholder="jam Masuk" name="jam_masuk[]" required>

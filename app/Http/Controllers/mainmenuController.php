@@ -304,9 +304,53 @@ public function jadwalevaluasifilter(Request $req){
   }
 
   //Jadwal Terapi
-  public function jadwalasses(){
-
+  public function jadwalasses($id){
+    $isi=DB::table('terapi_pasien')
+    ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
+    ->where('id_asses',$id)->get();
+    $terapis=DB::table('d_pegawai')->where('id_pegawai','like','T%')->get();
+    return view('main_menu.jadwal-add',[
+      'isi'=>$isi,
+      'id'=>$id,
+      'terapis'=>$terapis]);
   }
+
+  public function addjadwal(Request $req){
+    $id_terapi=$req->id_terapi;
+    $jam_masuk=$req->jam_masuk;
+    $jam_keluar=$req->jam_keluar;
+    $id_asses=$req->id_asses;
+    $tgl=$req->tgl;
+    $terapis=$req->terapis;
+    $id_terapipasien=$req->id_terapipasien;
+    $biaya=$req->biaya;
+    $no=-1;
+    foreach ($id_terapi as $id_terapi) {
+      $no++;
+      $id=$id_terapi;
+      $masuk=$jam_masuk[$no];
+      $keluar=$jam_keluar[$no];
+      $tgls=$tgl[$no];
+      $terps=$terapis[$no];
+      $id_terapiP=$id_terapipasien[$no];
+      $cost=$biaya[$no];
+      $sql=[
+        'id_pegawai'=>$terps,
+        'id_asses'=>$id_asses,
+        'id_terapipasien'=>$id_terapiP,
+        'biaya'=>$cost,
+        'tgl'=>$tgls,
+        'jam_masuk'=>$masuk,
+        'jam_keluar'=>$keluar,
+        'keterangan'=>'Terapi',
+        'status_pasien'=>'Hadir'
+      ];
+
+      DB::table('jadwal_terapis')->insert($sql);
+    }
+    return redirect('jadwal-terapi');
+  }
+
   public function jadwalterapi(){
     $sql = DB::table('jadwal_terapis')
     ->select('jadwal_terapis.*','d_pasien.nama as namaP','d_pegawai.nama')

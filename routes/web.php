@@ -33,6 +33,7 @@ Route::post('/absensi/{id}','mainmenuController@absensifilter');
 //jadwal terapi
 Route::get('/jadwal-terapi','mainmenuController@jadwalterapi');
 Route::get('/jadwal-terapi/asses/{id}','mainmenuController@jadwalasses');
+Route::post('/jadwal-terapi/add','mainmenuController@addjadwal');
 //jadwal Evaluasi
 Route::get('/jadwal-evaluasi','mainmenuController@jadwalevaluasi');
 Route::post('/jadwal-evaluasi/filter-date','mainmenuController@jadwalevaluasifilter');

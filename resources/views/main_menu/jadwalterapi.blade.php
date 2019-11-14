@@ -79,7 +79,7 @@
                             <td>{{$data->jam_masuk}}</td>
                             <td>{{$data->nama}}</td>
                             <td>{{$data->namaP}}</td>
-                            <td>{{$data->jml_sesi}}</td>
+                            <td>jml sesi</td>
                           </tr>
                           @endforeach
                         </tbody>

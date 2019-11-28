@@ -46,7 +46,7 @@
           <li class="{{Request::is('jadwal-terapi')?'active':''}}">
             <a href="{{url('/jadwal-terapi')}}"><i class="fa fa-circle-o"></i> Jadwal Terapi</a></li>
           <li class="{{Request::is('jadwal-evaluasi','jadwal-evaluasi/*')?'active':''}}">
-            <a href="#"><i class="fa fa-circle-o"></i> Jadwal Evaluasi</a></li>
+            <a href="{{url('/jadwal-evaluasi')}}"><i class="fa fa-circle-o"></i> Jadwal Evaluasi</a></li>
         </ul>
       </li>
       <li class="treeview {{Request::is('karyawan','karyawan/*','data-terapis','data-terapi','data-pasien')?'active':''}}">

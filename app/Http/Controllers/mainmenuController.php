@@ -59,15 +59,15 @@ public function jadwalevaluasi(){
   $awal=date('Y-m-01');
   $akhir=date('Y-m-31');
   $isi=DB::table('h_pasien')
-  ->select('h_pasien.id_pasien as idpasien','h_pasien.status','d_pasien.nama'
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 3 MONTH) as tgl_eval1')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 6 MONTH) as tgl_eval2')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 9 MONTH) as tgl_eval3')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1 YEAR) as tgl_eval4')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1-3 YEAR_MONTH) as tgl_eval5')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1-5 YEAR_MONTH) as tgl_eval6'),'d_pasien.tgl_daftar','assessment.*')
+  ->select('h_pasien.id_pasien as idpasien','assessment.status_pasien','d_pasien.nama'
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 3 MONTH) as tgl_eval1')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 6 MONTH) as tgl_eval2')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 9 MONTH) as tgl_eval3')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1 YEAR) as tgl_eval4')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1-3 YEAR_MONTH) as tgl_eval5')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1-5 YEAR_MONTH) as tgl_eval6'),'assessment.*')
   ->leftJoin('assessment','h_pasien.id_pasien','=','assessment.id_pasien')
-  ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->whereBetween('d_pasien.tgl_daftar',[$awal,$akhir])->get();
+  ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->whereBetween('assessment.tgl_mulai_terapi',[$awal,$akhir])->get();
 
 
   return view ('main_menu.jadwaleval',[
@@ -78,13 +78,13 @@ public function jadwalevaluasifilter(Request $req){
   $max=$req->max;
   $pilih=$req->pilih;
   $isi=DB::table('h_pasien')
-  ->select('h_pasien.id_pasien as idpasien','h_pasien.status','d_pasien.nama'
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 3 MONTH) as tgl_eval1')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 6 MONTH) as tgl_eval2')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 9 MONTH) as tgl_eval3')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1 YEAR) as tgl_eval4')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1-3 YEAR_MONTH) as tgl_eval5')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1-5 YEAR_MONTH) as tgl_eval6'),'d_pasien.tgl_daftar','assessment.*')
+  ->select('h_pasien.id_pasien as idpasien','assessment.status_pasien','d_pasien.nama'
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 3 MONTH) as tgl_eval1')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 6 MONTH) as tgl_eval2')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 9 MONTH) as tgl_eval3')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1 YEAR) as tgl_eval4')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1-3 YEAR_MONTH) as tgl_eval5')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1-5 YEAR_MONTH) as tgl_eval6'),'assessment.*')
   ->leftJoin('assessment','h_pasien.id_pasien','=','assessment.id_pasien')
   ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->whereBetween($pilih,[$min,$max])->get();
 

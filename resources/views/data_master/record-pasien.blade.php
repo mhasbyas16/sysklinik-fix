@@ -6,7 +6,7 @@
     <section class="content-header">
       <h1>
         Data Master
-        <small>Pasien</small>
+        <small>Record Pasien</small>
       </h1>
       <!--
       <ol class="breadcrumb">
@@ -31,7 +31,7 @@
                   <div class="box box-solid">
                     <div class="box-header">
                       <i class="fa fa-bar-chart-o"></i>
-                      <h3 class="box-title">Tabel Pasien</h3>
+                      <h3 class="box-title">Record Pasien</h3>
                     </div>
 
                     <!-- /.box-header -->
@@ -41,35 +41,26 @@
                     <tr>
                       <th>Nama</th>
                       <th>ID Asses</th>
-                      <th>Assesor</th>
-                      <th>Status</th>
-                      <th>Aksi</th>
+                      <th>Keterangan</th>
+                      <th>Tanggal</th>
                     </tr>
                     </thead>
                     <tbody>
-                      @foreach($data as $data)
-                      <tr>
-                        <td>{{$data->namaPAS}}</td>
-                        <td>{{$data->id_asses}}</td>
-                        <td>{{$data->namaPEG}}</td>
-                        <td>{{$data->status_pasien}}</td>
-                        <td><div class="btn-group">
-                                <a href="{{url('/data-pasien/view')}}/{{$data->id_pasien}}">
-                                  <button class="btn btn-info" >Edit</button></a>
-                                <a href="{{url('/data-pasien/record')}}/{{$data->id_pasien}}">
-                                  <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#{{$data->id_pegawai}}">Record</button></a>
-                            </div>
-                        </td>
-                      </tr>
+                      @foreach($data as $record)
+                        <tr>
+                          <td>{{$record->nama}}</td>
+                          <td>{{$record->id_asses}}</td>
+                          <td>{{$record->keterangan}}</td>
+                          <td>{{$record->tgl}}</td>
+                        </tr>
                       @endforeach
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th>Nama</th>
-                        <th>ID Asses</th>
-                        <th>Assesor</th>
-                        <th>Status</th>
-                        <th>Batal</th>
+                      <th>Nama</th>
+                      <th>ID Asses</th>
+                      <th>Keterangan</th>
+                      <th>Tanggal</th>
                     </tr>
                     </tfoot>
                   </table>

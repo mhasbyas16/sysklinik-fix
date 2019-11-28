@@ -20,7 +20,7 @@
             <!-- /.box-header -->
             <form method="post"  action="{{url('jadwal-terapi/add')}}" enctype="multipart/form-data" class="form-horizontal">
               {{csrf_field()}}
-              <input type="text" value="" name="id_pasien" hidden/>
+              <input type="text" value="" name="id_pasien"/>
             <div class="box-body">
               @if(\Session::has('alert'))
               <div class="alert alert-danger alert-dismissible">

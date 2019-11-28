@@ -17,7 +17,7 @@ class datamasterController extends Controller
     ->select('assessment.*','d_pasien.nama as namaPAS','d_pegawai.nama as namaPEG')
     ->leftJoin('assessment','h_pasien.id_pasien','=','assessment.id_pasien')
     ->leftJoin('d_pegawai','assessment.id_pegawai','=','d_pegawai.id_pegawai')
-    ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->where('status_pasien','Pasien')->get();
+    ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->get();
 
     $agama=agama::listagama();
     $kar=DB::table('d_pegawai')->orderBy('nama','asc')->get();
@@ -33,6 +33,12 @@ class datamasterController extends Controller
     ]);
   }
 
+  public function recordpasien($id){
+    $data=DB::table('record_status_pasien')->join('d_pasien','d_pasien.id_pasien','=','record_status_pasien.id_pasien')->where('record_status_pasien.id_pasien',$id)->orderBy('id_asses','asc')->get();
+
+    return view('data_master.record-pasien',['data'=>$data]);
+  }
+/*
   public function datapasienview($id){
     $data=DB::table('d_pasien')
     ->join('h_pasien','h_pasien.id_pasien','=','d_pasien.id_pasien')
@@ -189,7 +195,7 @@ class datamasterController extends Controller
     DB::table('d_pasien')->where('id_pasien',$id_pasien)->update($data_DP);
       return redirect ('/data-pasien');
   }
-
+*/
 
 //karyawan
   public function karyawan(){

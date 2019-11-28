@@ -34,13 +34,15 @@ Route::post('/absensi/{id}','mainmenuController@absensifilter');
 Route::get('/jadwal-terapi','mainmenuController@jadwalterapi');
 Route::get('/jadwal-terapi/asses/{id}','mainmenuController@jadwalasses');
 Route::post('/jadwal-terapi/add','mainmenuController@addjadwal');
+Route::get('/jadwal-terapi/validate/{id}/{validate}','mainmenuController@validatejadwal')->name('jadwal_validate');
 //jadwal Evaluasi
 Route::get('/jadwal-evaluasi','mainmenuController@jadwalevaluasi');
 Route::post('/jadwal-evaluasi/filter-date','mainmenuController@jadwalevaluasifilter');
 //Data Pasien
 Route::get('/data-pasien','datamasterController@datapasien');
-Route::get('/data-pasien/view/{id}','datamasterController@datapasienview');
-Route::post('/data-pasien/update','datamasterController@datapasienupdate');
+Route::get('/data-pasien/view/{id}','mainmenuController@registerlistdata');
+Route::post('/data-pasien/update','mainmenuController@registerlistupdate');
+Route::get('/data-pasien/record/{id}','datamasterController@recordpasien');
 //Data Karyawan
 Route::get('/karyawan','datamasterController@karyawan');
 Route::get('/karyawan/tambah-data/{kt}','datamasterController@karyawantambah');

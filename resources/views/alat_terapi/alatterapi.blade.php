@@ -8,37 +8,19 @@
         Alat Terapi
         <small>Daftar Alat Terapi</small>
       </h1>
-      <!--
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-files-o"></i> Main Menu</a></li>
-        <li class="active">Assesment</li>
-      </ol>
-      -->
     </section>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
     <script type="text/javascript">
-    $(function() {
-        $( "#jenisterapi" ).option();
-    });
- 
-    window.onload=function(){
-      $('#jenisterapi').on('change', function() {
-        var nama_kota=document.getElementById("form1").kategori.value;
-        <?php 
-          if($namajenis=="FT")
-            $now = "FT0"
-            $dataakhir = \App\alat_terapi::max('id_barang');
-            $no = $dataakhir+1;
-            $rplc = $now.$no;
-            $id_barang=$rplc;
-        ?>
-        if (nama_kota=="makanan"){
-          document.getElementById("tampil").innerHTML="<option value='Nasi Goreng'>Nasi Goreng</option><option value='Bakso'>Bakso</option>";
-        }else if (nama_kota=="minuman"){
-          document.getElementById("tampil").innerHTML="<option value='Teh'>Teh</option><option value='Copy'>Copy</option>";
-        }
-      });
-    }
-  </script>
+        $(document).ready(function(){
+            $('#jenisterapi').on('change', function(e){
+                var id = e.target.value;
+                var idd = $('#idd').val(); 
+                $('#idat').val(id+idd);
+            });
+        });
+    </script>
 
     <!-- Main content -->
     <section class="content">
@@ -70,7 +52,7 @@
                             <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Jenis Terapi</label>
 
                             <div class="col-sm-7">
-                              <select class="form-control select2" name="jenisterapi " id="jenisterapi" required>
+                              <select class="form-control select2" name="jenisterapi " id="jenisterapi" onchange="readURL(this);">
                                 <option selected hidden disabled>Jenis Terapi</option>
                                 @foreach($jenis as $namajenis)
                                 <option value="{{$namajenis->id_terapi}}">{{$namajenis->id_terapi}}</option>
@@ -80,14 +62,13 @@
                           </div>
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="col-xs-7 col-md-8 text-center">
                           <div class="form-group">
                             <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">ID Alat Terapi</label>
-                            <!--<input type="text" class="form-control col-md-6 text-left" name="id_pasien" value="{{$id_pasien}}" hidden>-->
                             <div class="col-sm-7">
-                              <input type="text" class="form-control" name="idat" readonly required value="{{$id_barang}}">
+                               <input type="text" name="idd" id="idd" value="{{$acak}}" hidden="true">
+                               <input type="text" class="form-control" name="idat" id="idat" value="{{$nama->id_barang}}" readonly>
                             </div>
                           </div>
                       </div>
@@ -99,11 +80,23 @@
                             <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Nama Alat Terapi</label>
 
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" name="namaat" value="{{$nama->nama_barang}}">
+                                <input type="text" class="form-control" name="namaat" value="{{$nama->nama_barang}}" required>
                             </div>
                           </div>
                       </div>
-                    </div>              
+                    </div>     
+
+                    <div class="row">
+                  <div class="col-xs-7 col-md-8 text-center">
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Stok Awal</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="stokawal" required>
+                        </div>
+                      </div>
+                  </div>
+                </div>
                     
                     <div class="button">
                       <ul class="left" style="padding-left: 385pt ">
@@ -131,7 +124,7 @@
                       <div class="form-group">
                         <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Jenis Terapi</label>
                         <div class="col-sm-7">
-                          <select class="form-control select2" name="jenisterapi" required>
+                          <select class="form-control select2" name="jenisterapi" id="jenisterapi" onchange="readURL(this);">
                             <option selected hidden disabled>Jenis Terapi</option>
                             @foreach($jenis as $namajenis)
                             <option value="{{$namajenis->id_terapi}}">{{$namajenis->id_terapi}}</option>
@@ -141,14 +134,14 @@
                       </div>
                   </div>
                 </div>
-
                 <div class="row">
                   <div class="col-xs-7 col-md-8 text-center">
                       <div class="form-group">
                         <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">ID Alat Terapi</label>
 
                         <div class="col-sm-7">
-                          <input type="text" class="form-control" name="idat" readonly required>
+                          <input type="text" name="idd" id="idd" value="{{$acak}}" hidden="true">
+                          <input type="text" class="form-control" name="idat" id="idat" readonly>
                         </div>
                       </div>
                   </div>
@@ -160,7 +153,19 @@
                         <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Nama Alat Terapi</label>
 
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" name="namaat">
+                            <input type="text" class="form-control" name="namaat" required>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-7 col-md-8 text-center">
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Stok Awal</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="stokawal" required>
                         </div>
                       </div>
                   </div>
@@ -199,6 +204,7 @@
                 <tr>
                   <th>ID Barang</th>
                   <th>Nama Barang</th>
+                  <th>Stok Awal</th>
                   <th>Aksi</th>
 
                 </tr>
@@ -208,6 +214,7 @@
                 <tr>
                   <td><a href="{{url('alatterapi/'. $x->id_barang.'/edit')}}">{{$x->id_barang}}</a></td>
                   <td><a href="{{url('alatterapi/'. $x->id_barang.'/edit')}}">{{$x->nama_barang}}</a></td>
+                  <td><a href="{{url('alatterapi/'. $x->id_barang.'/edit')}}">{{$x->stok_awal}}</a></td>
                   <td>
                     <form action="{{ url('alatterapi', $x->id_barang) }}" method="post">
                         @csrf
@@ -222,6 +229,7 @@
                 <tr>
                   <th>ID Barang</th>
                   <th>Nama Barang</th>
+                  <th>Stok Awal</th>
                   <th>Aksi</th>
                 </tr>
                 </tfoot>

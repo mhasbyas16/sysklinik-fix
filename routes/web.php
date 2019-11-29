@@ -14,9 +14,7 @@
 
 
 //Dashboard
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'Controller@index');
 
 // ------------------------------------- HASBY PART  BEGIN ----------------------------------- //
 
@@ -61,19 +59,33 @@ Route::post('/data-terapi/add','datamasterController@dataterapiadd');
 
 // ------------------------------------- ENNY PART BEGIN ---------------------------------- //
 
-//billing
-Route::get('/billing','Controller@Billing');
-Route::get('/d_billing','Controller@Detail_Billing');
-//rekam medis
-Route::resource('rekam_medis','RekamMedis');
-Route::resource('detail_rekam_medis','DetailRekamMedis');
-//keuangan
-Route::resource('transaksi_keuangan', 'TransaksiKeuangan');
-Route::resource('laporan_keuangan', 'LaporanKeuangan');
-//payroll
-Route::get('/payroll','Controller@Payroll');
-//setting
-Route::get('/setting','Controller@Setting');
+//Login and Logout
+Route::resource('login','login');
+Route::get('logout', 'datamasterController@logout');
+
+//Billing
+Route::resource('billing','billing');
+Route::resource('detail_billing','detail_billing');
+
+//Rekam Medis
+Route::resource('rekam_medis','rekam_medis');
+Route::resource('detail_rekam_medis','detail_rekam_medis');
+
+//Keuangan
+Route::resource('transaksi_keuangan', 'transaksi_keuangan');
+Route::resource('laporan_keuangan', 'laporan_keuangan');
+
+//Payroll
+Route::resource('payroll','payroll');
+
+//Setting
+Route::resource('setting', 'setting');
+
+//Print Page and Send Email
+Route::get('/print/billing/{id}', 'printpage@printBilling');
+Route::get('/send/billing/{id}', 'printpage@sendBilling');
+Route::get('/print/laporan/{id}', 'printpage@printLaporanKeuangan');
+
 
 // ------------------------------------- ENNY PART END ----------------------------------- //
 
@@ -84,5 +96,6 @@ Route::get('/setting','Controller@Setting');
 Route::resource('/alatterapi','alatterapi');
 Route::resource('/transalat','transaksiat');
 Route::resource('/persediaan','persediaan');
-
+Route::get('/merk/{id}','alatterapi@merkAjax');
+Route::get('/ambil/{id}','alatterapi@merkAjax');
 // ------------------------------------ DINDIN PART END ---------------------------------- //

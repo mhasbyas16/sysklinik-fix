@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\detail_rekam_medis;
+use DB;
+use Carbon\Carbon;
 
-class DetailRekamMedis extends Controller
+class laporan_keuangan extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,7 @@ class DetailRekamMedis extends Controller
      */
     public function index()
     {
-        //
+        return view('keuangan.lapkeu');
     }
 
     /**
@@ -33,18 +34,21 @@ class DetailRekamMedis extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $r)
     {
-        $data = [
-            'id_sesirm' => $request->id_sesirm,
-            'id_jadwal' => $request->id_jadwal,
-            'area_stimulasi' => $request->area_stimulasi,
-            'keterangan' => $request->keterangan
-        ];
+        
+        $data = DB::table('saldo')->select('*')->whereMonth('tgl', $r->month)->whereYear('tgl', $r->year)->get();
+        $a = new Carbon('1-'.$r->month.'-'.$r->year);
+        $b = $a->format('F');
+        $bulan = $r->month;
+        $tahun = $r->year;
 
-        detail_rekam_medis::insert($data);
-
-        return redirect('detail_rekam_medis/'.$request->id_rm);
+        return view('keuangan.lapkeu', [
+            'data' => $data,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'b' => $b
+        ]);
     }
 
     /**
@@ -55,11 +59,7 @@ class DetailRekamMedis extends Controller
      */
     public function show($id)
     {
-        $detail = detail_rekam_medis::where('id_sesirm', $id)->get();
-        return view('rekam_medis.detail_rekamedis', [
-            'detail' => $detail,
-            'id_sesirm' => $id
-        ]);
+
     }
 
     /**
@@ -91,11 +91,13 @@ class DetailRekamMedis extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $r, $id)
+    public function destroy($id)
     {
-        $hapus = detail_rekam_medis::where('id_sesirm', $id);
-        $hapus->delete();
+        //
+    }
 
-        return redirect('detail_rekam_medis/'.$r->id_rm);
+
+    public function search($month, $year){
+
     }
 }

@@ -5,8 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
-class transaksi_keuangan extends Model
+class TransaksiKeuangan extends Model
 {
+    //
     protected $fillable=['*'];
  
     public static function getEnumColumnValues($table, $column) {
@@ -23,6 +24,4 @@ class transaksi_keuangan extends Model
       }
       return $enum_values;
     }
-
-
 }

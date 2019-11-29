@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\transaksi_keuangan;
-use App\pemasukan;
-use App\pengeluaran;
+use App\DetailRekamMedis;
+use DB;
 
-class TransaksiKeuangan extends Controller
+class detail_rekam_medis extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,16 +15,7 @@ class TransaksiKeuangan extends Controller
      */
     public function index()
     {
-        $pemasukan_kategori = transaksi_keuangan::getEnumColumnValues('pemasukan', 'kategori');
-        $pengeluaran_kategori = transaksi_keuangan::getEnumColumnValues('pengeluaran', 'kategori');
-        $pemasukan = pemasukan::All();
-        $pengeluaran = pengeluaran::All();
-        return view('keuangan.transkeu', [
-            'kategori_pengeluaran' => $pengeluaran_kategori,
-            'kategori_pemasukan' => $pemasukan_kategori,
-            'pemasukan_list' => $pemasukan,
-            'pengeluaran_list' => $pengeluaran
-        ]);
+        //
     }
 
     /**
@@ -44,22 +34,18 @@ class TransaksiKeuangan extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $r)
+    public function store(Request $request)
     {
-        $val = [
-            'id_karyawan' => 'AAA',
-            'tgl' => date('Y-m-d', strtotime($r->tanggal)),
-            'keterangan' => $r->keterangan,
-            'jumlah' => str_replace('.', '', $r->jumlah),
-            'kategori' => $r->kategori
+        $data = [
+            'id_rm' => $request->id_rm,
+            'id_jadwal' => $request->id_jadwal,
+            'area_stimulasi' => $request->area_stimulasi,
+            'keterangan' => $request->keterangan
         ];
-        if($r->formName == 'pemasukan') {
-            pemasukan::insert($val);
-        }elseif($r->formName == 'pengeluaran') {
-            pengeluaran::insert($val);
-        }
-        
-        return redirect('transaksi_keuangan');
+
+        DetailRekamMedis::insert($data);
+
+        return redirect('detail_rekam_medis/'.$request->id_rm);
     }
 
     /**
@@ -70,7 +56,13 @@ class TransaksiKeuangan extends Controller
      */
     public function show($id)
     {
-        //
+        $jadwal = DB::table('jadwal_terapis')->select('jadwal_terapis.*')->join('h_rekam_medis', 'jadwal_terapis.id_asses', '=', 'h_rekam_medis.id_asses')->where('h_rekam_medis.id_rm', $id)->whereNotIn('id_jadwal', DB::table('d_rekam_medis')->pluck('id_jadwal'))->get();
+        $detail = DetailRekamMedis::join('jadwal_terapis', 'd_rekam_medis.id_jadwal', '=', 'jadwal_terapis.id_jadwal')->where('id_rm', $id)->get();
+        return view('rekam_medis.detail_rekamedis', [
+            'detail' => $detail,
+            'id_rm' => $id,
+            'jadwal' => $jadwal
+        ]);
     }
 
     /**
@@ -102,8 +94,11 @@ class TransaksiKeuangan extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $r, $id)
     {
-        //
+        $hapus = DetailRekamMedis::where('id_sesirm', $id);
+        $hapus->delete();
+
+        return redirect('detail_rekam_medis/'.$r->id_rm);
     }
 }

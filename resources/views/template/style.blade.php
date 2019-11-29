@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{{asset('AdminLTE/bower_components/fullcalendar/dist/fullcalendar.min.css')}}"/>
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="{{asset('AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('AdminLTE/bower_components/font-awesome/css/font-awesome.min.css')}}">
   <!-- Ionicons -->
@@ -123,5 +125,26 @@
 <script src="{{asset('AdminLTE/bower_components/datatables.net/js/buttons.html5.min.js')}}"></script>
 <script src="{{asset('AdminLTE/bower_components/datatables.net/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('js/system.js')}}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+<script type="text/javascript">
+    $(document).ready(function($){
+    // Format mata uang.
+    $( '.uang' ).mask('000.000.000', {reverse: true});
+    
+    });
+
+    $(function () {
+      $('#datepicker').datepicker({
+      autoclose: true
+      });
+      $('#datedaftar').datepicker({
+      autoclose: true
+      });
+      $('.tanggal').datepicker({
+      format: 'dd-mm-yyyy'
+      });
+    });
+    </script>
 </body>
 </html>

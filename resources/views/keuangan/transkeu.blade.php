@@ -28,7 +28,7 @@
         </li>
       </ul>
       <!-- Tab panes -->
-      <div class="tab-content">
+      <div class="tab-content col-md-12">
         <div role="tabpanel" class="tab-pane active" id="home">
           <section class="content">
             <!-- row -->
@@ -45,6 +45,20 @@
                         <div class="col-xs-7 col-md-12 text-left">
                           <div class="form-group">
                             <label class="col-sm-12"><h3>Input Transaksi Pemasukan</h3><hr></label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-7 col-md-8 text-center">
+                          <div class="form-group">
+                            <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Penanggung Jawab</label>
+                            <div class="col-sm-7">
+                              <select name="id_karyawan" class="form-control" required>
+                                @foreach($karyawan as $krywn)
+                                    <option value="{{ $krywn->id_pegawai }}">{{ $krywn->nama }}</option>
+                                @endforeach
+                              </select>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -131,16 +145,20 @@
                           <th>Jumlah</th>
                           <th>Keterangan</th>
                           <th>Tanggal</th>
+                          <th>Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
                         @foreach ($pemasukan_list as $p)
                           <tr>
-                            <td>{{ $p->id_karyawan }}</td>
+                            <td>{{ $p->nama }}</td>
                             <td>{{ $p->kategori }}</td>
                             <td>{{ $p->jumlah }}</td>
                             <td>{{ $p->keterangan }}</td>
                             <td>{{ $p->tgl }}</td>
+                            <td>
+                              
+                            </td>
                           </tr>
                         @endforeach
                       </tbody>
@@ -151,6 +169,7 @@
                         <th>Jumlah</th>
                         <th>Keterangan</th>
                         <th>Tanggal</th>
+                        <th>Aksi</th>
                       </tr>
                       </tfoot>
                     </table>
@@ -176,7 +195,21 @@
                       <div class="row">
                         <div class="col-xs-7 col-md-12 text-left">
                           <div class="form-group">
-                            <label class="col-sm-12"><h3>Input Transaksi Pemasukan</h3><hr></label>
+                            <label class="col-sm-12"><h3>Input Transaksi Pengeluaran</h3><hr></label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-7 col-md-8 text-center">
+                          <div class="form-group">
+                            <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Penanggung Jawab</label>
+                            <div class="col-sm-7">
+                              <select name="id_karyawan" class="form-control" required="">
+                                @foreach($karyawan as $krywn)
+                                    <option value="{{ $krywn->id_pegawai }}">{{ $krywn->nama }}</option>
+                                @endforeach
+                              </select>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -263,16 +296,20 @@
                           <th>Jumlah</th>
                           <th>Keterangan</th>
                           <th>Tanggal</th>
+                          <th>Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
                         @foreach ($pengeluaran_list as $p)
                           <tr>
-                            <td>{{ $p->id_karyawan }}</td>
+                            <td>{{ $p->nama }}</td>
                             <td>{{ $p->kategori }}</td>
                             <td>{{ $p->jumlah }}</td>
                             <td>{{ $p->keterangan }}</td>
                             <td>{{ $p->tgl }}</td>
+                            <td>
+                               
+                            </td>
                           </tr>
                         @endforeach
                       </tbody>
@@ -283,6 +320,7 @@
                         <th>Jumlah</th>
                         <th>Keterangan</th>
                         <th>Tanggal</th>
+                        <th>Aksi</th>
                       </tr>
                       </tfoot>
                     </table>

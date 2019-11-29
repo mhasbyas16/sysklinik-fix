@@ -25,116 +25,84 @@
           <!-- jQuery Knob -->
           <div class="box box-solid">
             <!-- /.box-header -->
-            <form class="form-horizontal">
-            <div class="box-body">
-              <div class="row">
-                <div class="col-xs-7 col-md-12 text-left">
-                    <div class="form-group">
-                      <label class="col-sm-12"><h3>Setting Account</h3><hr></label>
-                    </div>
-                </div>
-                <!-- ./col -->
-              </div>
-
-              <div class="row">
-                        <div class="col-xs-7 col-md-8 text-center">
-                            <div class="form-group">
-                              <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Nama</label>
-
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" name="nama_P" disabled="">
-                              </div>
-                            </div>
-                        </div>
+            <form class="form-horizontal" action="{{ url('/setting/'.$data->id_pegawai) }}" method="post">
+              @csrf
+              {{ method_field('PATCH') }}
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-xs-7 col-md-12 text-left">
+                      <div class="form-group">
+                        <label class="col-sm-12"><h3>Setting Account</h3><hr></label>
                       </div>
-
-                      <div class="row">
-                        <div class="col-xs-7 col-md-8 text-center">
-                            <div class="form-group">
-                              <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Jabatan</label>
-
-                              <div class="col-sm-7">
-                                  <input type="text" class="form-control" id="alamatP" name="alamat" disabled=""></textarea>
-                              </div>
-                            </div>
-                        </div>
-                      </div> 
-
-                      <div class="row">
-                        <div class="col-xs-7 col-md-8 text-center">
-                            <div class="form-group">
-                              <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Email</label>
-
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" name="nama_P" disabled="">
-                              </div>
-                            </div>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-xs-7 col-md-8 text-center">
-                            <div class="form-group">
-                              <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Password</label>
-
-                              <div class="col-sm-7">
-                                  <input type="text" class="form-control" id="alamatP" name="alamat" disabled=""></textarea>
-                              </div>
-                            </div>
-                        </div>
-                      </div>             
-                      
-                      <div class="button">
-                        <ul class="left" style="padding-left: 450pt ">
-                          <button class="btn btn-primary" href="#" data-toggle="modal" data-target="#myModal">Edit</button>
-                        </ul>
-                      </div>
-
-                  <!-- Modal -->
-                  <div id="myModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                      <!-- konten modal-->
-                      <div class="modal-content">
-                        <!-- heading modal -->
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Edit Data</h4>
-                        </div>
-                        <!-- body modal -->
-                        <div class="modal-body">
-                          <div class="row">
-                            <div class="col-xs-7 col-md-12 text-center">
-                                <div class="form-group">
-                                  <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Password</label>
-
-                                  <div class="col-sm-7">
-                                      <input type="text" class="form-control" id="alamatP" name="alamat"></textarea>
-                                  </div>
-                                </div>
-                            </div>
-                          </div> 
-                          <div class="row">
-                            <div class="col-xs-7 col-md-12 text-center">
-                                <div class="form-group">
-                                  <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Re-type Password</label>
-
-                                  <div class="col-sm-7">
-                                      <input type="text" class="form-control" id="alamatP" name="alamat"></textarea>
-                                  </div>
-                                </div>
-                            </div>
-                          </div>     
-                        </div>
-                        <!-- footer modal -->
-                        <div class="modal-footer">
-                          <ul>
-                            <button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
                   </div>
+                  <!-- ./col -->
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-7 col-md-8 text-center">
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Nama</label>
+
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" name="nama_P" @if($status == "") disabled @endif value="{{ $data->nama }}">
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-7 col-md-8 text-center">
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Jabatan</label>
+
+                        <div class="col-sm-7">
+                          <select name="id_jabatan" class="form-control" @if($status == "") disabled @endif>
+                            @foreach ($jabatan as $j)
+                              <option value="{{ $j->id_jabatan }}"  @if($data->id_jabatan == $j->id_jabatan) selected @endif>{{ $j->jabatan }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+                </div> 
+
+                {{-- <div class="row">
+                  <div class="col-xs-7 col-md-8 text-center">
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Email</label>
+
+                        <div class="col-sm-7">
+                          <input type="email" class="form-control" name="email" @if($status != "edit") disabled @endif value="{{ $data->email }}">
+                        </div>
+                      </div>
+                  </div>
+                </div> --}}
+
+                <div class="row">
+                  <div class="col-xs-7 col-md-8 text-center">
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Password</label>
+
+                        <div class="col-sm-7">
+                            <input type="password" class="form-control" name="password" @if($status == "") disabled @endif value="{{ $data->password }}">
+                        </div>
+                      </div>
+                  </div>
+                </div>             
+                
+                @if ($status == "")
+                  <div class="button">
+                    <ul class="left" style="padding-left: 450pt ">
+                      <a class="btn btn-primary" href="{{ url('/setting/'.$data->id_pegawai.'/edit') }}">Edit</a>
+                    </ul>
+                  </div>
+                @elseif ($status == "edit")
+                  <div class="button">
+                    <ul class="left" style="padding-left: 450pt ">
+                      <button class="btn btn-primary" type="submit">Update</button>
+                    </ul>
+                  </div>
+                @endif
 
               </div>
             </form>

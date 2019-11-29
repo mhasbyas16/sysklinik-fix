@@ -5,12 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Helper\idrandom;
+use Illuminate\Support\Facades\Session;
 use App\Helper\agama;
 use File;
 use Str;
 
 class datamasterController extends Controller
 {
+
+
+  public function logout(){
+    Session::flush();
+    return redirect("/login");
+  }
+  
   //pasien
   public function datapasien(){
     $data=DB::table('h_pasien')

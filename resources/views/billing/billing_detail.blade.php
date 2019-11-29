@@ -4,8 +4,8 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-    Rekam Medis
-    <small>Form Rekam Medis</small>
+    Billing
+    <small>Detail Billing</small>
     </h1>
     <!--
     <ol class="breadcrumb">
@@ -23,25 +23,39 @@
         <div class="box box-solid">
           <!-- begin data alat-->
           @foreach ($data as $d)
-            <form class="form-horizontal" action="{{ url('rekam_medis/'.$d->id_rm ) }}" method="post">
+            <form class="form-horizontal" action="{{ url('billing/'.$d->id_bukti ) }}" method="post">
               @csrf
               {{ method_field('PATCH') }}
               <div class="box-body">
                 <div class="row">
                   <div class="col-xs-7 col-md-12 text-left">
                     <div class="form-group">
-                      <label class="col-sm-12"><h3>Data Rekam Medis</h3><hr></label>
+                      <label class="col-sm-12"><h3>Data Billing Detail</h3><hr></label>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-12">
-                  <div class="col-md-6">                  
+                  <div class="col-md-6">
                     <div class="row">
                       <div class="col-xs-12 col-md-12 text-center">
                         <div class="form-group">
-                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Pasien</label>
+                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Validasi</label>
                           <div class="col-sm-7">
-                            <input type="text" name="nama" value="{{ $d->nama }}" disabled>
+                            <select name="validasi" class="form-control">
+                              <option value="Tidak Valid" <?php if($d->validasi == "Tidak Valid"){ echo 'selected';} ?>>Tidak Valid</option>
+                              <option value="Valid" <?php if($d->validasi == "Valid"){ echo 'selected';} ?>>Valid</option>
+                            </select>
+                            <input type="hidden" name="id_bill" value="{{ $d->id_bill }}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>                  
+                    <div class="row">
+                      <div class="col-xs-12 col-md-12 text-center">
+                        <div class="form-group">
+                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Tanggal Bayar</label>
+                          <div class="col-sm-7">
+                            <input type="text" name="id_pasien" value="{{ $d->tgl_bayar }}" class="form-control" disabled>
                           </div>
                         </div>
                       </div>
@@ -49,10 +63,9 @@
                     <div class="row">
                       <div class="col-xs-12 col-md-12 text-center">
                         <div class="form-group">
-                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">ID Assessment</label>
+                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Jumlah Bayar</label>
                           <div class="col-sm-7">
-                            <input type="text" name="id_asses" value="{{ $d->id_asses }}" disabled>
-                            <input type="hidden" name="id_asses" value="{{ $d->id_asses }}">
+                            <input type="text" name="id_pasien" value="{{ $d->jml_bayar }}" class="form-control" disabled>
                           </div>
                         </div>
                       </div>
@@ -63,9 +76,9 @@
                     <div class="row">
                       <div class="col-xs-12 col-md-12 text-center">
                         <div class="form-group">
-                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Diagnosa</label>
+                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Bukti</label>
                           <div class="col-sm-7">
-                            <textarea class="form-control" name="diagnosa" rows="5" value="{{ $d->diagnosa }}">{{ $d->diagnosa }}</textarea>
+                            <img src="{{ asset('/images/bukti/'.$d->foto) }}" target="_Blank" alt="Bukti">
                           </div>
                         </div>
                       </div>
@@ -75,7 +88,7 @@
                 <br>
                 <div class="button">
                   <ul>
-                    <button class="btn btn-success" href="#">Simpan</button>
+                    <button class="btn btn-success" href="#">Update</button>
                     <button class="btn btn-danger" href="#">Batal</button>
                   </ul>
                 </div>
@@ -91,5 +104,6 @@
       <!-- /.col -->
     </div>
   </section>
+  <!-- End Main content -->
 </div>
 @endsection

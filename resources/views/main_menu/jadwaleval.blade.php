@@ -65,7 +65,8 @@
                             </div>
                         </td>
                         <td><select class="form-control" name="pilih" value=" " required>
-                          <option value="tgl_mulai_terapi">Tanggal Asses</option>
+                          <option value="tgl_daftar">Tanggal Daftar</option>
+                          <option value="tgl_asses">Tanggal Asses</option>
                         </select></td>
                         <td>&nbsp;&nbsp;&nbsp;</td>
                         <td><button type="submit" class="btn btn-information"><i class="fa fa-search"></i></button></td>
@@ -80,6 +81,7 @@
                     <thead>
                     <tr>
                       <th>Nama</th>
+                      <th>TGL Daftar</th>
                       <th>TGL Asses</th>
                       <th>TGL Eval 1</th>
                       <th>TGL Eval 2</th>
@@ -95,19 +97,20 @@
                       @foreach($isi as $data)
                       <tr>
                         <td>{{$data->nama}}</td>
-                        <td>{{$data->tgl_mulai_terapi}}</td>
+                        <td>{{$data->tgl_daftar}}</td>
+                        <td>{{$data->tgl_asses}}</td>
                         <td>{{$data->tgl_eval1}}</td>
                         <td>{{$data->tgl_eval2}}</td>
                         <td>{{$data->tgl_eval3}}</td>
                         <td>{{$data->tgl_eval4}}</td>
                         <td>{{$data->tgl_eval5}}</td>
                         <td>{{$data->tgl_eval6}}</td>
-                        <td>..</td>
+                        <td>{{$data->assesor}}</td>
                         <td><div class="btn-group">
-                          @if($data->status_pasien=='Cancel')
+                          @if($data->status=='Cancel')
                             <a href="{{url('/register-list/delete')}}/{{$data->idpasien}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data Ini?')">
                               <button type="button" class="btn btn-danger">Delete</button></a>
-                          @elseif($data->status_pasien!='Cancel')
+                          @elseif($data->status!='Cancel')
                           @endif
                         </div></td>
                       </tr>
@@ -116,6 +119,7 @@
                     <tfoot>
                     <tr>
                       <th>Nama</th>
+                      <th>TGL Daftar</th>
                       <th>TGL Asses</th>
                       <th>TGL Eval 1</th>
                       <th>TGL Eval 2</th>

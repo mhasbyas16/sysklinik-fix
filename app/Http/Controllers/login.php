@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use DB;
+use Alert;
 
-class LaporanKeuangan extends Controller
+
+class login extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -12,8 +17,8 @@ class LaporanKeuangan extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('keuangan.lapkeu');
+    {   
+        return view('signin');
     }
 
     /**
@@ -32,9 +37,32 @@ class LaporanKeuangan extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $r)
     {
-        //
+        $id_pegawai = $r->id_pegawai;
+        $password = md5($r->password);
+
+        $cek_log = DB::table('h_pegawai')->select('h_pegawai.*', 'nama', 'jabatan')->where('h_pegawai.id_pegawai', $id_pegawai)->join('d_pegawai', 'h_pegawai.id_pegawai', '=', 'd_pegawai.id_pegawai')->join('jabatan', 'd_pegawai.id_jabatan', '=', 'jabatan.id_jabatan')->first();
+
+        if (isset($cek_log)) {
+            if ($password == $cek_log->password) {
+                Session::put('id_pegawai',$cek_log->id_pegawai);
+                Session::put('uname',$cek_log->nama);
+                Session::put('jabatan',$cek_log->jabatan);
+                Session::put('role',$cek_log->hakakses);
+                Session::put('login',TRUE);
+
+                Alert::success('Selamat datang, '.$cek_log->nama.'!')->autoclose(3500);
+                return redirect('/');
+            }else{
+                
+                Alert::error('Password yang anda masukkan salah!')->autoclose(3500);
+                return redirect('/login');
+            }
+        }else{
+            return redirect('/login');
+        }
+
     }
 
     /**

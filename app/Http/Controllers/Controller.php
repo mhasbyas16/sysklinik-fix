@@ -6,9 +6,24 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use DB;
+use App\m_jenisterapi;
 
 class Controller extends BaseController
 {
+	public function index(){
+    	$terapis = DB::table('h_pegawai')->select('id_pegawai')->where('h_pegawai.id_pegawai','like','T%')->count();
+    	$pegawai = DB::table('h_pegawai')->select('id_pegawai')->where('h_pegawai.id_pegawai','like','K%')->count();
+        $pasien=DB::table('h_pasien')->count();
+        $jenis = m_jenisterapi::all()->count();
+        return view('index', [
+            'terapis'=>$terapis,
+            'pegawai'=>$pegawai,
+            'pasien'=>$pasien,
+            'jenis'=>$jenis
+        ]);
+	}
+	
     public function Registerlist(){
 		return view('main_menu.registerlist');
 	}

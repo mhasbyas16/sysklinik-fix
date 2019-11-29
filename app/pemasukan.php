@@ -4,8 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class pemasukan extends Model
+class Pemasukan extends Model
 {
+    //
 	protected $table = 'pemasukan';
     protected $fillable=['*'];
 }

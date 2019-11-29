@@ -32,7 +32,7 @@ Route::post('/absensi/{id}','mainmenuController@absensifilter');
 Route::get('/jadwal-terapi','mainmenuController@jadwalterapi');
 Route::get('/jadwal-terapi/asses/{id}','mainmenuController@jadwalasses');
 Route::post('/jadwal-terapi/add','mainmenuController@addjadwal');
-Route::get('/jadwal-terapi/validate/{id}/{validate}','mainmenuController@validatejadwal')->name('jadwal_validate');
+Route::get('/jadwal-terapi/{idJ}/{id}/{validate}/{type}','mainmenuController@validatejadwal')->name('jadwal_validate');
 //jadwal Evaluasi
 Route::get('/jadwal-evaluasi','mainmenuController@jadwalevaluasi');
 Route::post('/jadwal-evaluasi/filter-date','mainmenuController@jadwalevaluasifilter');

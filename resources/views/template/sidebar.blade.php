@@ -42,7 +42,7 @@
           <li class="{{Request::is('register-list','register-list/*')?'active':''}}">
             <a href="{{url('/register-list')}}"><i class="fa fa-circle-o"></i> Register List</a></li>
           <li class="{{Request::is('absensi','absensi/*')?'active':''}}">
-            <a href="#"><i class="fa fa-circle-o"></i> Absensi</a></li>
+            <a href="{{url('/absensi')}}"><i class="fa fa-circle-o"></i> Absensi</a></li>
           <li class="{{Request::is('jadwal-terapi')?'active':''}}">
             <a href="{{url('/jadwal-terapi')}}"><i class="fa fa-circle-o"></i> Jadwal Terapi</a></li>
           <li class="{{Request::is('jadwal-evaluasi','jadwal-evaluasi/*')?'active':''}}">

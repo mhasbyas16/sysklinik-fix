@@ -408,7 +408,8 @@ public function jadwalevaluasifilter(Request $req){
          $sqlizinterapis=DB::table('request_jadwal')
                   ->join('d_pegawai','d_pegawai.id_pegawai','=','request_jadwal.id_pegawai')
                   ->where('request_jadwal.id_pegawai','like','T%')
-                  ->where('id_jadwal','<>','')
+                  ->whereNotNull('request_jadwal.id_jadwal')
+                  ->whereNotNull('request_jadwal.id_pegawai')
                   ->orderBy('deskripsi','desc');
          $rizinterapis=$sqlizinterapis->get();
          $countizinrterapis=$sqlizinterapis->where('deskripsi','Request')->count();
@@ -416,7 +417,8 @@ public function jadwalevaluasifilter(Request $req){
          $sqlrpasien=DB::table('request_jadwal')
                   ->join('d_pasien','d_pasien.id_pasien','=','request_jadwal.id_pasien')
                   ->where('request_jadwal.id_pasien','<>','')
-                  ->where('id_jadwal','<>','')
+                  ->whereNotNull('request_jadwal.id_jadwal')
+                  ->whereNotNull('request_jadwal.id_pasien')
                   ->orderBy('deskripsi','desc');
          $rpasien=$sqlrpasien->get();
          $countrpasien=$sqlrpasien->where('deskripsi','Request')->count();
@@ -442,9 +444,14 @@ public function jadwalevaluasifilter(Request $req){
       ]);
   }
 
-  public function validatejadwal($id,$validate){
+  public function validatejadwal($idJ,$id,$validate,$type){
     if ($validate=="Diterima") {
-      DB::table('request_jadwal')->where('id_requestjadwal',$id)->update(['deskripsi'=>'Diterima']);
+        if ($type=="req-izin-pasien") {
+          DB::table('jadwal_terapis')->where('id_jadwal',$idJ)->update(['status_pasien'=>'Izin']);
+        }elseif ($type=="req-izin-terapis") {
+          DB::table('jadwal_terapis')->where('id_jadwal',$idJ)->update(['status_terapis'=>'Izin']);
+        }
+        DB::table('request_jadwal')->where('id_requestjadwal',$id)->update(['deskripsi'=>'Diterima']);
     }elseif ($validate=="Ditolak") {
       DB::table('request_jadwal')->where('id_requestjadwal',$id)->update(['deskripsi'=>'Ditolak']);
     }

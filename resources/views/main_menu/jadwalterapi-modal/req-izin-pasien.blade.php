@@ -30,9 +30,9 @@
                     <td>{{$isi->ket_izin}}</td>
                     <td>
                       @if($isi->deskripsi=="Request")
-                        <a href="{{url('/jadwal-terapi/validate')}}/{{$isi->id_requestjadwal}}/Diterima" onclick="return confirm('Apakah Anda Yakin ?')" class="btn btn-social-icon btn-dropbox">
+                        <a href="{{url('/jadwal-terapi')}}/{{$isi->id_jadwal}}/{{$isi->id_requestjadwal}}/Diterima/req-izin-pasien" onclick="return confirm('Apakah Anda Yakin ?')" class="btn btn-social-icon btn-dropbox">
                           <i class="fa fa-check"></i></a>
-                        <a href="{{url('/jadwal-terapi/validate')}}/{{$isi->id_requestjadwal}}/Ditolak" onclick="return confirm('Apakah Anda Yakin ?')" class="btn btn-social-icon btn-danger">
+                        <a href="{{url('/jadwal-terapi')}}/{{$isi->id_jadwal}}/{{$isi->id_requestjadwal}}/Ditolak/req-izin-pasien" onclick="return confirm('Apakah Anda Yakin ?')" class="btn btn-social-icon btn-danger">
                           <i class="fa fa-close"></i></a>
                       @elseif($isi->deskripsi=="Diterima")
                         <span class="badge bg-green">Diterima</span>

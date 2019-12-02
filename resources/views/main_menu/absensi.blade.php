@@ -96,7 +96,7 @@
                                 <td>{{$isi->jam_masuk}}</td>
                                 <td>{{$isi->jam_keluar}}</td>
                                 <td>{{$isi->id_jadwal}}</td>
-                                <td>{{$isi->status}}</td>
+                                <td>{{$isi->status_pasien}}</td>
                               </tr>
                             @endforeach
                           </tbody>
@@ -183,7 +183,7 @@
                                 <td>{{$isi->jam_masuk}}</td>
                                 <td>{{$isi->jam_keluar}}</td>
                                 <td>{{$isi->id_jadwal}}</td>
-                                <td>{{$isi->status}}</td>
+                                <td>{{$isi->status_terapis}}</td>
                               </tr>
                             @endforeach
                           </tbody>

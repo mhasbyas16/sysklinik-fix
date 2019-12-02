@@ -43,11 +43,13 @@ class hitungDenda extends Command
 
         foreach ($h_billing as $h) {
             $total_biaya = $h->biaya;
+            $total_tagihan = $h->sisa_tagihan;
 
             $denda = (10 * $total_biaya) / 100;
 
             $data = [
-                'denda' => $denda
+                'denda' => $denda,
+                'sisa_tagihan' => $total_tagihan + $denda
             ];
 
             Bill::where('id_bill', $h->id_bill)->update($data);

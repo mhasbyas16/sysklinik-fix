@@ -87,11 +87,59 @@ class billing extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $r, $id)
-    {
-        $validasi = $r->validasi;
+    {   
+        $billing = DB::table('h_billing')->select('*')->where('id_bill', $r->id_bill)->first();
 
+        $bukti_billing = DB::table('bukti_billing')->select('*')->where('id_bukti', $id)->first();
+        $keterangan = $bukti_billing->keterangan;
+
+        $validasi = $r->validasi;
+        $jml_bayar = $r->jml_bayar;
+
+        if ($keterangan == "Billing") {
+            $a = $billing->biaya;
+        }elseif ($keterangan == "Uang Pangkal") {
+            $a = $billing->uang_pangkal;
+        }elseif ($keterangan == "Assessment") {
+            $a = $billing->assessment;
+        }elseif ($keterangan == "Evaluasi") {
+            $a = $billing->evaluasi;
+        }elseif ($keterangan == "Denda") {
+            $a = $billing->denda;
+        }
+
+        if ($r->validasi == "Valid") {
+            $sisa = $billing->sisa_tagihan - $jml_bayar;
+            $ket = $a - $jml_bayar;
+
+            if ($sisa == 0) {
+                $bUpdate = [
+                    'sisa_tagihan' => $sisa,
+                    'status_bayarbill' => 'Lunas'
+                ];
+
+                $updateBill = Bill::where('id_bill', $r->id_bill)->date($bUpdate);
+
+            }else{
+                $bUpdate = [
+                    'sisa_tagihan' => $sisa,
+                    'status_bayarbill' => 'Belum Lunas'
+                ];
+
+                $updateBill = Bill::where('id_bill', $r->id_bill)->date($bUpdate);
+
+                if ($ket == 0) {
+                    $buktiUpdate = [
+                        'status_bayarbill' => 'Lunas'
+                    ];
+
+                    $updateBukti = BuktiBilling::where('id_bukti', $id)->update($buktiUpdate);
+                }
+            }
+        }
         $data = [
-            'validasi' => $validasi
+            'validasi' => $validasi,
+
         ];
 
         $update = BuktiBilling::where('id_bukti', $id)->update($data);

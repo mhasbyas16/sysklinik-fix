@@ -55,7 +55,7 @@
                         <div class="form-group">
                           <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Tanggal Bayar</label>
                           <div class="col-sm-7">
-                            <input type="text" name="id_pasien" value="{{ $d->tgl_bayar }}" class="form-control" disabled>
+                            <input type="text" name="tgl_bayar" value="{{ $d->tgl_bayar }}" class="form-control" disabled>
                           </div>
                         </div>
                       </div>
@@ -65,7 +65,7 @@
                         <div class="form-group">
                           <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Jumlah Bayar</label>
                           <div class="col-sm-7">
-                            <input type="text" name="id_pasien" value="{{ $d->jml_bayar }}" class="form-control" disabled>
+                            <input type="text" name="jml_bayar" value="{{ $d->jml_bayar }}" class="form-control" disabled>
                           </div>
                         </div>
                       </div>

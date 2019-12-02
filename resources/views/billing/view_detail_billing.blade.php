@@ -163,7 +163,7 @@
                   <div class="col-md-12 text-center">
                     <h3>{{ tglIndonesia(date('F Y', strtotime($tgl)))}}</h3>
                   </div>
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped" border="1px">
                       <thead>
                         <tr>
                           <th>Hari, Tanggal</th>
@@ -187,11 +187,31 @@
                           <td>{{ count($data) }}</td>
                           <td>Rp. {{ number_format(count($data) * $bps, 2) }}</td>
                         </tr>
-                        <tr>
-                          <td>Perubahan</td>
+                        <tr valign="top">
+                          <td rowspan="5" style="vertical-align: top">Perubahan</td>
                           <td>Sisa sesi bulan lalu</td>
                           <td>{{ $sisa_sesi }}</td>
-                          <td>Rp. {{ number_format($sisa_sesi * $bps, 2) }}</td>
+                          <td>Rp. {{ number_format($ttl_sisaSesi, 2) }}</td>
+                        </tr>
+                        <tr>
+                          <td>Uang Pangkal</td>
+                          <td>&nbsp;</td>
+                          <td>Rp. {{ number_format($uang_pangkal, 2) }}</td>
+                        </tr>
+                        <tr>
+                          <td>Assessment</td>
+                          <td>&nbsp;</td>
+                          <td>Rp. {{ number_format($assessment, 2) }}</td>
+                        </tr>
+                        <tr>
+                          <td>Evaluasi</td>
+                          <td>&nbsp;</td>
+                          <td>Rp. {{ number_format($evaluasi, 2) }}</td>
+                        </tr>
+                        <tr>
+                          <td>Denda</td>
+                          <td>&nbsp;</td>
+                          <td>Rp. {{ number_format($denda, 2) }}</td>
                         </tr>
                         <tr>
                           <td colspan="2"><label for="">Jumlah</label></td>
@@ -199,7 +219,15 @@
                           <td>Rp. {{ number_format($total, 2) }}</td>
                         </tr>
                         <tr>
-                          <td colspan="4" style="text-align: right; text-transform:capitalize; font-weight: bold">" {{ terbilang($total)." rupiah" }} "</td>
+                          <td colspan="4" style="text-align: right; text-transform:capitalize; font-weight: bold">
+                            " 
+                              @if ($total == 0)
+                                Lunas
+                              @else
+                                {{ terbilang($total)." rupiah" }}
+                              @endif 
+                            "
+                          </td>
                         </tr>
                       </tbody>
                     </table>

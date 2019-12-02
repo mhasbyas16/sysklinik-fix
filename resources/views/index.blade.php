@@ -1,6 +1,5 @@
 @extends('template.style')
 @section('isi')
-@include('sweet::alert')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->

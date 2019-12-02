@@ -96,6 +96,12 @@ Route::get('/print/laporan/{id}', 'printpage@printLaporanKeuangan');
 Route::resource('/alatterapi','alatterapi');
 Route::resource('/transalat','transaksiat');
 Route::resource('/persediaan','persediaan');
+
 Route::get('/merk/{id}','alatterapi@merkAjax');
 Route::get('/ambil/{id}','alatterapi@merkAjax');
+
+//dashboard asses baru
+Route::get('/ubahstatus/{id}','Controller@ubahstatus');
+Route::post('/hapus/{id}','Controller@hapus');
+
 // ------------------------------------ DINDIN PART END ---------------------------------- //

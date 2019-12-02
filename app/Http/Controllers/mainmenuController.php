@@ -10,6 +10,7 @@ use App\Helper\absensi;
 use App\Helper\idrandom;
 use App\Helper\agama;
 use File;
+use App\RekamMedis;
 
 class mainmenuController extends Controller
 {
@@ -362,6 +363,16 @@ public function jadwalevaluasifilter(Request $req){
       'tgl'=>$now
     ];
     DB::table('record_status_pasien')->insert($record);
+
+    $data = [
+      'id_rm' => 'RM'.date('YmdHis'),
+      'id_pasien' => $id_pasien->id_pasien,
+      'id_asses' => $id_asses,
+      'diagnosa' => $id_pasien->diagnosa
+    ];
+
+    RekamMedis::insert($data);
+
     return redirect('jadwal-terapi');
   }
 

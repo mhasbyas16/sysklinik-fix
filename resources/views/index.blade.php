@@ -1,5 +1,6 @@
 @extends('template.style')
 @section('isi')
+@include('sweet::alert')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -83,7 +84,7 @@
           <div class="nav-tabs-custom">
             <!-- Tabs within a box -->
             <ul class="nav nav-tabs pull-right">
-              <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
+              <li class="active"><a href="#revenue-chart" data-toggle="tab">Bar Chart</a></li>
               <li class="pull-left header"><i class="fa fa-inbox"></i> Total Pasien Tiap Jenis Terapi</li>
             </ul>
             <div class="tab-content no-padding">
@@ -94,8 +95,7 @@
           <!-- /.nav-tabs-custom -->
 
         </section>
-        <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+
         <section class="col-lg-5 connectedSortable">
 
           <!-- Calendar -->
@@ -124,12 +124,197 @@
 
 
         </section>
+      </div>
+
+      <div class="row">
+
+        <section class="col-lg-12 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          <div class="nav-tabs-custom">
+            <!-- Tabs within a box -->
+            <ul class="nav nav-tabs pull-right">
+              <!--li class="active"><a href="#revenue-chart" data-toggle="tab">Request Send Mail</a></li-->
+              <li class="pull-left header"><i class="fa fa-inbox"></i> Permintaan Unduh Kuesioner Terapi</li>
+            </ul>
+            <div class="tab-content no-padding">
+              <!-- Morris chart - Sales -->
+              <div class="chart tab-pane active" id="revenue-chart" style="position: relative;"></div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <br>
+                      <div class="box-body">
+                        <table id="pegawais" class="table table-bordered table-striped text-center">
+                          <thead>
+                          <tr>
+                            <th>Tanggal</th>
+                            <th>ID Pasien</th>
+                            <th>Nama Pasien</th>
+                            <th>E-mail</th>
+                            <th>Jenis Terapi</th>
+                            <th>Aksi</th>
+                            <th>Status</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($kue as $xx)
+                            <tr>
+                              <td>{{$xx->tgl}}</td>
+                              <td>{{$xx->id_pasien}}</td>
+                              <td>{{$xx->nama}}</td>
+                              <td>{{$xx->email}}</td>
+                              <td>{{$xx->jenis_terapi}}</td>
+                              <td>
+                                <form action="" method="">
+                                    
+                                    <input type="submit" class="btn btn-info btn-sm" href="#" value="Kirim E-Mail">
+                                </form>
+                              </td>
+                              <td>{{$xx->status}}</td>
+                            </tr>
+                            @endforeach
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <th>Tanggal</th>
+                            <th>ID Pasien</th>
+                            <th>Nama Pasien</th>
+                            <th>E-mail</th>
+                            <th>Jenis Terapi</th>
+                            <th>Aksi</th>
+                            <th>Status</th>
+                          </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                      <br>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <!-- /.nav-tabs-custom -->
+
+        </section>
         <!-- right col -->
       </div>
-      <!-- /.row (main row) -->
 
-    </section>
+      <div class="row">
+
+        <section class="col-lg-12 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          <div class="nav-tabs-custom">
+            <!-- Tabs within a box -->
+            <ul class="nav nav-tabs pull-right">
+              <!--li class="active"><a href="#revenue-chart" data-toggle="tab">Request New Asses</a></li-->
+              <li class="pull-left header"><i class="fa fa-inbox"></i> Permintaan Pasien untuk Assesment Baru</li>
+            </ul>
+            <div class="tab-content no-padding">
+              <!-- Morris chart - Sales -->
+              <div class="chart tab-pane active" id="revenue-chart" style="position: relative;"></div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <br>
+                      <div class="box-body">
+                        <table id="pegawaiis" class="table table-bordered table-striped text-center">
+                          <thead>
+                          <tr>
+                            <th>Tanggal</th>
+                            <th>ID Pasien</th>
+                            <th>Nama Pasien</th>
+                            <th>E-Mail</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($r as $x)
+                            <tr>
+                              <td>{{$x->tgl}}</td>
+                              <td>{{$x->id_pasien}}</td>
+                              <td>{{$x->nama}}</td>
+                              <td>{{$x->email}}</td>
+                              <td>{{$x->status}}</td>
+                              <td>
+                                <div class="inline">
+                                  <a href="#">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#update" id="ubah">Ubah</button>
+                                  </a>
+                                  <a href="{{url('/hapus')}}/{{$data->id_pasien}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data Ini?')">
+                                    <button type="button" class="btn btn-danger">Hapus</button>
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                            @endforeach
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <th>Tanggal</th>
+                            <th>ID Pasien</th>
+                            <th>Nama Pasien</th>
+                            <th>E-Mail</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                          </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                      <br>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <!-- /.nav-tabs-custom -->
+          <form action="{{url('/ubahstatus')}}" method="post">
+          <div class="modal" id="update">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Update Status</h4>
+                  </div>
+                  <div class="modal-body">
+                    <input class="control-label col-md-4 text-left" type="text" name="ids" placeholder="id pasiennya">
+                        
+                    <div class="text-center col-sm-4">
+                      <div class="form-group d-md-inline-flex col-md-11">
+                        <label class="control-label col-md-4 text-left">Status</label>
+                        <select class="form-control col-md-8 text-left select2" style="width: 100%;" name="status" required>
+                          <option value="Pilih">Pilih</option>
+                          <option value="Terima">Terima</option>
+                          <option value="Tolak">Tolak</option> 
+                        </select>
+                      </div>
+                    </div>
+                   </div>
+                   <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" href="#">Simpan</button>
+                   </div>
+                </div>
+              </div>
+          </div>
+          </form>
+
+          @if(\Session::has('alertwarn'))
+              <div class="alert alert-success">
+                <strong> Success </strong> {{Session::get('alert-success')}}
+              </div>
+            @endif
+
+        </section>
     <!-- /.content -->
   </div>
+
+  <script type="text/javascript">
+    var table=$('#pegawaiis').Datatable();
+
+    $('#pegawaiis').on('click', 'tr', function(){
+      var id=table.row(this).id();
+      $('#ids').val(id);
+    });
+  </script>
+
+
   <!-- /.content-wrapper -->
   @endsection

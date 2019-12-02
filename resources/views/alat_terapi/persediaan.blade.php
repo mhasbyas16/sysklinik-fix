@@ -50,10 +50,10 @@
                 <tbody>
                 @foreach($at as $x)
                 <tr>
-                  <td><a href="{{url('alatterapi/'. $x->id_barang.'/edit')}}">{{$x->id_barang}}</a></td>
-                  <td><a href="{{url('alatterapi/'. $x->id_barang.'/edit')}}">{{$x->nama_barang}}</a></td>
-                  <td><a href="{{url('alatterapi/'. $x->id_barang.'/edit')}}">{{$x->stok_awal}}</a></td>
-                  <td><a href="{{url('alatterapi/'. $x->id_barang.'/edit')}}">{{$x->stok}}</a></td>
+                  <td>{{$x->id_barang}}</td>
+                  <td>{{$x->nama_barang}}</td>
+                  <td>{{$x->stok_awal}}</td>
+                  <td>{{$x->stok}}</td>
                 </tr>
                 @endforeach
                 </tbody>

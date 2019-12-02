@@ -175,7 +175,7 @@
                       <tbody>
                         @foreach ($data as $d)
                           <tr>
-                            <td>{{ tglIndonesia(date('D, d/mY', strtotime($d->tgl))) }}</td>
+                            <td>{{ tglIndonesia(date('D, d/m/Y', strtotime($d->tgl))) }}</td>
                             <td>{{ $d->terapi}}</td>
                             <td>{{ $d->sesi }}</td>
                             <td>Rp. {{ number_format($d->biaya, 2) }}</td>

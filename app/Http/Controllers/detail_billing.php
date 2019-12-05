@@ -48,7 +48,7 @@ class detail_billing extends Controller
      */
     public function show($id)
     {
-        $sql = DB::table('d_billing')->select('h_billing.biaya as total', 'd_billing.id_bill_detail', 'd_pasien.nama', 'd_pasien.nama_ayah', 'd_pasien.nama_ibu', 'd_pasien.tempat_lahir', 'd_pasien.tgl_lahir', 'd_pasien.tlp', 'd_pasien.tlp_ayah', 'd_pasien.tlp_ibu', 'jadwal_terapis.*', 'jenis_terapi.terapi', 'd_billing.sesi', 'jenis_terapi.id_terapi', 'd_billing.biaya', 'h_billing.sisa_sesi', 'jadwal_terapis.biaya as bps')->join('h_billing', 'd_billing.id_bill', '=', 'h_billing.id_bill')->join('assessment', 'h_billing.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'assessment.id_pasien', '=', 'd_pasien.id_pasien')->join('jadwal_terapis', 'd_billing.id_jadwal', '=', 'jadwal_terapis.id_jadwal')->join('terapi_pasien', 'jadwal_terapis.id_terapipasien', '=', 'terapi_pasien.id_terapipasien')->join('jenis_terapi', 'terapi_pasien.id_terapi', '=', 'jenis_terapi.id_terapi')->where('d_billing.id_bill', $id);
+        $sql = DB::table('d_billing')->select('h_billing.sisa_tagihan as total', 'h_billing.uang_pangkal', 'h_billing.assessment', 'h_billing.denda', 'h_billing.evaluasi', 'd_billing.id_bill_detail', 'd_pasien.nama', 'd_pasien.nama_ayah', 'd_pasien.nama_ibu', 'd_pasien.tempat_lahir', 'd_pasien.tgl_lahir', 'd_pasien.tlp', 'd_pasien.tlp_ayah', 'd_pasien.tlp_ibu', 'jadwal_terapis.*', 'jenis_terapi.terapi', 'd_billing.sesi', 'jenis_terapi.id_terapi', 'd_billing.biaya', 'h_billing.sisa_sesi', 'jadwal_terapis.biaya as bps')->join('h_billing', 'd_billing.id_bill', '=', 'h_billing.id_bill')->join('assessment', 'h_billing.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'assessment.id_pasien', '=', 'd_pasien.id_pasien')->join('jadwal_terapis', 'd_billing.id_jadwal', '=', 'jadwal_terapis.id_jadwal')->join('terapi_pasien', 'jadwal_terapis.id_terapipasien', '=', 'terapi_pasien.id_terapipasien')->join('jenis_terapi', 'terapi_pasien.id_terapi', '=', 'jenis_terapi.id_terapi')->where('d_billing.id_bill', $id);
         //fullcalendar
             $events = [];
             $data=$sql->get();
@@ -95,13 +95,19 @@ class detail_billing extends Controller
         
         $jadwal_all = $jadwal->get();
         $jml = $jadwal->first();
+        $sisa_sesi = $a->sisa_sesi / $a->bps;
         return view('billing.view_detail_billing', compact('calendar'), [
             'data' => $data,
             'dp' => $data2,
             'jadwal' => $jadwal_all,
             'tgl' => $b,
             'total' => $a->total,
-            'sisa_sesi' => $a->sisa_sesi,
+            'uang_pangkal' => $a->uang_pangkal,
+            'assessment' => $a->assessment,
+            'evaluasi' => $a->evaluasi,
+            'denda' => $a->denda,
+            'sisa_sesi' => $sisa_sesi,
+            'ttl_sisaSesi' => $a->sisa_sesi,
             'bps' => $a->bps,
             'jml_sesi' => $jml->jml_sesi,
             'id' => $id

@@ -22,7 +22,7 @@ class printpage extends Controller
     	//
     }
     public function printBilling($id){
-    	$sql = DB::table('d_billing')->select('h_billing.biaya as total', 'd_billing.id_bill_detail', 'd_pasien.nama', 'd_pasien.nama_ayah', 'd_pasien.nama_ibu', 'd_pasien.tempat_lahir', 'd_pasien.tgl_lahir', 'd_pasien.tlp', 'd_pasien.tlp_ayah', 'd_pasien.tlp_ibu', 'jadwal_terapis.*', 'jenis_terapi.terapi', 'd_billing.sesi', 'jenis_terapi.id_terapi', 'd_billing.biaya', 'h_billing.sisa_sesi', 'jadwal_terapis.biaya as bps')->join('h_billing', 'd_billing.id_bill', '=', 'h_billing.id_bill')->join('assessment', 'h_billing.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'assessment.id_pasien', '=', 'd_pasien.id_pasien')->join('jadwal_terapis', 'd_billing.id_jadwal', '=', 'jadwal_terapis.id_jadwal')->join('terapi_pasien', 'jadwal_terapis.id_terapipasien', '=', 'terapi_pasien.id_terapipasien')->join('jenis_terapi', 'terapi_pasien.id_terapi', '=', 'jenis_terapi.id_terapi')->where('d_billing.id_bill', $id);
+    	$sql = DB::table('d_billing')->select('h_billing.sisa_tagihan as total', 'h_billing.uang_pangkal', 'h_billing.assessment', 'h_billing.evaluasi', 'h_billing.denda', 'd_billing.id_bill_detail', 'd_pasien.nama', 'd_pasien.nama_ayah', 'd_pasien.nama_ibu', 'd_pasien.tempat_lahir', 'd_pasien.tgl_lahir', 'd_pasien.tlp', 'd_pasien.tlp_ayah', 'd_pasien.tlp_ibu', 'jadwal_terapis.*', 'jenis_terapi.terapi', 'd_billing.sesi', 'jenis_terapi.id_terapi', 'd_billing.biaya', 'h_billing.sisa_sesi', 'jadwal_terapis.biaya as bps')->join('h_billing', 'd_billing.id_bill', '=', 'h_billing.id_bill')->join('assessment', 'h_billing.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'assessment.id_pasien', '=', 'd_pasien.id_pasien')->join('jadwal_terapis', 'd_billing.id_jadwal', '=', 'jadwal_terapis.id_jadwal')->join('terapi_pasien', 'jadwal_terapis.id_terapipasien', '=', 'terapi_pasien.id_terapipasien')->join('jenis_terapi', 'terapi_pasien.id_terapi', '=', 'jenis_terapi.id_terapi')->where('d_billing.id_bill', $id);
         //fullcalendar
             $events = [];
             $data=$sql->get();
@@ -69,13 +69,20 @@ class printpage extends Controller
         
         $jadwal_all = $jadwal->get();
         $jml = $jadwal->first();
+
+        $sisa_sesi = $a->sisa_sesi / $a->bps;
         return view('billing.print_billing', compact('clndr'), [
             'data' => $data,
             'dp' => $data2,
             'jadwal' => $jadwal_all,
             'tgl' => $b,
             'total' => $a->total,
-            'sisa_sesi' => $a->sisa_sesi,
+            'uang_pangkal' => $a->uang_pangkal,
+            'assessment' => $a->assessment,
+            'evaluasi' => $a->evaluasi,
+            'denda' => $a->denda,
+            'sisa_sesi' => $sisa_sesi,
+            'ttl_sisaSesi' => $a->sisa_sesi,
             'bps' => $a->bps,
             'jml_sesi' => $jml->jml_sesi,
             'id' => $id
@@ -85,14 +92,14 @@ class printpage extends Controller
     }
 
     public function sendBilling($id){
-        $data = DB::table('d_pasien')->select('email_ayah', 'nama', 'id_bill')->join('assessment', 'd_pasien.id_pasien', '=', 'assessment.id_pasien')->join('h_billing', 'assessment.id_asses', '=', 'h_billing.id_asses')->where('id_bill', $id);
+        $data = DB::table('d_pasien')->select('email', 'nama', 'id_bill')->join('assessment', 'd_pasien.id_pasien', '=', 'assessment.id_pasien')->join('h_billing', 'assessment.id_asses', '=', 'h_billing.id_asses')->join('h_pasien', 'd_pasien.id_pasien', '=', 'h_pasien.id_pasien')->where('id_bill', $id)->where('assessment.id_asses', $jh->id_asses);
         $dt = $data->first();
         $data = $data->get();
 
         Mail::send('billing.sendBilling', compact('data'), function($message) use($dt){
             $message->priority('importance');
 
-            $message->to($dt->email_ayah)->subject('Your billing data generated on '.date('F Y'));
+            $message->to($dt->email)->subject('Your billing data generated on '.date('F Y'));
         });
     }
 

@@ -227,10 +227,10 @@
                       <tbody>
                         @foreach($at as $x)
                       <tr>
-                        <td><a href="{{url('transalat/'. $x->id_barang.'/edit')}}">{{$x->tgl}}</a></td>
-                        <td><a>{{$x->no_kwitansi}}</a></td>
-                        <td><a>{{$x->id_barang}}</a></td>
-                        <td><a>{{$x->jml_barang}}</a></td>
+                        <td>{{$x->tgl}}</td>
+                        <td>{{$x->no_kwitansi}}</td>
+                        <td>{{$x->id_barang}}</td>
+                        <td>{{$x->jml_barang}}</td>
                         <td>
                           <form action="{{ url('transalat', $x->id_barang) }}" method="post">
                               @csrf
@@ -456,10 +456,10 @@
                       <tbody>
                         @foreach($out as $x)
                       <tr>
-                        <td><a href="{{url('transalat/'. $x->id_barang.'/edit')}}">{{$x->tgl}}</a></td>
-                        <td><a>{{$x->no_kwitansi}}</a></td>
-                        <td><a>{{$x->id_barang}}</a></td>
-                        <td><a>{{$x->jml_barang}}</a></td>
+                        <td>{{$x->tgl}}</td>
+                        <td>{{$x->no_kwitansi}}</td>
+                        <td>{{$x->id_barang}}</td>
+                        <td>{{$x->jml_barang}}</td>
                         <td>
                           <form action="{{ url('transalat', $x->id_barang) }}" method="post">
                               @csrf

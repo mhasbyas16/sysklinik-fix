@@ -8,6 +8,7 @@ use MaddHatter\LaravelFullcalendar\Facades\Calendar;
 use DB;
 use App\Helper\absensi;
 use File;
+use App\RekamMedis;
 
 class mainmenuController extends Controller
 {
@@ -392,6 +393,16 @@ public function jadwalevaluasifilter(Request $req){
       'tgl'=>$now
     ];
     DB::table('record_status_pasien')->insert($record);
+
+    $data = [
+      'id_rm' => 'RM'.date('YmdHis'),
+      'id_pasien' => $id_pasien->id_pasien,
+      'id_asses' => $id_asses,
+      'diagnosa' => $id_pasien->diagnosa
+    ];
+
+    RekamMedis::insert($data);
+
     return redirect('jadwal-terapi');
   }
 

@@ -28,6 +28,7 @@ Route::post('/register-list/filter-date','mainmenuController@registerlistfilter'
 //Absensi
 Route::get('/absensi','mainmenuController@absensi');
 Route::post('/absensi/{id}','mainmenuController@absensifilter');
+Route::get('/absensi/export/{awal}/{akhir}','mainmenuController@exportabsensi');
 //jadwal terapi
 Route::get('/jadwal-terapi','mainmenuController@jadwalterapi');
 Route::get('/jadwal-terapi/asses/{id}','mainmenuController@jadwalasses');

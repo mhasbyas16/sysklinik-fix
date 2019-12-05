@@ -3,8 +3,8 @@
      $('#datepicker, #datedaftar, #tgl_mulai, #tgl_selesai').datepicker({
          autoclose: true,
          format:'yyyy-mm-dd'
-     })
-})
+     });
+});
 
 //assesment alamat checkbox
 $(document).ready(function(){
@@ -37,15 +37,31 @@ $(function () {
     dom: 'Bfrtip',
     buttons:[
       {extend:'excelHtml5',
-       title:'Assesment Export'},
+       title:'Assesment Exportaa'},
       {extend:'pdfHtml5',
-       title:'Assesment Export'},
+       title:'Assesment Exportaa'},
        'print'],
        select:true,
         "pageLength": 20
-  })
-})
-
+  });
+});
+//
+$(document).ready(function() {
+    $('absensiPasien').DataTable({
+      dom: 'Bfrtip',
+      buttons:[
+        {extend:'excelHtml5',
+         title:'Absensi Pasien'},
+        {extend:'pdfHtml5',
+         title:'Absensi Pasien'},
+         'print'],
+         select:true
+    });
+    // Event listener to the two range filtering inputs to redraw on input
+    /*$('#max').on('keyup click change', function() {
+        table.draw();
+    } );*/
+} );
 /* Absensi */
 $.fn.dataTable.ext.search.push(
     function( settings, data, dataIndex ) {
@@ -64,8 +80,8 @@ $.fn.dataTable.ext.search.push(
     }
 );
 
-$(document).ready(function() {
-    var table = $('#example_P,#example_K,#example_T,#pegawais,#pasiens,#terapiss,#terapi').DataTable({
+/*$(document).ready(function() {
+    $('#pegawais,#pasiens,#terapiss,#terapi').DataTable({
       dom: 'Bfrtip',
       buttons:[
         {extend:'excelHtml5',
@@ -75,12 +91,12 @@ $(document).ready(function() {
          'print'],
          select:true
     });
-
     // Event listener to the two range filtering inputs to redraw on input
-    $('#max').on('keyup click change', function() {
+    /*$('#max').on('keyup click change', function() {
         table.draw();
     } );
-} );
+} );*/
+
 
 //format uang
 var gaji = document.getElementById('gaji');
@@ -137,3 +153,20 @@ function formatRupiah(angka, prefix)
   rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
   return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
 }
+
+$(document).ready(function($){
+// Format mata uang.
+$( '.uang' ).mask('000.000.000', {reverse: true});
+});
+
+$(function () {
+  $('#datepicker').datepicker({
+  autoclose: true
+  });
+  $('#datedaftar').datepicker({
+  autoclose: true
+  });
+  $('.tanggal').datepicker({
+  format: 'dd-mm-yyyy'
+  });
+)};

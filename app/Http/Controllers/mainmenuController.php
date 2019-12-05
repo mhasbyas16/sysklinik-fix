@@ -7,16 +7,17 @@ use Illuminate\Support\Facades\Session;
 use MaddHatter\LaravelFullcalendar\Facades\Calendar;
 use DB;
 use App\Helper\absensi;
-use App\Helper\idrandom;
-use App\Helper\agama;
 use File;
 
 class mainmenuController extends Controller
 {
   //absensi
   public function absensi(){
+    $Dawal=date('Y-m-1');
+    $Dakhir=date('Y-m-31');
     //pasien
-    $pasien=absensi::pasien()->get();
+    $pasien=absensi::pasien()->whereBetween('tgl',[$Dawal,$Dakhir])->get();
+    $sumPasien=absensi::sumPasien()->whereBetween('tgl',[$Dawal,$Dakhir])->groupBy('d_pasien.nama')->get();
     //terapis
     $terapis=absensi::terapis()->get();
     //karyawan
@@ -25,24 +26,32 @@ class mainmenuController extends Controller
     return view('main_menu.absensi',[
       'pasien'=>$pasien,
       'terapis'=>$terapis,
-      'karyawan'=>$karyawan
+      'karyawan'=>$karyawan,
+      'sumPasien'=>$sumPasien,
+      'Dawal'=>$Dawal,
+      'Dakhir'=>$Dakhir
     ]);
   }
 
   public function absensifilter(Request $req, $id){
     $min=$req->min;
     $max=$req->max;
+    $Dawal=$min;
+    $Dakhir=$max;
 
     if ($id=='pasien') {
       $pasien=absensi::pasien()->whereBetween('tgl',[$min,$max])->get();
+      $sumPasien=absensi::sumPasien()->whereBetween('tgl',[$min,$max])->get();
       $terapis=absensi::terapis()->get();
       $karyawan=absensi::karyawan()->get();
     }elseif ($id=='terapis') {
       $pasien=absensi::pasien()->get();
+      $sumPasien=absensi::sumPasien()->get();
       $terapis=absensi::terapis()->whereBetween('tgl',[$min,$max])->get();
       $karyawan=absensi::karyawan()->get();
     }elseif ($id=='karyawan') {
       $pasien=absensi::pasien()->get();
+      $sumPasien=absensi::sumPasien()->get();
       $terapis=absensi::terapis()->get();
       $karyawan=absensi::karyawan()->whereBetween('tgl',[$min,$max])->get();
     }
@@ -50,8 +59,17 @@ class mainmenuController extends Controller
     return view('main_menu.absensi',[
       'pasien'=>$pasien,
       'terapis'=>$terapis,
-      'karyawan'=>$karyawan
+      'karyawan'=>$karyawan,
+      'sumPasien'=>$sumPasien,
+      'Dawal'=>$Dawal,
+      'Dakhir'=>$Dakhir
     ]);
+  }
+
+  public function exportabsensi($awal,$akhir){
+    $pasien=absensi::pasien()->whereBetween('tgl',[$awal,$akhir])->get();
+    $sumPasien=absensi::sumPasien()->whereBetween('tgl',[$awal,$akhir])->groupBy('d_pasien.nama')->get();
+    return view ('main_menu.absensi-tab.exportPasien',['pasien'=>$pasien,'sumPasien'=>$sumPasien]);
   }
 
 //jadwal Evaluasi
@@ -131,9 +149,9 @@ public function jadwalevaluasifilter(Request $req){
   public function registerlistdata($id){
 
     $data=DB::table('d_pasien')
-    ->join('h_pasien','h_pasien.id_pasien','=','d_pasien.id_pasien')
-    ->join('record_status_pasien','record_status_pasien.id_pasien','=','h_pasien.id_pasien')
-    ->join('assessment','assessment.id_pasien','=','d_pasien.id_pasien')
+    ->leftJoin('h_pasien','h_pasien.id_pasien','=','d_pasien.id_pasien')
+    ->leftJoin('record_status_pasien','record_status_pasien.id_pasien','=','h_pasien.id_pasien')
+    ->leftJoin('assessment','assessment.id_pasien','=','d_pasien.id_pasien')
     ->where('d_pasien.id_pasien',$id)->orderBY('record_status_pasien.id_status','desc')->first();
     $assessment=DB::table('assessment');
     $count=$assessment->where('id_pasien',$id)->count();
@@ -143,8 +161,20 @@ public function jadwalevaluasifilter(Request $req){
     $bulan=$tgl_lahir[1];
     $tahun_now=date('Y');
     $bulan_now=date('m');
-    $agama=agama::listagama();
-    $status=agama::liststatus();
+    $agama=[
+      'Islam',
+      'Kristen',
+      'Katolik',
+      'Protestan',
+      'Hindu',
+      'Buddha'
+    ];
+    $status=[
+      'Daftar',
+      'Cancel',
+      'Asses',
+      'Pasien'
+    ];
     if ($bulan_now>=$bulan) {
       $diff=$tahun_now-$tahun;
     }else{

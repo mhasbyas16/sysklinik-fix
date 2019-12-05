@@ -10,6 +10,13 @@ class absensi{
     ->leftJoin('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien');
     return $pasien;
     }
+  public static function sumPasien(){
+    $pasien=DB::table('jadwal_terapis')
+    ->select('jadwal_terapis.*','d_pasien.nama','d_pasien.id_pasien',DB::raw('count(*)as total'))
+    ->leftJoin('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
+    ->leftJoin('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien');
+    return $pasien;
+  }
   public static function terapis(){
     $terapis=DB::table('jadwal_terapis')
     ->select('jadwal_terapis.*','d_pegawai.nama')

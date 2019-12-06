@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use App\Helper\idrandom;
 use Illuminate\Support\Facades\Session;
-use App\Helper\agama;
 use File;
 use Str;
 
@@ -18,7 +16,7 @@ class datamasterController extends Controller
     Session::flush();
     return redirect("/login");
   }
-  
+
   //pasien
   public function datapasien(){
     $data=DB::table('h_pasien')
@@ -27,10 +25,22 @@ class datamasterController extends Controller
     ->leftJoin('d_pegawai','assessment.id_pegawai','=','d_pegawai.id_pegawai')
     ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->get();
 
-    $agama=agama::listagama();
+    $agama=[
+      'Islam',
+      'Kristen',
+      'Katolik',
+      'Protestan',
+      'Hindu',
+      'Buddha'
+    ];
     $kar=DB::table('d_pegawai')->orderBy('nama','asc')->get();
     $j_terapi=DB::table('jenis_terapi')->orderBY('terapi','asc')->get();
-    $status=agama::liststatus();
+    $status=[
+      'Daftar',
+      'Cancel',
+      'Asses',
+      'Pasien'
+    ];
 
     return view('data_master.pasien',[
       'data'=>$data,
@@ -218,9 +228,21 @@ class datamasterController extends Controller
   }
 
   public function karyawantambah($kt){
-    $random=idrandom::id();
+    $angka=range(0,9);
+    shuffle($angka);
+    $id=array_rand($angka,3);
+    $idstring=implode($id);
+    $random=$idstring;
+
     $date=date('ymd');
-    $agama=agama::listagama();
+    $agama=[
+      'Islam',
+      'Kristen',
+      'Katolik',
+      'Protestan',
+      'Hindu',
+      'Buddha'
+    ];
     $j_terapi=DB::table('jenis_terapi')->get();
     $jabatan=DB::table('jabatan')->get();
     if ($kt=='terapis') {
@@ -242,7 +264,14 @@ class datamasterController extends Controller
     ->leftJoin('jabatan','jabatan.id_jabatan','=','d_pegawai.id_jabatan')
     ->leftJoin('jenis_terapi','jenis_terapi.id_terapi','=','d_pegawai.id_terapi')
     ->where('h_pegawai.id_pegawai',$id);
-    $agama=agama::listagama();
+    $agama=[
+      'Islam',
+      'Kristen',
+      'Katolik',
+      'Protestan',
+      'Hindu',
+      'Buddha'
+    ];
     $j_terapi=DB::table('jenis_terapi')->get();
     $jabatan=DB::table('jabatan')->get();
 

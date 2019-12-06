@@ -177,8 +177,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         MaddHatter\LaravelFullcalendar\ServiceProvider::class,
         App\Providers\absensiProvider::class,
-        App\Providers\idrandomProvider::class,
-        App\Providers\agamaProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
 
@@ -234,8 +232,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
         'absensi'=> App\Helper\absensi::class,
-        'idrandom'=> App\Helper\idrandom::class,
-        'agama'=> App\Helper\agama::class,
         'Form' => 'Collective\Html\FormFacade',
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Alert' => UxWeb\SweetAlert\SweetAlert::class,

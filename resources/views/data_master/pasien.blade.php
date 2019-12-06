@@ -41,9 +41,6 @@
                     <tr>
                       <th>Nama</th>
                       <th>ID Asses</th>
-                      <th>TGL Daftar</th>
-                      <th>TGL Asses</th>
-                      <th>ID Terapi</th>
                       <th>Assesor</th>
                       <th>Status</th>
                       <th>Aksi</th>
@@ -54,12 +51,15 @@
                       <tr>
                         <td>{{$data->namaPAS}}</td>
                         <td>{{$data->id_asses}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                         <td>{{$data->namaPEG}}</td>
                         <td>{{$data->status_pasien}}</td>
-                        <td><a href="{{url('/data-pasien/view')}}/{{$data->id_pasien}}"><button class="btn btn-danger" >Batal</button></a></td>
+                        <td><div class="btn-group">
+                                <a href="{{url('/data-pasien/view')}}/{{$data->id_pasien}}">
+                                  <button class="btn btn-info" >Edit</button></a>
+                                <a href="{{url('/data-pasien/record')}}/{{$data->id_pasien}}">
+                                  <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#{{$data->id_pegawai}}">Record</button></a>
+                            </div>
+                        </td>
                       </tr>
                       @endforeach
                     </tbody>
@@ -67,9 +67,6 @@
                     <tr>
                         <th>Nama</th>
                         <th>ID Asses</th>
-                        <th>TGL Daftar</th>
-                        <th>TGL Asses</th>
-                        <th>ID Terapi</th>
                         <th>Assesor</th>
                         <th>Status</th>
                         <th>Batal</th>
@@ -84,5 +81,7 @@
           </section>
     <!-- /.content -->
   </div>
+</div>
+</div>
 
 @endsection

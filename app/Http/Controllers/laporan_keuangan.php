@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
+use Carbon\Carbon;
 
-class LaporanKeuangan extends Controller
+class laporan_keuangan extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,9 +34,21 @@ class LaporanKeuangan extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $r)
     {
-        //
+        
+        $data = DB::table('saldo')->select('*')->whereMonth('tgl', $r->month)->whereYear('tgl', $r->year)->get();
+        $a = new Carbon('1-'.$r->month.'-'.$r->year);
+        $b = $a->format('F');
+        $bulan = $r->month;
+        $tahun = $r->year;
+
+        return view('keuangan.lapkeu', [
+            'data' => $data,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'b' => $b
+        ]);
     }
 
     /**
@@ -45,7 +59,7 @@ class LaporanKeuangan extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -80,5 +94,10 @@ class LaporanKeuangan extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function search($month, $year){
+
     }
 }

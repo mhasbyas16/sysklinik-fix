@@ -1,0 +1,8 @@
+body{
+	background: url('../foto/1.jpg');
+}
+
+.signin{
+	background: rgba(255,255,255,0.5);
+	box-shadow: 3px 3px 25px 3px #888888;
+}

@@ -7,51 +7,104 @@ use Illuminate\Support\Facades\Session;
 use MaddHatter\LaravelFullcalendar\Facades\Calendar;
 use DB;
 use App\Helper\absensi;
-use App\Helper\idrandom;
-use App\Helper\agama;
 use File;
+use App\RekamMedis;
 
 class mainmenuController extends Controller
 {
   //absensi
   public function absensi(){
+    $Dawal=date('Y-m-1');
+    $Dakhir=date('Y-m-31');
     //pasien
-    $pasien=absensi::pasien()->get();
+    $pasien=absensi::pasien()->whereBetween('tgl',[$Dawal,$Dakhir])->get();
     //terapis
-    $terapis=absensi::terapis()->get();
+    $terapis=absensi::terapis()->whereBetween('tgl',[$Dawal,$Dakhir])->get();
     //karyawan
-    $karyawan=absensi::karyawan()->get();
-
+    $karyawan=absensi::karyawan()->whereBetween('tgl',[$Dawal,$Dakhir])->get();
     return view('main_menu.absensi',[
       'pasien'=>$pasien,
       'terapis'=>$terapis,
-      'karyawan'=>$karyawan
+      'karyawan'=>$karyawan,
+      'Dawal'=>$Dawal,
+      'Dakhir'=>$Dakhir
     ]);
   }
 
   public function absensifilter(Request $req, $id){
     $min=$req->min;
     $max=$req->max;
+    $Dawal=$min;
+    $Dakhir=$max;
+    $awal=date('Y-m-1');
+    $akhir=date('Y-m-31');
 
     if ($id=='pasien') {
       $pasien=absensi::pasien()->whereBetween('tgl',[$min,$max])->get();
-      $terapis=absensi::terapis()->get();
-      $karyawan=absensi::karyawan()->get();
+      
+      $terapis=absensi::terapis()->whereBetween('tgl',[$awal,$akhir])->get();
+      
+      $karyawan=absensi::karyawan()->whereBetween('tgl',[$awal,$akhir])->get();
+      
     }elseif ($id=='terapis') {
-      $pasien=absensi::pasien()->get();
+      $pasien=absensi::pasien()->whereBetween('tgl',[$awal,$akhir])->get();
+      
       $terapis=absensi::terapis()->whereBetween('tgl',[$min,$max])->get();
-      $karyawan=absensi::karyawan()->get();
+      
+      $karyawan=absensi::karyawan()->whereBetween('tgl',[$awal,$akhir])->get();
+      
     }elseif ($id=='karyawan') {
-      $pasien=absensi::pasien()->get();
-      $terapis=absensi::terapis()->get();
+      $pasien=absensi::pasien()->whereBetween('tgl',[$awal,$akhir])->get();
+      
+      $terapis=absensi::terapis()->whereBetween('tgl',[$awal,$akhir])->get();
+      
       $karyawan=absensi::karyawan()->whereBetween('tgl',[$min,$max])->get();
+      
     }
 
     return view('main_menu.absensi',[
       'pasien'=>$pasien,
       'terapis'=>$terapis,
-      'karyawan'=>$karyawan
+      'karyawan'=>$karyawan,
+      'Dawal'=>$Dawal,
+      'Dakhir'=>$Dakhir
     ]);
+  }
+
+  public function exportabsensi($awal,$akhir,$validate){
+    if ($validate=='pasien') {
+      $pasien=absensi::pasien()->whereBetween('tgl',[$awal,$akhir])->get();
+      $sumPasien=absensi::sumPasien()->whereBetween('tgl',[$awal,$akhir])->groupBy('d_pasien.nama')->get();
+      return view ('main_menu.absensi-tab.exportPasien',[
+      'pasien'=>$pasien,
+      'sumPasien'=>$sumPasien,
+      'awal'=>$awal,
+      'akhir'=>$akhir]);
+    } elseif($validate=='terapis') {
+      $terapis=absensi::terapis()->whereBetween('tgl',[$awal,$akhir])->get();
+      $sumTerapis=absensi::sumTerapis()->whereBetween('tgl',[$awal,$akhir])->groupBy('d_pegawai.nama')->get();
+      return view ('main_menu.absensi-tab.exportTerapis',[
+      'terapis'=>$terapis,
+      'sumTerapis'=>$sumTerapis,
+      'awal'=>$awal,
+      'akhir'=>$akhir]);
+    }elseif($validate=='karyawan'){
+      $karyawan=absensi::karyawan()->whereBetween('tgl',[$awal,$akhir])->get();
+      $sumKaryawanH=absensi::sumKaryawan()->where('status_hadir','hadir')
+        ->whereBetween('tgl',[$awal,$akhir])
+        ->groupBy('d_pegawai.nama')
+        ->orderBy('d_pegawai.nama','asc')->get();
+      $sumKaryawanT=absensi::sumKaryawan()->where('status_hadir','telat')
+        ->whereBetween('tgl',[$awal,$akhir])
+        ->groupBy('d_pegawai.nama')->get();
+      return view ('main_menu.absensi-tab.exportKaryawan',[
+      'karyawan'=>$karyawan,
+      'sumKaryawanH'=>$sumKaryawanH,
+      'sumKaryawanT'=>$sumKaryawanT,
+      'awal'=>$awal,
+      'akhir'=>$akhir]);
+    }
+    
   }
 
 //jadwal Evaluasi
@@ -59,16 +112,15 @@ public function jadwalevaluasi(){
   $awal=date('Y-m-01');
   $akhir=date('Y-m-31');
   $isi=DB::table('h_pasien')
-  ->select('h_pasien.id_pasien as idpasien','h_pasien.status','d_pasien.nama'
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 3 MONTH) as tgl_eval1')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 6 MONTH) as tgl_eval2')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 9 MONTH) as tgl_eval3')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1 YEAR) as tgl_eval4')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1-3 YEAR_MONTH) as tgl_eval5')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1-5 YEAR_MONTH) as tgl_eval6'),'d_pasien.tgl_daftar','assessment.*')
+  ->select('h_pasien.id_pasien as idpasien','assessment.status_pasien','d_pasien.nama'
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 3 MONTH) as tgl_eval1')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 6 MONTH) as tgl_eval2')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 9 MONTH) as tgl_eval3')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1 YEAR) as tgl_eval4')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1-3 YEAR_MONTH) as tgl_eval5')
+  ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1-5 YEAR_MONTH) as tgl_eval6'),'assessment.*')
   ->leftJoin('assessment','h_pasien.id_pasien','=','assessment.id_pasien')
-  ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->whereBetween('d_pasien.tgl_daftar',[$awal,$akhir])->get();
-
+  ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->whereBetween('assessment.tgl_mulai_terapi',[$awal,$akhir])->get();
 
   return view ('main_menu.jadwaleval',[
     'isi'=>$isi]);
@@ -78,14 +130,13 @@ public function jadwalevaluasifilter(Request $req){
   $max=$req->max;
   $pilih=$req->pilih;
   $isi=DB::table('h_pasien')
-  ->select('h_pasien.id_pasien as idpasien','h_pasien.status','d_pasien.nama'
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 3 MONTH) as tgl_eval1')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 6 MONTH) as tgl_eval2')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 9 MONTH) as tgl_eval3')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1 YEAR) as tgl_eval4')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1-3 YEAR_MONTH) as tgl_eval5')
-  ,DB::raw('DATE_ADD(assessment.tgl_asses, INTERVAL 1-5 YEAR_MONTH) as tgl_eval6'),'d_pasien.tgl_daftar','assessment.*')
-  ->leftJoin('assessment','h_pasien.id_pasien','=','assessment.id_pasien')
+  ->select('h_pasien.id_pasien as idpasien','assessment.status_pasien','d_pasien.nama'
+ ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 3 MONTH) as tgl_eval1')
+ ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 6 MONTH) as tgl_eval2')
+ ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 9 MONTH) as tgl_eval3')
+ ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1 YEAR) as tgl_eval4')
+ ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1-3 YEAR_MONTH) as tgl_eval5')
+ ,DB::raw('DATE_ADD(assessment.tgl_mulai_terapi, INTERVAL 1-5 YEAR_MONTH) as tgl_eval6'),'assessment.*')->leftJoin('assessment','h_pasien.id_pasien','=','assessment.id_pasien')
   ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->whereBetween($pilih,[$min,$max])->get();
 
 
@@ -103,7 +154,6 @@ public function jadwalevaluasifilter(Request $req){
     ->leftJoin('assessment','assessment.id_pasien','=','h_pasien.id_pasien')
     //->whereBetween('record_status_pasien.tgl',[$awal,$akhir])
     ->where('assessment.status_pasien','Daftar')->get();
-
 
     return view ('main_menu.registerlist',[
       'isi'=>$isi]);
@@ -134,9 +184,9 @@ public function jadwalevaluasifilter(Request $req){
   public function registerlistdata($id){
 
     $data=DB::table('d_pasien')
-    ->join('h_pasien','h_pasien.id_pasien','=','d_pasien.id_pasien')
-    ->join('record_status_pasien','record_status_pasien.id_pasien','=','h_pasien.id_pasien')
-    ->join('assessment','assessment.id_pasien','=','d_pasien.id_pasien')
+    ->leftJoin('h_pasien','h_pasien.id_pasien','=','d_pasien.id_pasien')
+    ->leftJoin('record_status_pasien','record_status_pasien.id_pasien','=','h_pasien.id_pasien')
+    ->leftJoin('assessment','assessment.id_pasien','=','d_pasien.id_pasien')
     ->where('d_pasien.id_pasien',$id)->orderBY('record_status_pasien.id_status','desc')->first();
     $assessment=DB::table('assessment');
     $count=$assessment->where('id_pasien',$id)->count();
@@ -146,8 +196,20 @@ public function jadwalevaluasifilter(Request $req){
     $bulan=$tgl_lahir[1];
     $tahun_now=date('Y');
     $bulan_now=date('m');
-    $agama=agama::listagama();
-    $status=agama::liststatus();
+    $agama=[
+      'Islam',
+      'Kristen',
+      'Katolik',
+      'Protestan',
+      'Hindu',
+      'Buddha'
+    ];
+    $status=[
+      'Daftar',
+      'Cancel',
+      'Asses',
+      'Pasien'
+    ];
     if ($bulan_now>=$bulan) {
       $diff=$tahun_now-$tahun;
     }else{
@@ -283,22 +345,26 @@ public function jadwalevaluasifilter(Request $req){
     $record=[
       'id_asses'=>$id_asses->id_asses,
       'id_pasien'=>$id_pasien,
+      'keterangan'=>$status,
       'tgl'=>$now
     ];
       DB::table('d_pasien')->where('id_pasien',$id_pasien)->update($data_DP);
 
       DB::table('daftar')->where('id_pasien',$id_pasien)->orderBY('id_daftar','desc')->limit('1')->update(['status'=>'1']);
       DB::table('record_status_pasien')->insert($record);
-      foreach ($req->J_terapi as $J_terapi) {
-        $T_pasien=[
-          'id_asses'=>$id_asses->id_asses,
-          'id_terapi'=>$J_terapi,
-          'status'=>'0',
-          'keterangan'=>'Asses'
-        ];
-        DB::table('terapi_pasien')->insert($T_pasien);
-      }
+      if ($req->J_terapi=="") {
 
+      }else{
+        foreach ($req->J_terapi as $J_terapi) {
+          $T_pasien=[
+            'id_asses'=>$id_asses->id_asses,
+            'id_terapi'=>$J_terapi,
+            'status'=>'0',
+            'keterangan'=>'Asses'
+          ];
+          DB::table('terapi_pasien')->insert($T_pasien);
+        }
+      }
 
       return redirect ('/register-list');
   }
@@ -324,6 +390,7 @@ public function jadwalevaluasifilter(Request $req){
     $terapis=$req->terapis;
     $id_terapipasien=$req->id_terapipasien;
     $biaya=$req->biaya;
+    $id_asses=$req->id_asses;
     $no=-1;
     foreach ($id_terapi as $id_terapi) {
       $no++;
@@ -346,8 +413,30 @@ public function jadwalevaluasifilter(Request $req){
         'status_pasien'=>'Hadir'
       ];
 
+      DB::table('assessment')->where('id_asses',$id_asses)->update(['status_pasien'=>'Pasien']);
+      DB::table('terapi_pasien')->where('id_asses',$id_asses)->update(['keterangan'=>'Pasien']);
       DB::table('jadwal_terapis')->insert($sql);
+
     }
+    $now=date('ymd');
+    $id_pasien=DB::table('assessment')->where('id_asses',$id_asses)->first();
+    $record=[
+      'id_asses'=>$id_asses,
+      'id_pasien'=>$id_pasien->id_pasien,
+      'keterangan'=>'Pasien',
+      'tgl'=>$now
+    ];
+    DB::table('record_status_pasien')->insert($record);
+
+    $data = [
+      'id_rm' => 'RM'.date('YmdHis'),
+      'id_pasien' => $id_pasien->id_pasien,
+      'id_asses' => $id_asses,
+      'diagnosa' => $id_pasien->diagnosa
+    ];
+
+    RekamMedis::insert($data);
+
     return redirect('jadwal-terapi');
   }
 
@@ -383,19 +472,64 @@ public function jadwalevaluasifilter(Request $req){
          ]);
 
          //jadwal tabel hari ini
-         $rterapis=DB::table('request_jadwal')->join('d_pegawai','d_pegawai.id_pegawai','=','request_jadwal.id_pegawai')->get();
-         $rpasien=DB::table('request_jadwal')->join('d_pegawai','d_pegawai.id_pegawai','=','request_jadwal.id_pasien')->get();
+         $sqlterapis=DB::table('request_jadwal')
+                  ->join('d_pegawai','d_pegawai.id_pegawai','=','request_jadwal.id_pegawai')
+                  ->where('request_jadwal.id_pegawai','like','T%')
+                  ->whereNull('id_jadwal')
+                  ->orderBy('deskripsi','desc');
+         $rterapis=$sqlterapis->get();
+         $countrterapis=$sqlterapis->where('deskripsi','Request')->count();
+         //req izin terapis
+         $sqlizinterapis=DB::table('request_jadwal')
+                  ->join('d_pegawai','d_pegawai.id_pegawai','=','request_jadwal.id_pegawai')
+                  ->where('request_jadwal.id_pegawai','like','T%')
+                  ->whereNotNull('request_jadwal.id_jadwal')
+                  ->whereNotNull('request_jadwal.id_pegawai')
+                  ->orderBy('deskripsi','desc');
+         $rizinterapis=$sqlizinterapis->get();
+         $countizinrterapis=$sqlizinterapis->where('deskripsi','Request')->count();
+         //req izin pasien
+         $sqlrpasien=DB::table('request_jadwal')
+                  ->join('d_pasien','d_pasien.id_pasien','=','request_jadwal.id_pasien')
+                  ->where('request_jadwal.id_pasien','<>','')
+                  ->whereNotNull('request_jadwal.id_jadwal')
+                  ->whereNotNull('request_jadwal.id_pasien')
+                  ->orderBy('deskripsi','desc');
+         $rpasien=$sqlrpasien->get();
+         $countrpasien=$sqlrpasien->where('deskripsi','Request')->count();
+         //
          $data2=$sql->where('jadwal_terapis.tgl',date('Y-m-d'))->orderBY('jadwal_terapis.jam_masuk','asc')->get();
-         $assessment=DB::table('assessment')
+         $sqlassessment=DB::table('assessment')
                       ->select('assessment.*','d_pasien.nama as namaP', 'd_pegawai.nama as namaA')
                       ->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
                       ->join('d_pegawai','d_pegawai.id_pegawai','=','assessment.id_pegawai')
-                      ->where('status_pasien','Asses')->get();
+                      ->where('status_pasien','Asses');
+          $assessment=$sqlassessment->get();
+          $countassessment=$sqlassessment->count();
       return view('main_menu.jadwalterapi', compact('calendar'),[
         'data2'=>$data2,
         'rterapis'=>$rterapis,
+        'rizinterapis'=>$rizinterapis,
         'rpasien'=>$rpasien,
-        'assessment'=>$assessment
+        'assessment'=>$assessment,
+        'countrpasien'=>$countrpasien,
+        'countrterapis'=>$countrterapis,
+        'countizinrterapis'=>$countizinrterapis,
+        'countassessment'=>$countassessment
       ]);
+  }
+
+  public function validatejadwal($idJ,$id,$validate,$type){
+    if ($validate=="Diterima") {
+        if ($type=="req-izin-pasien") {
+          DB::table('jadwal_terapis')->where('id_jadwal',$idJ)->update(['status_pasien'=>'Izin']);
+        }elseif ($type=="req-izin-terapis") {
+          DB::table('jadwal_terapis')->where('id_jadwal',$idJ)->update(['status_terapis'=>'Izin']);
+        }
+        DB::table('request_jadwal')->where('id_requestjadwal',$id)->update(['deskripsi'=>'Diterima']);
+    }elseif ($validate=="Ditolak") {
+      DB::table('request_jadwal')->where('id_requestjadwal',$id)->update(['deskripsi'=>'Ditolak']);
+    }
+    return redirect('/jadwal-terapi');
   }
 }

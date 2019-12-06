@@ -6,9 +6,106 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use DB;
+use App\m_jenisterapi;
 
 class Controller extends BaseController
 {
+	public function index(){
+    	$terapis = DB::table('h_pegawai')->select('id_pegawai')->where('h_pegawai.id_pegawai','like','T%')->count();
+    	$pegawai = DB::table('h_pegawai')->select('id_pegawai')->where('h_pegawai.id_pegawai','like','K%')->count();
+        $pasien=DB::table('h_pasien')->count();
+        $jenis = m_jenisterapi::all()->count();
+        $r=DB::table('request_dash')->select('*')->where('keterangan','Asses')->get();
+        $kue=DB::table('request_dash')->select('*')->where('keterangan','Kuesioner')->get();
+        $data=DB::table('request_dash')->select('id_pasien')->first();
+        return view('index', [
+            'terapis'=>$terapis,
+            'pegawai'=>$pegawai,
+            'pasien'=>$pasien,
+            'jenis'=>$jenis,
+            'r'=>$r,
+            'kue'=>$kue,
+            'data'=>$data
+        ]);
+	}
+
+	public function ubahstatus($id){
+
+		$data=DB::table('request_dash')
+        ->select('id_pasien')
+        ->where('id_pasien', $id)->first();
+
+        $list= $request->input('status');
+
+		$data1=[
+            'status' => $list
+        ];
+
+        $cek=DB::table('h_pasien')->where('id_pasien',$id)->count();
+	    if ($cek==0) {
+	        return redirect('/data-terapis')->with('alertwarn','Data tidak ditemukan');
+	    }else {
+	      //DB::table('h_pegawai')->where('id_pegawai',$id)->delete();
+	      DB::table('h_pasien')->where('id_pasien',$id)->update($data1);
+	      //return redirect('/data-terapis')->with('alertwarn','Berhasil Menghapus Data');
+	    //$apa=m_daftarpasien::where('id_pasien', $id);
+		//$apa->update($data1);
+		return redirect('/')->with('alertwarn','Berhasil');
+	    }
+
+	}
+
+	public function hapus($id){
+		$data=DB::table('request_dash')
+	    ->select('id_pasien')
+	    ->where(['id_pasien'=>$id])->first();
+
+	    $cek=DB::table('h_pasien')->where('id_pasien',$id)->count();
+	    if ($cek==0) {
+	        return redirect('/')->with('alertwarn','Data tidak ditemukan');
+	    }else {
+	      DB::table('h_pasien')->where('id_pasien',$id)->delete();
+	      return redirect('/')->with('alertwarn','Berhasil Menghapus Data');
+	    }
+
+	}
+
+	public function emails(){
+
+	        $id_pasien = $request->input('id_pasien');
+	        $email = $request->input('email');
+	        $username = $request->input('username');
+	        $password = md5($request->input('password'));
+
+	        $ambil=DB::table('h_pasien')->select('email')
+	        ->where(['email'=>$email])->first();
+
+	        $data1=[
+	            'id_pasien' => $id_pasien,
+	            'email' => $email,
+	            'username' => $username,
+	            'password' => $password,
+	            'konfirmasi' => 'Belum'
+	        ];
+
+	        $data2=DB::table('h_pasien')
+	        ->select('email')
+	        ->where(['email'=>$email])->first();
+
+	       
+	            Mail::send('maill', compact('id_pasien'), function($message) use($data1, $id_pasien){
+	            set_time_limit(300);
+	            $message->priority('importance');
+	            $message->to($data1['email'])->subject('Kuesioner Terapi');
+	            //$message->attachData($output, 'Your Payroll '.date('d-m-Y').'.pdf');
+	            });
+
+	            m_daftarpasien::insert($data1); //simpan ke tabel h_pasien
+	            m_daftar::insert($data3); // simpan ke tabel daftar
+	            return redirect('reg')->with('alert-success','Registration Success');
+	}
+	
     public function Registerlist(){
 		return view('main_menu.registerlist');
 	}

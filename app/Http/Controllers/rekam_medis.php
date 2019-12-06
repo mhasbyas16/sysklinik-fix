@@ -7,14 +7,12 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use DB;
 use Illuminate\Support\Facades\Session;
-use App\users;
-use App\jabatan;
-use App\Helper\record;
-use App\rekam_medis;
+use App\RekamMedis;
+USE App\Login;
+use DB;
 
-class RekamMedis extends Controller
+class rekam_medis extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,7 +21,7 @@ class RekamMedis extends Controller
      */
     public function index()
     {
-        $rekam_medis = DB::table('h_rekam_medis')->select('h_rekam_medis.id_rm', 'h_rekam_medis.id_asses', 'h_rekam_medis.diagnosa', 'd_pasien.nama as nama_pasien')->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')->get();
+        $rekam_medis = DB::table('h_rekam_medis')->select('assessment.*', 'h_rekam_medis.id_rm', 'jenis_terapi.terapi', 'd_pasien.nama')->join('assessment', 'h_rekam_medis.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')->join('terapi_pasien', 'h_rekam_medis.id_asses', '=', 'terapi_pasien.id_asses')->join('jenis_terapi', 'terapi_pasien.id_terapi', '=', 'jenis_terapi.id_terapi')->groupBy('id_rm')->get();
         return view('rekam_medis.rekamedis', [
             'list_rekam_medis' => $rekam_medis
         ]);
@@ -36,15 +34,13 @@ class RekamMedis extends Controller
      */
     public function create()
     {
-        $rekam_medis = DB::table('h_rekam_medis')->select('h_rekam_medis.id_rm', 'h_rekam_medis.id_asses', 'd_pasien.nama as nama_pasien')->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')->get();
-        $pasien = DB::table('d_pasien')->select('d_pasien.id_pasien', 'd_pasien.nama')->join('assessment', 'd_pasien.id_pasien', '=', 'assessment.id_pasien')->get();
+        $pasien = DB::table('d_pasien')->select('d_pasien.*')->join('h_pasien', 'd_pasien.id_pasien', '=', 'h_pasien.id_pasien')->join('assessment', 'd_pasien.id_pasien', '=', 'assessment.id_pasien')->where('assessment.status_pasien', '=', 'Asses')->get();
         $terapis = DB::table('d_pegawai')->select('d_pegawai.*')->join('jabatan', 'd_pegawai.id_jabatan', '=', 'jabatan.id_jabatan')->where('d_pegawai.id_jabatan','=','5')->get();
-        $terapi = DB::table('jenis_terapi')->select('*')->get();
+        $asses = DB::table('assessment')->select('*')->get();
         return view('rekam_medis.form_rekamMedis', [
-            'list_rekam_medis' => $rekam_medis,
             'pasien' => $pasien,
             'terapis' => $terapis,
-            'terapi' => $terapi
+            'asses' => $asses
         ]);
     }
 
@@ -57,12 +53,13 @@ class RekamMedis extends Controller
     public function store(Request $r)
     {
         $data = [
-            'id_rm' => $r->id_pasien,
-            'id_asses' => $r->id_terapis,
+            'id_asses' => $r->id_asses,
+            'id_terapis' => $r->id_terapis,
             'diagnosa' => $r->diagnosa
         ];
 
-        rekam_medis::insert($data);
+        RekamMedis::insert($data);
+
 
         return redirect('rekam_medis');
     }
@@ -86,7 +83,11 @@ class RekamMedis extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $data = DB::table('h_rekam_medis')->select('nama', 'id_asses', 'diagnosa', 'id_rm')->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')->where('id_rm', $id)->get();
+        return view('rekam_medis.form_rekamMedis', [
+            'data' => $data
+        ]);
     }
 
     /**
@@ -96,9 +97,19 @@ class RekamMedis extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $r, $id)
     {
-        //
+        $id_asses = $r->id_asses;
+        $data = [
+            'diagnosa' => $r->diagnosa
+        ];
+
+        $update = RekamMedis::where('id_rm', $id);
+        $update->update($data);
+
+        Login::where('id_asses', $id_asses)->update($data);
+
+        return redirect('rekam_medis');
     }
 
     /**
@@ -109,7 +120,7 @@ class RekamMedis extends Controller
      */
     public function destroy($id)
     {
-        $hapus = rekam_medis::where('id_rm', $id);
+        $hapus = RekamMedis::where('id_rm', $id);
         $hapus->delete();
 
         return redirect('rekam_medis');

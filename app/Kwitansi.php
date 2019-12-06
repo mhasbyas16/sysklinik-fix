@@ -4,8 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class rekam_medis extends Model
+class Kwitansi extends Model
 {
-    protected $table = 'h_rekam_medis';
+    protected $table = "kwitansi";
     protected $fillable = ['*'];
+    public $timestamps = false;
 }

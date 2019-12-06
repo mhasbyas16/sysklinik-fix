@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\transaksi_keuangan;
-use App\pemasukan;
-use App\pengeluaran;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use DB;
+use Alert;
 
-class TransaksiKeuangan extends Controller
+
+class login extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,17 +17,8 @@ class TransaksiKeuangan extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $pemasukan_kategori = transaksi_keuangan::getEnumColumnValues('pemasukan', 'kategori');
-        $pengeluaran_kategori = transaksi_keuangan::getEnumColumnValues('pengeluaran', 'kategori');
-        $pemasukan = pemasukan::All();
-        $pengeluaran = pengeluaran::All();
-        return view('keuangan.transkeu', [
-            'kategori_pengeluaran' => $pengeluaran_kategori,
-            'kategori_pemasukan' => $pemasukan_kategori,
-            'pemasukan_list' => $pemasukan,
-            'pengeluaran_list' => $pengeluaran
-        ]);
+    {   
+        return view('signin');
     }
 
     /**
@@ -46,20 +39,30 @@ class TransaksiKeuangan extends Controller
      */
     public function store(Request $r)
     {
-        $val = [
-            'id_karyawan' => 'AAA',
-            'tgl' => date('Y-m-d', strtotime($r->tanggal)),
-            'keterangan' => $r->keterangan,
-            'jumlah' => str_replace('.', '', $r->jumlah),
-            'kategori' => $r->kategori
-        ];
-        if($r->formName == 'pemasukan') {
-            pemasukan::insert($val);
-        }elseif($r->formName == 'pengeluaran') {
-            pengeluaran::insert($val);
+        $id_pegawai = $r->id_pegawai;
+        $password = md5($r->password);
+
+        $cek_log = DB::table('h_pegawai')->select('h_pegawai.*', 'nama', 'jabatan')->where('h_pegawai.id_pegawai', $id_pegawai)->join('d_pegawai', 'h_pegawai.id_pegawai', '=', 'd_pegawai.id_pegawai')->join('jabatan', 'd_pegawai.id_jabatan', '=', 'jabatan.id_jabatan')->first();
+
+        if (isset($cek_log)) {
+            if ($password == $cek_log->password) {
+                Session::put('id_pegawai',$cek_log->id_pegawai);
+                Session::put('uname',$cek_log->nama);
+                Session::put('jabatan',$cek_log->jabatan);
+                Session::put('role',$cek_log->hakakses);
+                Session::put('login',TRUE);
+
+                Alert::success('Selamat datang, '.$cek_log->nama.'!')->autoclose(3500);
+                return redirect('/');
+            }else{
+                
+                Alert::error('Password yang anda masukkan salah!')->autoclose(3500);
+                return redirect('/login');
+            }
+        }else{
+            return redirect('/login');
         }
-        
-        return redirect('transaksi_keuangan');
+
     }
 
     /**

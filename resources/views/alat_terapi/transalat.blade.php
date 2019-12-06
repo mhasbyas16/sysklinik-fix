@@ -14,7 +14,7 @@
         <li class="active">Assesment</li>
       </ol>
       -->
-    </section>
+    </section>  
 
     <!-- Main content -->
     <div class="container">
@@ -62,8 +62,8 @@
                                 <div class="form-group">
                                   <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Tanggal</label>
 
-                                  <div class="col-sm-7">
-                                    <input type="text" class="form-control" name="tglat" required value="{{$id->tgl}}">
+                                  <div class="col-sm-3">
+                                    <input type="date" name="tglat" id="datepicker" class="input-tanggal" required value="{{$id->tgl}}">
                                   </div>
                                 </div>
                             </div>
@@ -87,7 +87,12 @@
                                   <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">ID Barang</label>
 
                                   <div class="col-sm-7">
-                                    <input type="text" class="form-control" name="idat" required value="{{$id->id_barang}}">
+                                    <select class="form-control select2" name="idat">
+                                      <option selected hidden disabled>Jenis Terapi</option>
+                                      @foreach($alll as $idnyaat)
+                                      <option value="{{$idnyaat->id_barang}}">{{$idnyaat->id_barang}}</option>
+                                      @endforeach
+                                    </select>
                                   </div>
                                 </div>
                             </div>
@@ -132,8 +137,8 @@
                             <div class="form-group">
                               <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Tanggal</label>
 
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" name="tglat" required>
+                              <div class="col-sm-3">
+                                <input type="date" name="tglat" id="datepicker" class="input-tanggal" required>
                               </div>
                             </div>
                         </div>
@@ -157,7 +162,12 @@
                               <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">ID Barang</label>
 
                               <div class="col-sm-7">
-                                <input type="text" class="form-control" name="idat" required>
+                                <select class="form-control select2" name="idat">
+                                  <option selected hidden disabled>Cari ID Barang</option>
+                                  @foreach($alll as $idnyaat)
+                                  <option value="{{$idnyaat->id_barang}}">{{$idnyaat->id_barang}}</option>
+                                  @endforeach
+                                </select>
                               </div>
                             </div>
                         </div>
@@ -217,10 +227,10 @@
                       <tbody>
                         @foreach($at as $x)
                       <tr>
-                        <td><a href="{{url('transalat/'. $x->id_barang.'/edit')}}">{{$x->tgl}}</a></td>
-                        <td><a>{{$x->no_kwitansi}}</a></td>
-                        <td><a>{{$x->id_barang}}</a></td>
-                        <td><a>{{$x->jml_barang}}</a></td>
+                        <td>{{$x->tgl}}</td>
+                        <td>{{$x->no_kwitansi}}</td>
+                        <td>{{$x->id_barang}}</td>
+                        <td>{{$x->jml_barang}}</td>
                         <td>
                           <form action="{{ url('transalat', $x->id_barang) }}" method="post">
                               @csrf
@@ -281,8 +291,8 @@
                                 <div class="form-group">
                                   <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Tanggal</label>
 
-                                  <div class="col-sm-7">
-                                    <input type="text" class="form-control" name="tglat" required value="{{$id->tgl}}">
+                                  <div class="col-sm-3">
+                                    <input type="date" name="tglat" id="datepicker" class="input-tanggal" required value="{{$id->tgl}}">
                                   </div>
                                 </div>
                             </div>
@@ -306,7 +316,12 @@
                                   <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">ID Barang</label>
 
                                   <div class="col-sm-7">
-                                    <input type="text" class="form-control" name="idat" required value="{{$id->id_barang}}">
+                                    <select class="form-control select2" name="idat">
+                                      <option selected hidden disabled>Cari ID Barang</option>
+                                      @foreach($alll as $idnyaat)
+                                      <option value="{{$idnyaat->id_barang}}">{{$idnyaat->id_barang}}</option>
+                                      @endforeach
+                                    </select>
                                   </div>
                                 </div>
                             </div>
@@ -351,8 +366,8 @@
                             <div class="form-group">
                               <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Tanggal</label>
 
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" name="tglat" required>
+                              <div class="col-sm-3">
+                                <input type="date" name="tglat" id="datepicker" class="input-tanggal" required>
                               </div>
                             </div>
                         </div>
@@ -376,7 +391,12 @@
                               <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">ID Barang</label>
 
                               <div class="col-sm-7">
-                                <input type="text" class="form-control" name="idat" required>
+                                <select class="form-control select2" name="idat">
+                                  <option selected hidden disabled>Cari ID Barang</option>
+                                  @foreach($alll as $idnyaat)
+                                  <option value="{{$idnyaat->id_barang}}">{{$idnyaat->id_barang}}</option>
+                                  @endforeach
+                                </select>
                               </div>
                             </div>
                         </div>
@@ -436,10 +456,10 @@
                       <tbody>
                         @foreach($out as $x)
                       <tr>
-                        <td><a href="{{url('transalat/'. $x->id_barang.'/edit')}}">{{$x->tgl}}</a></td>
-                        <td><a>{{$x->no_kwitansi}}</a></td>
-                        <td><a>{{$x->id_barang}}</a></td>
-                        <td><a>{{$x->jml_barang}}</a></td>
+                        <td>{{$x->tgl}}</td>
+                        <td>{{$x->no_kwitansi}}</td>
+                        <td>{{$x->id_barang}}</td>
+                        <td>{{$x->jml_barang}}</td>
                         <td>
                           <form action="{{ url('transalat', $x->id_barang) }}" method="post">
                               @csrf

@@ -4,25 +4,43 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use App\Helper\idrandom;
-use App\Helper\agama;
+use Illuminate\Support\Facades\Session;
 use File;
 use Str;
 
 class datamasterController extends Controller
 {
+
+
+  public function logout(){
+    Session::flush();
+    return redirect("/login");
+  }
+
   //pasien
   public function datapasien(){
     $data=DB::table('h_pasien')
     ->select('assessment.*','d_pasien.nama as namaPAS','d_pegawai.nama as namaPEG')
     ->leftJoin('assessment','h_pasien.id_pasien','=','assessment.id_pasien')
     ->leftJoin('d_pegawai','assessment.id_pegawai','=','d_pegawai.id_pegawai')
-    ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->where('status_pasien','Pasien')->get();
+    ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->get();
 
-    $agama=agama::listagama();
+    $agama=[
+      'Islam',
+      'Kristen',
+      'Katolik',
+      'Protestan',
+      'Hindu',
+      'Buddha'
+    ];
     $kar=DB::table('d_pegawai')->orderBy('nama','asc')->get();
     $j_terapi=DB::table('jenis_terapi')->orderBY('terapi','asc')->get();
-    $status=agama::liststatus();
+    $status=[
+      'Daftar',
+      'Cancel',
+      'Asses',
+      'Pasien'
+    ];
 
     return view('data_master.pasien',[
       'data'=>$data,
@@ -33,6 +51,12 @@ class datamasterController extends Controller
     ]);
   }
 
+  public function recordpasien($id){
+    $data=DB::table('record_status_pasien')->join('d_pasien','d_pasien.id_pasien','=','record_status_pasien.id_pasien')->where('record_status_pasien.id_pasien',$id)->orderBy('id_asses','asc')->get();
+
+    return view('data_master.record-pasien',['data'=>$data]);
+  }
+/*
   public function datapasienview($id){
     $data=DB::table('d_pasien')
     ->join('h_pasien','h_pasien.id_pasien','=','d_pasien.id_pasien')
@@ -189,7 +213,7 @@ class datamasterController extends Controller
     DB::table('d_pasien')->where('id_pasien',$id_pasien)->update($data_DP);
       return redirect ('/data-pasien');
   }
-
+*/
 
 //karyawan
   public function karyawan(){
@@ -204,9 +228,21 @@ class datamasterController extends Controller
   }
 
   public function karyawantambah($kt){
-    $random=idrandom::id();
+    $angka=range(0,9);
+    shuffle($angka);
+    $id=array_rand($angka,3);
+    $idstring=implode($id);
+    $random=$idstring;
+
     $date=date('ymd');
-    $agama=agama::listagama();
+    $agama=[
+      'Islam',
+      'Kristen',
+      'Katolik',
+      'Protestan',
+      'Hindu',
+      'Buddha'
+    ];
     $j_terapi=DB::table('jenis_terapi')->get();
     $jabatan=DB::table('jabatan')->get();
     if ($kt=='terapis') {
@@ -228,7 +264,14 @@ class datamasterController extends Controller
     ->leftJoin('jabatan','jabatan.id_jabatan','=','d_pegawai.id_jabatan')
     ->leftJoin('jenis_terapi','jenis_terapi.id_terapi','=','d_pegawai.id_terapi')
     ->where('h_pegawai.id_pegawai',$id);
-    $agama=agama::listagama();
+    $agama=[
+      'Islam',
+      'Kristen',
+      'Katolik',
+      'Protestan',
+      'Hindu',
+      'Buddha'
+    ];
     $j_terapi=DB::table('jenis_terapi')->get();
     $jabatan=DB::table('jabatan')->get();
 

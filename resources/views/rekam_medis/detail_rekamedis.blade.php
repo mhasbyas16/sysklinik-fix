@@ -37,7 +37,7 @@
                     <div class="row">
                       <div class="col-xs-12 col-md-12 text-center">
                         <div class="form-group">
-                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">ID Sesi RM</label>
+                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">No. Rekam Medis</label>
                           <div class="col-sm-7">
                             <input type="text" class="form-control" name="id_rm" value="{{ $id_rm }}" readonly="">
                           </div>
@@ -47,25 +47,29 @@
                     <div class="row">
                       <div class="col-xs-12 col-md-12 text-center">
                         <div class="form-group">
-                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">ID Jadwal</label>
-                          <div class="col-sm-7">
-                            <textarea class="form-control" name="id_jadwal" rows="5"></textarea>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-xs-12 col-md-12 text-center">
-                        <div class="form-group">
                           <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Area Stimulasi</label>
                           <div class="col-sm-7">
-                            <input type="text" class="form-control tanggal" name="area_stimulasi" required>
+                            <textarea class="form-control" name="area_stimulasi" rows="5"></textarea>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-xs-12 col-md-12 text-center">
+                        <div class="form-group">
+                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Jadwal</label>
+                          <div class="col-sm-7">
+                            <select class="form-control" name="id_jadwal" required>
+                              @foreach($jadwal as $jadwal)
+                                <option value="{{ $jadwal->id_jadwal }}">{{ $jadwal->tgl }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div class="row">
                       <div class="col-xs-12 col-md-12 text-center">
                         <div class="form-group">
@@ -80,7 +84,7 @@
                 </div>
               <br>
               <div class="button">
-                <ul style="padding-left: 680pt ">
+                <ul>
                   <button class="btn btn-success" href="#">Simpan</button>
                   <button class="btn btn-danger" href="#">Batal</button>
                 </ul>
@@ -122,9 +126,9 @@
                 @foreach($detail as $detail)
                   <tr>
                     <td>{{ $detail->id_sesirm }}</td>
-                    <td>{{ $detail->id_jadwal }}</td>
                     <td>{{ $detail->area_stimulasi }}</td>
                     <td>{{ $detail->keterangan }}</td>
+                    <td>{{ $detail->tgl }}</td>
                     <td>
                       <form action="{{ url('detail_rekam_medis/'.$detail->id_sesirm) }}" method="POST" style="padding:0px; margin:0px" class="col-md-3">
                           @method('DELETE')

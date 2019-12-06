@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\transaksi_at;
 use App\transaksi_out;
+use App\alat_terapi;
 use DB;
 
 class transaksiat extends Controller
@@ -16,11 +17,13 @@ class transaksiat extends Controller
      */
     public function index()
     {
+        $all = alat_terapi::all();
         $masuk = transaksi_at::all();
         $keluar = transaksi_out::all();
         return view('alat_terapi.transalat', [
             'at'=>$masuk,
-            'out'=>$keluar
+            'out'=>$keluar,
+            'alll'=>$all
         ]);
     }
 
@@ -42,11 +45,16 @@ class transaksiat extends Controller
      */
     public function store(Request $request)
     {
+        $tglat = $request->tglat;
+        $noat = $request->noat;
+        $idat = $request->input('idat');
+        $jmlat = $request->jmlat;
+
         $datatrans=[
-            'tgl' => $request->tglat,
-            'no_kwitansi' => $request->noat,
-            'id_barang' => $request->idat,
-            'jml_barang' => $request->jmlat
+            'tgl' => $tglat,
+            'no_kwitansi' => $noat,
+            'id_barang' => $idat,
+            'jml_barang' => $jmlat
         ];
 
         if($request->formName == 'masukan') {

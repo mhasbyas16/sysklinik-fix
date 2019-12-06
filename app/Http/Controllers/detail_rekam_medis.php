@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\detail_rekam_medis;
+use App\DetailRekamMedis;
+use DB;
 
-class DetailRekamMedis extends Controller
+class detail_rekam_medis extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,13 +37,13 @@ class DetailRekamMedis extends Controller
     public function store(Request $request)
     {
         $data = [
-            'id_sesirm' => $request->id_sesirm,
+            'id_rm' => $request->id_rm,
             'id_jadwal' => $request->id_jadwal,
             'area_stimulasi' => $request->area_stimulasi,
             'keterangan' => $request->keterangan
         ];
 
-        detail_rekam_medis::insert($data);
+        DetailRekamMedis::insert($data);
 
         return redirect('detail_rekam_medis/'.$request->id_rm);
     }
@@ -55,10 +56,12 @@ class DetailRekamMedis extends Controller
      */
     public function show($id)
     {
-        $detail = detail_rekam_medis::where('id_sesirm', $id)->get();
+        $jadwal = DB::table('jadwal_terapis')->select('jadwal_terapis.*')->join('h_rekam_medis', 'jadwal_terapis.id_asses', '=', 'h_rekam_medis.id_asses')->where('h_rekam_medis.id_rm', $id)->whereNotIn('id_jadwal', DB::table('d_rekam_medis')->pluck('id_jadwal'))->where('status_terapis',  '=', 'Hadir')->get();
+        $detail = DetailRekamMedis::join('jadwal_terapis', 'd_rekam_medis.id_jadwal', '=', 'jadwal_terapis.id_jadwal')->where('id_rm', $id)->get();
         return view('rekam_medis.detail_rekamedis', [
             'detail' => $detail,
-            'id_sesirm' => $id
+            'id_rm' => $id,
+            'jadwal' => $jadwal
         ]);
     }
 
@@ -93,7 +96,7 @@ class DetailRekamMedis extends Controller
      */
     public function destroy(Request $r, $id)
     {
-        $hapus = detail_rekam_medis::where('id_sesirm', $id);
+        $hapus = DetailRekamMedis::where('id_sesirm', $id);
         $hapus->delete();
 
         return redirect('detail_rekam_medis/'.$r->id_rm);

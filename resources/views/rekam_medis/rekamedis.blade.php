@@ -7,7 +7,6 @@
     Rekam Medis
     <small>Header Rekam Medis</small>
     </h1>
-    <a href="{{ url('rekam_medis/create') }}" class="btn btn-primary">Add New</a>
     <!--
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-files-o"></i> Main Menu</a></li>
@@ -32,7 +31,8 @@
               <thead>
                 <tr>
                 <th>ID Rekam Medis</th>
-                <th>ID Asses</th>
+                <th>Nama Pasien</th>
+                <th>Jenis Terapi</th>
                 <th>Diagnosa</th>
                 <th>Aksi</th>
                 </tr>
@@ -40,7 +40,8 @@
               <tfoot>
               <tr>
                 <th>ID Rekam Medis</th>
-                <th>ID Asses</th>
+                <th>Nama Pasien</th>
+                <th>Jenis Terapi</th>
                 <th>Diagnosa</th>
                 <th>Aksi</th>
               </tr>
@@ -49,10 +50,11 @@
                 @foreach ($list_rekam_medis as $list_rm)
                   <tr>
                     <td><a href="{{ url('detail_rekam_medis/'.$list_rm->id_rm) }}">{{ $list_rm->id_rm }}</a></td>
-                    <td><a href="{{ url('detail_rekam_medis/'.$list_rm->id_rm) }}">{{ $list_rm->id_asses }}</td>
-                    <td><a href="{{ url('detail_rekam_medis/'.$list_rm->id_rm) }}">{{ $list_rm->diagnosa }}</td>
+                    <td>{{ $list_rm->nama }}</td>
+                    <td>{{ $list_rm->terapi }}</td>
+                    <td>{{ $list_rm->diagnosa }}</td>
                     <td>
-                      <a href="{{url('detail_rekam_medis/'.$list_rm->id_rm.'/edit')}}" class="col-md-3">Edit</a>
+                      <a href="{{url('rekam_medis/'.$list_rm->id_rm.'/edit')}}" class="col-md-3">Edit</a>
                       <form action="{{ url('rekam_medis/'.$list_rm->id_rm) }}" method="POST" style="padding:0px; margin:0px" class="col-md-3">
                           @method('DELETE')
                           @csrf

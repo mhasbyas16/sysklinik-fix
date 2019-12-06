@@ -41,7 +41,7 @@
                         <div class="form-group">
                           <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Validasi</label>
                           <div class="col-sm-7">
-                            <select name="validasi" class="form-control">
+                            <select name="validasi" class="form-control" <?php if($d->validasi == "Valid"){ echo 'disabled';} ?>>
                               <option value="Tidak Valid" <?php if($d->validasi == "Tidak Valid"){ echo 'selected';} ?>>Tidak Valid</option>
                               <option value="Valid" <?php if($d->validasi == "Valid"){ echo 'selected';} ?>>Valid</option>
                             </select>
@@ -55,7 +55,8 @@
                         <div class="form-group">
                           <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Tanggal Bayar</label>
                           <div class="col-sm-7">
-                            <input type="text" name="tgl_bayar" value="{{ $d->tgl_bayar }}" class="form-control" disabled>
+                            <input type="text" value="{{ $d->tgl_bayar }}" class="form-control" disabled>
+                            <input type="hidden" name="tgl_bayar" value="{{ $d->tgl_bayar }}" class="form-control" >
                           </div>
                         </div>
                       </div>
@@ -65,7 +66,8 @@
                         <div class="form-group">
                           <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Jumlah Bayar</label>
                           <div class="col-sm-7">
-                            <input type="text" name="jml_bayar" value="{{ $d->jml_bayar }}" class="form-control" disabled>
+                            <input type="text" value="{{ $d->jml_bayar }}" class="form-control" disabled>
+                            <input type="hidden" name="jml_bayar" value="{{ $d->jml_bayar }}" class="form-control" >
                           </div>
                         </div>
                       </div>
@@ -88,8 +90,12 @@
                 <br>
                 <div class="button">
                   <ul>
-                    <button class="btn btn-success" href="#">Update</button>
-                    <button class="btn btn-danger" href="#">Batal</button>
+                    @if ($d->validasi == "Tidak Valid")
+                      <button class="btn btn-success" type="submit">Update</button>
+                    @else
+                      <a href="{{ url('/kwitansi/'.$d->id_bukti) }}" class="btn btn-success">View Kwitansi</a>
+                    @endif
+                    <button class="btn btn-danger" type="button" onclick="goBack()">Batal</button>
                   </ul>
                 </div>
                 <br>

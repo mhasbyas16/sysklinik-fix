@@ -10,23 +10,32 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    <link rel="stylesheet" href="{{ asset('/css/stylesignin.css') }}">
 </head>
-<body>
+<body class="pt-5">
 @include('sweet::alert')
-	<div class="container-fluid">
-		<div class="col-md-12">
-			<form action="{{ url('login') }}" class="form-horizontal col-md-5 col-md-offset-1" method="post">
+	<div class="container-fluid pt-5">
+		<div class="col-md-4 offset-4 p-3 mt-5 signin">
+			<form action="{{ url('login') }}" class="form-horizontal col-md-12 p-3" method="post">
 				@csrf
-				<div class="form-group">
-					<label for="id_pegawai">ID Pegawai</label>
-					<input type="text" placeholder="ID Pegawai" id="id_pegawai" class="form-control" name="id_pegawai">				
+				<div class="row">
+					<div class="text-center col-md-12">
+						<h3>
+							Login
+						</h3>
+					</div>
 				</div>
-				<div class="form-group">
-					<label for="exampleFormControlSelect1">Password</label>
-					<input type="password" id="exampleFormControlSelect1" placeholder="Password" class="form-control" name="password">
+				<div class="form-group row">
+					<label class="text-muted" for="id_pegawai">ID Pegawai</label>
+					<input type="text" placeholder="ID Pegawai" id="id_pegawai" class="form-control col-md-12" name="id_pegawai">				
 				</div>
-				<div>
-					<input type="submit" name="submit" class="btn btn-warning" value="Sign In">
+				<div class="form-group row">
+					<label class="text-muted" for="exampleFormControlSelect1">Password</label>
+					<input type="password" id="exampleFormControlSelect1" placeholder="Password" class="form-control col-md-12" name="password">
+				</div>
+				<div class="form-group row">
+					<input type="submit" name="submit" class="btn btn-info col-md-12" value="Sign In">
 				</div>
 			</form>
 		</div>

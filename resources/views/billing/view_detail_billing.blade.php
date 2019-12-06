@@ -131,7 +131,7 @@
                             <label for="">Telp</label>
                           </div>
                           <div class="col-md-8" style="text-transform: capitalize">
-                            : {{ $dp->tlp .' / '. $dp->tlp_ayah .' / '. $dp->tlp_ibu}}
+                            : {{ $dp->tlp .' / '. $dp->tlp_ayah .'(Ayah) / '. $dp->tlp_ibu.'(Ibu)'}}
                           </div>
                         </div>
                       @endforeach

@@ -74,6 +74,7 @@ Route::resource('detail_rekam_medis','detail_rekam_medis');
 //Keuangan
 Route::resource('transaksi_keuangan', 'transaksi_keuangan');
 Route::resource('laporan_keuangan', 'laporan_keuangan');
+Route::resource('kwitansi', 'detail_kwitansi');
 
 //Payroll
 Route::resource('payroll','payroll');

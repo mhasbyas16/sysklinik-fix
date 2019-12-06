@@ -7,10 +7,13 @@
   <body>
     <?php
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=hasil.xls");
+    header("Content-Disposition: attachment; filename=Absensi_Pasien_$awal-$akhir.xls");
     ?>
     <table class="display text-center" style="width:100%;display:none;" >
       <thead>
+          <tr>
+              <th colspan="6">Absensi Pasien {{$awal}}-{{$akhir}}</th>    
+            </tr>  
         <tr>
           <th>Nama</th>
           <th>Tanggal</th>

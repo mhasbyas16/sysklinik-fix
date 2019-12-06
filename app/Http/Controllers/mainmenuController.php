@@ -18,17 +18,14 @@ class mainmenuController extends Controller
     $Dakhir=date('Y-m-31');
     //pasien
     $pasien=absensi::pasien()->whereBetween('tgl',[$Dawal,$Dakhir])->get();
-    $sumPasien=absensi::sumPasien()->whereBetween('tgl',[$Dawal,$Dakhir])->groupBy('d_pasien.nama')->get();
     //terapis
-    $terapis=absensi::terapis()->get();
+    $terapis=absensi::terapis()->whereBetween('tgl',[$Dawal,$Dakhir])->get();
     //karyawan
-    $karyawan=absensi::karyawan()->get();
-
+    $karyawan=absensi::karyawan()->whereBetween('tgl',[$Dawal,$Dakhir])->get();
     return view('main_menu.absensi',[
       'pasien'=>$pasien,
       'terapis'=>$terapis,
       'karyawan'=>$karyawan,
-      'sumPasien'=>$sumPasien,
       'Dawal'=>$Dawal,
       'Dakhir'=>$Dakhir
     ]);
@@ -39,38 +36,75 @@ class mainmenuController extends Controller
     $max=$req->max;
     $Dawal=$min;
     $Dakhir=$max;
+    $awal=date('Y-m-1');
+    $akhir=date('Y-m-31');
 
     if ($id=='pasien') {
       $pasien=absensi::pasien()->whereBetween('tgl',[$min,$max])->get();
-      $sumPasien=absensi::sumPasien()->whereBetween('tgl',[$min,$max])->get();
-      $terapis=absensi::terapis()->get();
-      $karyawan=absensi::karyawan()->get();
+      
+      $terapis=absensi::terapis()->whereBetween('tgl',[$awal,$akhir])->get();
+      
+      $karyawan=absensi::karyawan()->whereBetween('tgl',[$awal,$akhir])->get();
+      
     }elseif ($id=='terapis') {
-      $pasien=absensi::pasien()->get();
-      $sumPasien=absensi::sumPasien()->get();
+      $pasien=absensi::pasien()->whereBetween('tgl',[$awal,$akhir])->get();
+      
       $terapis=absensi::terapis()->whereBetween('tgl',[$min,$max])->get();
-      $karyawan=absensi::karyawan()->get();
+      
+      $karyawan=absensi::karyawan()->whereBetween('tgl',[$awal,$akhir])->get();
+      
     }elseif ($id=='karyawan') {
-      $pasien=absensi::pasien()->get();
-      $sumPasien=absensi::sumPasien()->get();
-      $terapis=absensi::terapis()->get();
+      $pasien=absensi::pasien()->whereBetween('tgl',[$awal,$akhir])->get();
+      
+      $terapis=absensi::terapis()->whereBetween('tgl',[$awal,$akhir])->get();
+      
       $karyawan=absensi::karyawan()->whereBetween('tgl',[$min,$max])->get();
+      
     }
 
     return view('main_menu.absensi',[
       'pasien'=>$pasien,
       'terapis'=>$terapis,
       'karyawan'=>$karyawan,
-      'sumPasien'=>$sumPasien,
       'Dawal'=>$Dawal,
       'Dakhir'=>$Dakhir
     ]);
   }
 
-  public function exportabsensi($awal,$akhir){
-    $pasien=absensi::pasien()->whereBetween('tgl',[$awal,$akhir])->get();
-    $sumPasien=absensi::sumPasien()->whereBetween('tgl',[$awal,$akhir])->groupBy('d_pasien.nama')->get();
-    return view ('main_menu.absensi-tab.exportPasien',['pasien'=>$pasien,'sumPasien'=>$sumPasien]);
+  public function exportabsensi($awal,$akhir,$validate){
+    if ($validate=='pasien') {
+      $pasien=absensi::pasien()->whereBetween('tgl',[$awal,$akhir])->get();
+      $sumPasien=absensi::sumPasien()->whereBetween('tgl',[$awal,$akhir])->groupBy('d_pasien.nama')->get();
+      return view ('main_menu.absensi-tab.exportPasien',[
+      'pasien'=>$pasien,
+      'sumPasien'=>$sumPasien,
+      'awal'=>$awal,
+      'akhir'=>$akhir]);
+    } elseif($validate=='terapis') {
+      $terapis=absensi::terapis()->whereBetween('tgl',[$awal,$akhir])->get();
+      $sumTerapis=absensi::sumTerapis()->whereBetween('tgl',[$awal,$akhir])->groupBy('d_pegawai.nama')->get();
+      return view ('main_menu.absensi-tab.exportTerapis',[
+      'terapis'=>$terapis,
+      'sumTerapis'=>$sumTerapis,
+      'awal'=>$awal,
+      'akhir'=>$akhir]);
+    }elseif($validate=='karyawan'){
+      $karyawan=absensi::karyawan()->whereBetween('tgl',[$awal,$akhir])->get();
+      $sumKaryawanH=absensi::sumKaryawan()->where('status_hadir','hadir')
+        ->whereBetween('tgl',[$awal,$akhir])
+        ->groupBy('d_pegawai.nama')
+        ->orderBy('d_pegawai.nama','asc')->get();
+      $sumKaryawanT=absensi::sumKaryawan()->where('status_hadir','telat')
+        ->whereBetween('tgl',[$awal,$akhir])
+        ->groupBy('d_pegawai.nama')->get();
+      return view ('main_menu.absensi-tab.exportKaryawan',[
+      'karyawan'=>$karyawan,
+      'sumKaryawanH'=>$sumKaryawanH,
+      'sumKaryawanT'=>$sumKaryawanT,
+      'awal'=>$awal,
+      'akhir'=>$akhir]);
+    }
+    
   }
 
 //jadwal Evaluasi

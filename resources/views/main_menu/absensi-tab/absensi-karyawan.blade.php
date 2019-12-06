@@ -1,6 +1,4 @@
-<!-- Tab panes -->
-<div class="tab-content">
-  <div role="tabpanel" class="tab-pane {{Request::is('absensi','absensi/pasien')?'active':''}}" id="pasien">
+<div role="tabpanel" class="tab-pane {{Request::is('absensi/karyawan')?'active':''}}" id="karyawan">
     <section class="content">
         <div class="row">
           <div class="col-xs-12">
@@ -8,12 +6,12 @@
             <div class="box box-solid">
               <div class="box-header">
                 <i class="fa fa-bar-chart-o"></i>
-                <h3 class="box-title">Tabel Presensi Pasien</h3>
+                <h3 class="box-title">Tabel Presensi Karyawan</h3>
               </div>
 
               <!-- /.box-header -->
               <div class="box-body">
-                <form method="post" action="{{url('/absensi/pasien')}}">
+                <form method="post" action="{{url('/absensi/karyawan')}}">
                   {{csrf_field()}}
                 <table border="0" cellspacing="5" cellpadding="5">
                   <tbody><tr>
@@ -44,44 +42,54 @@
                   </tr>
                 </tbody></table>
                 <br>
-                <table id="absensiPasien" class="display text-center" style="width:100%;" >
+                <table id="absensiKaryawan" class="display text-center" style="width:100%;" >
                   <thead>
                     <tr>
                       <th>Nama</th>
                       <th>Tanggal</th>
                       <th>Jam Masuk</th>
+                      <th>Lokasi Masuk</th>
                       <th>Jam Keluar</th>
-                      <th>ID Jadwal</th>
+                      <th>Lokasi Keluar</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($pasien as $isi)
-                      <tr>
+                    @foreach ($karyawan as $isi)
+                    @if ($isi->status_hadir=="hadir" OR $isi->status_hadir=="telat" )
+                    <tr>
                         <td>{{$isi->nama}}</td>
                         <td>{{$isi->tgl}}</td>
                         <td>{{$isi->jam_masuk}}</td>
+                        <td>{{$isi->lokasi_masuk}}</td>
                         <td>{{$isi->jam_keluar}}</td>
-                        <td>{{$isi->id_jadwal}}</td>
-                        <td>{{$isi->status_pasien}}</td>
-                      </tr>
+                        <td>{{$isi->lokasi_keluar}}</td>
+                        <td>@if ($isi->status_hadir=="hadir")
+                                <span class="badge bg-green">Hadir</span>
+                            @else
+                                <span class="badge bg-red">Telat</span>
+                            @endif
+                        </td>
+                    </tr>  
+                    @endif                      
                     @endforeach
                   </tbody>
                   <tfoot>
                     <tr>
-                      <th>Nama</th>
-                      <th>Tanggal</th>
-                      <th>Jam Masuk</th>
-                      <th>Jam Keluar</th>
-                      <th>ID Jadwal</th>
-                      <th>Status</th>
+                        <th>Nama</th>
+                        <th>Tanggal</th>
+                        <th>Jam Masuk</th>
+                        <th>Lokasi Masuk</th>
+                        <th>Jam Keluar</th>
+                        <th>Lokasi Keluar</th>
+                        <th>Status</th>
                     </tr>
                   </tfoot>
               </div>
             </table>
-                <a href="{{url('/absensi/export')}}/{{$Dawal}}/{{$Dakhir}}/pasien"><button type="button" class="btn btn-success">
-                  Export Data
-                </button></a>
+                <a href="{{url('/absensi/export')}}/{{$Dawal}}/{{$Dakhir}}/karyawan"><button type="button" class="btn btn-success">
+                    Export Data
+                  </button></a>
               </div>
               <!-- /.box-body -->
             </div>
@@ -91,8 +99,9 @@
   </div>
   <script type="text/javascript">
   $(document).ready(function() {
-      $('#absensiPasien').DataTable({
+      $('#absensiKaryawan').DataTable({
         select:true
       });
   });
   </script>
+</div>

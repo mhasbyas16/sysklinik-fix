@@ -1,6 +1,4 @@
-<!-- Tab panes -->
-<div class="tab-content">
-  <div role="tabpanel" class="tab-pane {{Request::is('absensi','absensi/pasien')?'active':''}}" id="pasien">
+<div role="tabpanel" class="tab-pane {{Request::is('absensi/terapis')?'active':''}}" id="terapis">
     <section class="content">
         <div class="row">
           <div class="col-xs-12">
@@ -8,12 +6,12 @@
             <div class="box box-solid">
               <div class="box-header">
                 <i class="fa fa-bar-chart-o"></i>
-                <h3 class="box-title">Tabel Presensi Pasien</h3>
+                <h3 class="box-title">Tabel Presensi Terapis</h3>
               </div>
 
               <!-- /.box-header -->
               <div class="box-body">
-                <form method="post" action="{{url('/absensi/pasien')}}">
+                <form method="post" action="{{url('/absensi/terapis')}}">
                   {{csrf_field()}}
                 <table border="0" cellspacing="5" cellpadding="5">
                   <tbody><tr>
@@ -44,7 +42,7 @@
                   </tr>
                 </tbody></table>
                 <br>
-                <table id="absensiPasien" class="display text-center" style="width:100%;" >
+                <table id="absensiTerapis" class="display text-center" style="width:100%;" >
                   <thead>
                     <tr>
                       <th>Nama</th>
@@ -56,14 +54,14 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($pasien as $isi)
+                    @foreach ($terapis as $isi)
                       <tr>
                         <td>{{$isi->nama}}</td>
                         <td>{{$isi->tgl}}</td>
                         <td>{{$isi->jam_masuk}}</td>
                         <td>{{$isi->jam_keluar}}</td>
                         <td>{{$isi->id_jadwal}}</td>
-                        <td>{{$isi->status_pasien}}</td>
+                        <td>{{$isi->status_terapis}}</td>
                       </tr>
                     @endforeach
                   </tbody>
@@ -79,9 +77,9 @@
                   </tfoot>
               </div>
             </table>
-                <a href="{{url('/absensi/export')}}/{{$Dawal}}/{{$Dakhir}}/pasien"><button type="button" class="btn btn-success">
-                  Export Data
-                </button></a>
+            <a href="{{url('/absensi/export')}}/{{$Dawal}}/{{$Dakhir}}/terapis"><button type="button" class="btn btn-success">
+                Export Data
+              </button></a>
               </div>
               <!-- /.box-body -->
             </div>
@@ -91,7 +89,7 @@
   </div>
   <script type="text/javascript">
   $(document).ready(function() {
-      $('#absensiPasien').DataTable({
+      $('#absensiTerapis').DataTable({
         select:true
       });
   });

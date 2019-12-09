@@ -203,12 +203,9 @@ $(document).ready(function() {
          'print'],
          select:true
     });
-<<<<<<< HEAD
     function goBack() {
       window.history.back();
     }
-    </script>
-=======
     // Event listener to the two range filtering inputs to redraw on input
     $('#max').on('keyup click change', function() {
         table.draw();
@@ -287,10 +284,8 @@ $(function () {
   $('.tanggal').datepicker({
   format: 'dd-mm-yyyy'
   });
-)};
-)};
+});
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
->>>>>>> 11e90b45514f8e0a9f64b5d36444cb4283e423e2
 </body>
 </html>

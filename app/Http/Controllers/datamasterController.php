@@ -306,28 +306,34 @@ class datamasterController extends Controller
     $no_tlp=$req->no_tlp;
     $hakakses=$req->hakakses;
     //Foto
-    $foto=$req->file('foto');
-    $size=$foto->getSize();
-    $tipe=$foto->getClientOriginalExtension();
-    if ($size>=10) {
-      return redirect('/karyawan/edit-data'.'/'.$id)->with('alert','file foto tidak boleh melebihi dari 1MB');
-    }
-    $fotoo=$req->Nfoto;
-    $Nfoto=$id;
+    if ($req->file('foto')=='') {
+      $Nfoto=$id;
+    }else{
+      $foto=$req->file('foto');
+      $size=$foto->getSize();
+      $tipe=$foto->getClientOriginalExtension();
+      if ($size>=1024000) {
+        return redirect('/karyawan/edit-data'.'/'.$id)->with('alert','file foto tidak boleh melebihi dari 1MB');
+      }
+      $fotoo=$req->Nfoto;
+      $Nfoto=$id;
+      
+      if ($save=='add') {
+        $pict=$req->file('foto');
+        $pict->move(public_path().'/foto/pegawai',$id);
+      }elseif ($save=='edit') {
+        if ($fotoo==$id) {
+  
+        }elseif($fotoo!=$id) {
+            $data=DB::table('d_pegawai')->select('foto')->where('id_pegawai',$id)->first();
+            File::delete('foto/pegawai/'.$data->foto);
+            $pict=$req->file('foto');
+            $pict->move(public_path().'/foto/pegawai',$id);
+          }
+      }
+    }  
 
-    if ($save=='add') {
-      $pict=$req->file('foto');
-      $pict->move(public_path().'/foto/pegawai',$id);
-    }elseif ($save=='edit') {
-      if ($fotoo==$id) {
-
-      }elseif($fotoo!=$id) {
-          $data=DB::table('d_pegawai')->select('foto')->where('id_pegawai',$id)->first();
-          File::delete('foto/pegawai/'.$data->foto);
-          $pict=$req->file('foto');
-          $pict->move(public_path().'/foto/pegawai',$id);
-        }
-    }
+    
 
     //Fasilitas
     $gaji=implode(explode(".",$req->gaji));

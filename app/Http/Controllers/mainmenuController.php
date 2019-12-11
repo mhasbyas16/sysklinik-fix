@@ -12,6 +12,16 @@ use App\RekamMedis;
 
 class mainmenuController extends Controller
 {
+
+  //tambah jadwal dan asses
+  public function tambah_jadwal(){
+    return view('main_menu.jadwal_tambah');
+  }
+
+  public function tambah_asses(){
+    return view('main_menu.asses_tambah');
+  }
+
   //absensi
   public function absensi(){
     $Dawal=date('Y-m-1');

@@ -124,10 +124,10 @@ NO. NPWP      : {{$data->npwp}}
                         </tfoot>
                       </table>
                       <div class="col-xs-3">
-                      <a href="{{url('karyawan/tambah-data/karyawan')}}" class="btn btn-block btn-social btn-linkedin">
-                        <i class="fa fa-user-plus"></i>Tambah Karyawan
-                      </a>
-                    </div>
+                        <a href="{{url('karyawan/tambah-data/karyawan')}}" class="btn btn-block btn-social btn-linkedin">
+                          <i class="fa fa-user-plus"></i>Tambah Karyawan
+                        </a>
+                      </div>
                     </div>
                     <!-- /.box-body -->
                   </div>

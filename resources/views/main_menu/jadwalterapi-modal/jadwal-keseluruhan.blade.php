@@ -39,6 +39,11 @@
                 </tr>
                 </tfoot>
               </table>
+              <div class="col-xs-3">
+                <a href="{{url('/tambah_jadwal')}}" class="btn btn-block btn-social btn-linkedin">
+                  <i class="fa fa-user-plus"></i>Tambah Jadwal
+                </a>
+              </div>
             </div>
             <!-- /.box-body -->
           </div>

@@ -1,5 +1,7 @@
 body{
 	background: url('../foto/1.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .signin{

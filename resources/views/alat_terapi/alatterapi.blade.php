@@ -62,12 +62,19 @@
                           </div>
                       </div>
                     </div>
+                    <?php
+                      $angka=range(0,9);
+                      shuffle($angka);
+                      $id=array_rand($angka,4);
+                      $idstring=implode($id);
+                      $id=$idstring;
+                    ?>
                     <div class="row">
                       <div class="col-xs-7 col-md-8 text-center">
                           <div class="form-group">
                             <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">ID Alat Terapi</label>
                             <div class="col-sm-7">
-                               <input type="text" name="idd" id="idd" value="{{$acak}}" hidden="true">
+                               <input type="text" name="idd" id="idd" value="{{$id}}" hidden="true">
                                <input type="text" class="form-control" name="idat" id="idat" value="{{$nama->id_barang}}" readonly>
                             </div>
                           </div>
@@ -134,13 +141,20 @@
                       </div>
                   </div>
                 </div>
+                    <?php
+                      $angka=range(0,9);
+                      shuffle($angka);
+                      $id=array_rand($angka,4);
+                      $idstring=implode($id);
+                      $id=$idstring;
+                    ?>
                 <div class="row">
                   <div class="col-xs-7 col-md-8 text-center">
                       <div class="form-group">
                         <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">ID Alat Terapi</label>
 
                         <div class="col-sm-7">
-                          <input type="text" name="idd" id="idd" value="{{$acak}}" hidden="true">
+                          <input type="text" name="idd" id="idd" value="{{$id}}" hidden="true">
                           <input type="text" class="form-control" name="idat" id="idat" readonly>
                         </div>
                       </div>

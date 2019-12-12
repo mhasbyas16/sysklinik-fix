@@ -23,14 +23,12 @@ class alatterapi extends Controller
         $jenis=DB::table('jenis_terapi')->get();
         $merks = m_jenisterapi::pluck('id_terapi');
         $merkk = alat_terapi::pluck('id_barang');
-        $random=idrandom::id();
         return view('alat_terapi.alatterapi', [
             'at'=>$alatterapi,
             'jenis'=>$jenis,
             'jt'=>$max,
             'merks'=>$merks,
-            'merkk'=>$merks,
-            'acak'=>$random
+            'merkk'=>$merks
         ]);
     }
 

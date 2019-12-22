@@ -6,7 +6,7 @@
   <title>Klinik Liliput</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
+  <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{asset('AdminLTE/bower_components/jquery/dist/jquery.min.js')}}"></script>
     <script src="{{asset('AdminLTE/bower_components/moment/min/moment.min.js')}}"></script>
     <script src="{{asset('AdminLTE/bower_components/fullcalendar/dist/fullcalendar.min.js')}}"></script>
@@ -285,6 +285,10 @@ $(function () {
   format: 'dd-mm-yyyy'
   });
 });
+
+//jadwal add
+/*
+*/
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 </body>

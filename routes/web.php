@@ -37,6 +37,8 @@ Route::get('/jadwal-terapi/{idJ}/{id}/{validate}/{type}','mainmenuController@val
 
 Route::get('/tambah_jadwal', 'mainmenuController@tambah_jadwal');
 Route::get('/tambah_asses', 'mainmenuController@tambah_asses');
+Route::post('/store_asses','mainmenuController@store_asses');
+Route::post('/jterapi_pasien','mainmenuController@jterapiPasien')->name("ajaxRequest.post");
 //jadwal Evaluasi
 Route::get('/jadwal-evaluasi','mainmenuController@jadwalevaluasi');
 Route::post('/jadwal-evaluasi/filter-date','mainmenuController@jadwalevaluasifilter');

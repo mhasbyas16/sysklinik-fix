@@ -18,7 +18,8 @@
           <!-- jQuery Knob -->
           <div class="box box-solid">
             <!-- /.box-header -->
-            <form method=""  action="" enctype="multipart/form-data" class="form-horizontal">
+          <form method="post"  action="{{url('/store_asses')}}" enctype="multipart/form-data" class="form-horizontal">
+            {{ csrf_field() }}
             <div class="box-body">
               @if(\Session::has('alert'))
               <div class="alert alert-danger alert-dismissible">
@@ -42,8 +43,10 @@
                     <div class="form-group">
                       <label class="col-sm-4 control-label" style="text-align: left; padding-left: 20pt">Pasien</label>
                       <div class="col-sm-5" style="margin-left: 1pt">
-                          <select class="form-control select2" style="width: 100%;" name="assesor" value="" required>
-                            <option value="">Pilih Pasien</option>
+                          <select class="form-control select2" style="width: 100%;" name="pasien" value="" required>
+                            @foreach ($pasien as $item)
+                          <option value="{{$item->id_pasien}}">{{$item->nama}}</option>
+                            @endforeach
                           </select>
                       </div>
                     </div>
@@ -53,7 +56,9 @@
                       <label class="col-sm-4 control-label" style="text-align: left; padding-left: 20pt">Assesor</label>
                       <div class="col-sm-5" style="margin-left: 1pt">
                           <select class="form-control select2" style="width: 100%;" name="assesor" value="" required>
-                            <option value="">Pilih Assessor</option>
+                            @foreach($kar as $kar)
+                              <option value="{{$kar->id_pegawai}}">{{$kar->nama}}</option>
+                            @endforeach
                           </select>
                       </div>
                     </div>
@@ -67,7 +72,9 @@
                       <label class="col-sm-4 control-label" style="text-align: left; padding-left: 20pt">Jenis Terapi</label>
 
                       <div class="col-sm-7 text-left">
-                          <input type="checkbox" name="" value="">&nbsp;<br>
+                          @foreach($j_terapi as $j_terapi)
+                          <input type="checkbox" name="J_terapi[]" value="{{$j_terapi->id_terapi}}">&nbsp;{{$j_terapi->terapi}}<br>
+                          @endforeach
                       </div>
                     </div>
                 </div>
@@ -112,8 +119,9 @@
 
                       <div class="col-sm-5">
                           <select class="form-control select2" style="width: 100%;" name="status" value=" " required>
-                            <option value="">Pilih Status</option>
-                            <option value=""></option>
+                              @foreach($status as $isi)
+                              <option value="{{$isi}}">{{$isi}}</option>
+                              @endforeach
                           </select>
                       </div>
                     </div>

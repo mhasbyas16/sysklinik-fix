@@ -15,11 +15,149 @@ class mainmenuController extends Controller
 
   //tambah jadwal dan asses
   public function tambah_jadwal(){
-    return view('main_menu.jadwal_tambah');
+    $terapis=DB::table('d_pegawai')->where('id_pegawai','like','T%')->get();
+    $isi=DB::table('terapi_pasien')
+    ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
+   ->get();
+    $j_terapi=DB::table('terapi_pasien')
+    ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
+    ->where('keterangan','Pasien')->get();
+    $pasien=DB::table('record_status_pasien')
+    ->join('d_pasien','d_pasien.id_pasien','=','record_status_pasien.id_pasien')
+    ->where('record_status_pasien.keterangan','Pasien')->get();
+    return view('main_menu.jadwal_tambah',[
+      'terapis'=>$terapis,
+      'j_terapi'=>$j_terapi,
+      'pasien'=>$pasien
+    ]);
+  }
+
+  public function jterapiPasien(Request $req){
+    $id=$req->id_asses;
+    $j_terapi=DB::table('terapi_pasien')
+    ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
+    ->where('keterangan','Pasien')->where('id_asses',$id)->get();
+   // $j_terapi=json_decode($j_terapi2,true);
+    return response()->json(['j_terapi'=>$j_terapi]);
+
+  }
+
+  public function store_tambah(){
+    $id_terapi=$req->Jterapi;
+    $jam_masuk=$req->jam_masuk;
+    $jam_keluar=$req->jam_keluar;
+    $tgl=$req->tgl;
+    $terapis=$req->terapis;
+    //$id_terapipasien=$req->id_terapipasien;
+    $biaya=$req->biaya;
+    $id_asses=$req->pasien;
+    
+      $id=$id_terapi;
+      $masuk=$jam_masuk[$no];
+      $keluar=$jam_keluar[$no];
+      $tgls=$tgl[$no];
+      $id_terapiP=$id_terapipasien[$no];
+      $cost=$biaya[$no];
+      $sql=[
+        'id_pegawai'=>$terapis,
+        'id_asses'=>$id_asses,
+        'id_terapipasien'=>$id_terapiP,
+        'biaya'=>$cost,
+        'tgl'=>$tgls,
+        'jam_masuk'=>$masuk,
+        'jam_keluar'=>$keluar,
+        'keterangan'=>'Terapi',
+        'status_pasien'=>'Hadir'
+      ];
+
+      DB::table('assessment')->where('id_asses',$id_asses)->update(['status_pasien'=>'Pasien']);
+      DB::table('terapi_pasien')->where('id_asses',$id_asses)->update(['keterangan'=>'Pasien']);
+      DB::table('jadwal_terapis')->insert($sql);
+
+    $now=date('ymd');
+    $id_pasien=DB::table('assessment')->where('id_asses',$id_asses)->first();
+    $record=[
+      'id_asses'=>$id_asses,
+      'id_pasien'=>$id_pasien->id_pasien,
+      'keterangan'=>'Pasien',
+      'tgl'=>$now
+    ];
+    DB::table('record_status_pasien')->insert($record);
+
+    $data = [
+      'id_rm' => 'RM'.date('YmdHis'),
+      'id_pasien' => $id_pasien->id_pasien,
+      'id_asses' => $id_asses,
+      'diagnosa' => $id_pasien->diagnosa
+    ];
+
+    RekamMedis::insert($data);
+
+    return redirect('jadwal-terapi');
   }
 
   public function tambah_asses(){
-    return view('main_menu.asses_tambah');
+    $pasien=DB::table('assessment')->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')->where('status_pasien','Pasien')->get();
+    $kar=DB::table('d_pegawai')->orderBy('nama','asc')->get();
+    $j_terapi=DB::table('jenis_terapi')->orderBY('terapi','asc')->get();
+    $status=[
+      'Asses'
+    ];
+    return view('main_menu.asses_tambah',[
+      'kar'=>$kar,
+      'j_terapi'=>$j_terapi,
+      'status'=>$status,
+      'pasien'=>$pasien
+    ]);
+  }
+
+  public function store_asses(Request $req){
+    $id_pasien=$req->pasien;
+    $assesor=$req->assesor;
+    $j_terapi=$req->J_terapi;
+    $tgl_mulai_terapi=$req->tgl_mulai_terapi;
+    $tgl_selesai_terapi=$req->tgl_selesai_terapi;
+    $status=$req->status;
+    $diagnosa='';
+
+    $angka=range(0,9);
+    shuffle($angka);
+    $id=array_rand($angka,3);
+    $idstring=implode($id);
+    $random=$idstring;
+    $date=date('ymd');
+    $id=$date.$random;
+
+
+    $data_A=[
+      'id_asses'=>$id,
+      'id_pasien'=>$id_pasien,
+      'id_pegawai'=>$assesor,
+      'tgl_mulai_terapi'=>$tgl_mulai_terapi,
+      'tgl_selesai_terapi'=>$tgl_selesai_terapi,
+      'diagnosa'=>$diagnosa,
+      'status_pasien'=>$status];
+
+      $record=[
+        'id_asses'=>$id,
+        'id_pasien'=>$id_pasien,
+        'keterangan'=>$status,
+        'tgl'=>$date
+      ];
+
+    DB::table('assessment')->insert($data_A);
+    DB::table('record_status_pasien')->insert($record);
+    foreach ($j_terapi as $J_terapi) {
+      $T_pasien=[
+        'id_asses'=>$id,
+        'id_terapi'=>$J_terapi,
+        'status'=>'0',
+        'keterangan'=>'Asses'
+      ];
+      DB::table('terapi_pasien')->insert($T_pasien);
+    }
+
+    return redirect('/jadwal-terapi');
   }
 
   //absensi

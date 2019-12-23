@@ -50,7 +50,7 @@ class transaksi_keuangan extends Controller
     public function store(Request $r)
     {
         $val = [
-            'id_karyawan' => $r->id_karyawan,
+            'id_pegawai' => $r->id_karyawan,
             'tgl' => date('Y-m-d', strtotime($r->tanggal)),
             'keterangan' => $r->keterangan,
             'jumlah' => str_replace('.', '', $r->jumlah),
@@ -62,6 +62,7 @@ class transaksi_keuangan extends Controller
             pengeluaran::insert($val);
         }
         
+        Alert::success('Data berhasil ditambahkan')->autoclose(3500);
         return redirect('transaksi_keuangan');
     }
 
@@ -107,17 +108,20 @@ class transaksi_keuangan extends Controller
      */
     public function destroy($id)
     {
+
+
         $pemasukan = Pemasukan::where('id_income', $id);
         $getPemasukan = $pemasukan->first();
 
-        $pengeluaran = Pengeluaran::where('id_outcome', $id);
 
-        if ($getPemasukan > 0) {
+        if (isset($getPemasukan->id_income)) {
             $hapusPemasukkan = $pemasukan->delete();
         }else{
+            $pengeluaran = Pengeluaran::where('id_outcome', $id);
             $hapusPengeluaran = $pengeluaran->delete();
         }
 
+        Alert::success('Data berhasil dihapus')->autoclose(3500);
         return redirect('transaksi_keuangan');
     }
 }

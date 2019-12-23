@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Bill;
 use App\BuktiBilling;
 use DB;
+use Alert;
 use App\Kwitansi;
 use App\Pemasukan;
 
@@ -19,6 +20,7 @@ class billing extends Controller
     public function index()
     {
         $data = DB::table('h_billing')->select('h_billing.*', 'd_pasien.nama')->join('assessment', 'h_billing.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'assessment.id_pasien', '=', 'd_pasien.id_pasien')->get();
+        $update = DB::table('h_billing')->where('status', 'Baru')->update(['status' => 'Lama']);
         return view('billing.billing',[
             'data' => $data
         ]);
@@ -55,6 +57,7 @@ class billing extends Controller
     {   
         $data = DB::table('bukti_billing')->select('bukti_billing.*')->join('h_billing', 'bukti_billing.id_bill', '=', 'h_billing.id_bill')->where('bukti_billing.id_bill', $id)->get();
         
+        $update = DB::table('bukti_billing')->where('status', 'Baru')->where('id_bill', $id)->update(['status' => 'Lama']);
 
         return view('billing.detail_billing', [
             'data' => $data
@@ -547,10 +550,14 @@ class billing extends Controller
                 BuktiBilling::where('id_bukti', $id)->update($data);
                 
             }
+
+            Alert::success('Pembayaran berhasil divalidasi')->autoclose(3500);
         }else{
-            echo "tagihan sudah lunas.";
+            
+            Alert::warning('Tagihan sudah lunas')->autoclose(3500);
         }
 
+        return redirect('billing/'.$r->id_bill);
     }
 
     /**

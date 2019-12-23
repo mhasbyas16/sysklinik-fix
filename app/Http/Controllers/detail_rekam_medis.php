@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\DetailRekamMedis;
 use DB;
+use Alert;
 
 class detail_rekam_medis extends Controller
 {
@@ -45,6 +46,7 @@ class detail_rekam_medis extends Controller
 
         DetailRekamMedis::insert($data);
 
+        Alert::success('Data berhasil ditambahkan')->autoclose(3500);
         return redirect('detail_rekam_medis/'.$request->id_rm);
     }
 
@@ -99,6 +101,7 @@ class detail_rekam_medis extends Controller
         $hapus = DetailRekamMedis::where('id_sesirm', $id);
         $hapus->delete();
 
+        Alert::success('Data berhasil dihapus')->autoclose(3500);
         return redirect('detail_rekam_medis/'.$r->id_rm);
     }
 }

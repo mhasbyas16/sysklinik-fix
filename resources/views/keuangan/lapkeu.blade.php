@@ -340,7 +340,7 @@
                                 <div class="form-group">
                                     <div class="col-md-4 col-md-offset-4">
                                       <a class="col-md-12 btn btn-primary text-center" href="{{ url('/print/laporan/'.$d->id_saldo) }}" target="_Blank">
-                                        Export PDF
+                                        Export Excel
                                       </a>
                                     </div>
                                   </div>

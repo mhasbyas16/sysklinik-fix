@@ -303,6 +303,7 @@ public function jadwalevaluasifilter(Request $req){
     //->whereBetween('record_status_pasien.tgl',[$awal,$akhir])
     ->where('assessment.status_pasien','Daftar')->get();
 
+    $update = DB::table('assessment')->where('status', 'Baru')->update(['status' => 'Lama']);
     return view ('main_menu.registerlist',[
       'isi'=>$isi]);
   }
@@ -583,7 +584,7 @@ public function jadwalevaluasifilter(Request $req){
       'diagnosa' => $id_pasien->diagnosa
     ];
 
-    RekamMedis::insert($data);
+    DB::table('h_rekam_medis')->insert($data);
 
     return redirect('jadwal-terapi');
   }
@@ -654,6 +655,8 @@ public function jadwalevaluasifilter(Request $req){
                       ->where('status_pasien','Asses');
           $assessment=$sqlassessment->get();
           $countassessment=$sqlassessment->count();
+
+        $update = DB::table('jadwal_terapis')->where('status', 'Baru')->update(['status' => 'Lama']);
       return view('main_menu.jadwalterapi', compact('calendar'),[
         'data2'=>$data2,
         'rterapis'=>$rterapis,

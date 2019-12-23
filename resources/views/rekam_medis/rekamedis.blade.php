@@ -1,5 +1,6 @@
 @extends('template.style')
 @section('isi')
+@include('sweet::alert')
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header d-md-inline-flex">
@@ -54,11 +55,11 @@
                     <td>{{ $list_rm->terapi }}</td>
                     <td>{{ $list_rm->diagnosa }}</td>
                     <td>
-                      <a href="{{url('rekam_medis/'.$list_rm->id_rm.'/edit')}}" class="col-md-3">Edit</a>
-                      <form action="{{ url('rekam_medis/'.$list_rm->id_rm) }}" method="POST" style="padding:0px; margin:0px" class="col-md-3">
+                      <a href="{{url('rekam_medis/'.$list_rm->id_rm.'/edit')}}" class="col-md-3 btn btn-primary">Edit</a> 
+                      <form action="{{ url('rekam_medis/'.$list_rm->id_rm) }}" id="rekam_medis" method="POST" class="col-md-3">
                           @method('DELETE')
                           @csrf
-                          <input type="submit" style="padding:0px; margin:0px; border: 0px; background: none" value="Hapus" class="btn-link">
+                          <input type="submit" value="Hapus" class="btn btn-danger btn-delete">
                       </form>
                     </td>
                   </tr>
@@ -73,4 +74,10 @@
   </section>
   <!-- /.content -->
 </div>
+
+<script>
+  $('.btn-delete').click(function(e) {
+        return confirm("Are you sure?");
+});
+</script>
 @endsection

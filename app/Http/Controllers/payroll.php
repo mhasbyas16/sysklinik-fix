@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use PDF;
 use Mail;
+use Alert;
 use App\Payment;
 use Carbon\Carbon;
 
@@ -99,28 +100,104 @@ class payroll extends Controller
     public function update(Request $r, $id)
     {
         if ($r->submit == "Print") {
-            $payroll = DB::table('payroll')->select('payroll.*', 'd_pegawai.nama', 'jabatan.jabatan')->join('d_pegawai', 'payroll.id_pegawai', '=', 'd_pegawai.id_pegawai')->join('jabatan', 'd_pegawai.id_jabatan', '=', 'jabatan.id_jabatan')->where('payroll.id_payroll', $id)->get();
-        
+
+            $data = [
+                'insentif' => $r->insentif,
+                'gaji' => $r->gaji,
+                'eval_disc' => $r->eval_disc,
+                'asses' => $r->asses,
+                'evaluasi' => $r->evaluasi,
+                'jabatan' => $r->jabatan,
+                'transport' => $r->transport,
+                'bonus' => $r->bonus,
+                'overtime' => $r->overtime,
+                'overtime_sabtu' => $r->overtime_sabtu,
+                'tempat_tinggal' => $r->tempat_tinggal,
+                'gaji_kotor' => $r->gaji_kotor,
+                'pph' => $r->pph,
+                'asuransi' => $r->asuransi,
+                'lainnya' => $r->lainnya,
+                'total_pengeluaran' => $r->ttl_pengeluaran,
+                'gaji_bersih' => $r->gaji_bersih
+            ];
+
+            $update = DB::table('payroll')->where('id_payroll', $id)->update($data);
+
             set_time_limit(300);
 
             $pdf = PDF::loadView('payroll.payroll_print',[
-                'payroll' => $payroll
+                'insentif' => $r->insentif,
+                'gaji' => $r->gaji,
+                'eval_disc' => $r->eval_disc,
+                'asses' => $r->asses,
+                'evaluasi' => $r->evaluasi,
+                'jabatan' => $r->jabatan,
+                'transport' => $r->transport,
+                'bonus' => $r->bonus,
+                'overtime' => $r->overtime,
+                'overtime_sabtu' => $r->overtime_sabtu,
+                'tempat_tinggal' => $r->tempat_tinggal,
+                'gaji_kotor' => $r->gaji_kotor,
+                'pph' => $r->pph,
+                'asuransi' => $r->asuransi,
+                'lainnya' => $r->lainnya,
+                'total_pengeluaran' => $r->ttl_pengeluaran,
+                'gaji_bersih' => $r->gaji_bersih,
+                'id_pegawai' => $id
             ]);
             $pdf->setPaper('A4', 'potrait');
 
             return $pdf->download('a.pdf');
         }elseif($r->submit == "Send Email"){
+            $data = [
+                'insentif' => $r->insentif,
+                'gaji' => $r->gaji,
+                'eval_disc' => $r->eval_disc,
+                'asses' => $r->asses,
+                'evaluasi' => $r->evaluasi,
+                'jabatan' => $r->jabatan,
+                'transport' => $r->transport,
+                'bonus' => $r->bonus,
+                'overtime' => $r->overtime,
+                'overtime_sabtu' => $r->overtime_sabtu,
+                'tempat_tinggal' => $r->tempat_tinggal,
+                'gaji_kotor' => $r->gaji_kotor,
+                'pph' => $r->pph,
+                'asuransi' => $r->asuransi,
+                'lainnya' => $r->lainnya,
+                'total_pengeluaran' => $r->ttl_pengeluaran,
+                'gaji_bersih' => $r->gaji_bersih
+            ];
+
+            $update = DB::table('payroll')->where('id_payroll', $id)->update($data);
+
             $payroll = DB::table('payroll')->select('payroll.*', 'd_pegawai.nama', 'email', 'jabatan.jabatan')->join('d_pegawai', 'payroll.id_pegawai', '=', 'd_pegawai.id_pegawai')->join('jabatan', 'd_pegawai.id_jabatan', '=', 'jabatan.id_jabatan')->where('payroll.id_payroll', $id);
             
             $py = $payroll->first();
-            $payroll = $payroll->get();
 
-            Mail::send('payroll.sendPayroll', compact('payroll'), function($message) use($py, $payroll){
+            Mail::send('payroll.sendPayroll', compact('data'), function($message) use($py, $data, $r){
             
                 set_time_limit(300);
 
                 $pdf = PDF::loadView('payroll.payroll_print',[
-                    'payroll' => $payroll
+                    'insentif' => $r->insentif,
+                    'gaji' => $r->gaji,
+                    'eval_disc' => $r->eval_disc,
+                    'asses' => $r->asses,
+                    'evaluasi' => $r->evaluasi,
+                    'jabatan' => $r->jabatan,
+                    'transport' => $r->transport,
+                    'bonus' => $r->bonus,
+                    'overtime' => $r->overtime,
+                    'overtime_sabtu' => $r->overtime_sabtu,
+                    'tempat_tinggal' => $r->tempat_tinggal,
+                    'gaji_kotor' => $r->gaji_kotor,
+                    'pph' => $r->pph,
+                    'asuransi' => $r->asuransi,
+                    'lainnya' => $r->lainnya,
+                    'total_pengeluaran' => $r->ttl_pengeluaran,
+                    'gaji_bersih' => $r->gaji_bersih,
+                    'id_pegawai' => $py->id_pegawai
                 ]);
                 $pdf->setPaper('A4', 'potrait');
 
@@ -130,11 +207,13 @@ class payroll extends Controller
                 $message->to($py->email)->subject('Your payslip data generated on '.date('F Y'));
                 $message->attachData($output, 'Your Payslip '.date('d-m-Y').'.pdf');
             });
+
+
+            Alert::success('Payroll berhasil dikirim')->autoclose(3500);
         }
+
+        return redirect('payroll/'.$id);
         
-        return view('payroll.payroll_print', [
-            'payroll' => $payroll
-        ]);
     }
 
     /**

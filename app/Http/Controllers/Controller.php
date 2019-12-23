@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use DB;
+use Khill\Lavacharts\Lavacharts;
 use App\m_jenisterapi;
 
 class Controller extends BaseController
@@ -19,6 +20,46 @@ class Controller extends BaseController
         $r=DB::table('request_dash')->select('*')->where('keterangan','Asses')->get();
         $kue=DB::table('request_dash')->select('*')->where('keterangan','Kuesioner')->get();
         $data=DB::table('request_dash')->select('id_pasien')->first();
+
+        $notif_rm = DB::table('h_rekam_medis')->where('status', 'Baru')->count();
+
+        $dataa = DB::select('select count(id_pasien) as Total, terapi as jenis_terapi from assessment right join d_pegawai on assessment.id_pegawai = d_pegawai.id_pegawai right join jenis_terapi on d_pegawai.id_terapi = jenis_terapi.id_terapi where assessment.status_pasien = "Pasien" group by d_pegawai.id_terapi');
+        
+
+$lava = new Lavacharts; // See note below for Laravel
+
+$votes  = $lava->DataTable();
+
+$votes->addStringColumn('Jenis Terapi')
+      ->addNumberColumn('Total');
+foreach ($dataa as $d) {
+	$votes->addRow([$d->jenis_terapi, $d->Total]);
+}
+
+\Lava::BarChart('Votes', $votes, [
+                'orientation' => 'horizontal',
+                'colors' => [
+                    '#c3db2f'
+                ],
+                'height' => 250,
+                'hAxis'=> [
+                    'gridlines'=> 9,
+                    'textStyle' => [
+                        'color' => '#000'
+                    ]
+                ],
+                'vAxis'=> [
+                    'gridlines'=> 9,
+                    'textStyle' => [
+                        'color' => '#000'
+                    ]
+                ],
+                'textColor' => 'white'
+            ]);
+     
+
+
+
         return view('index', [
             'terapis'=>$terapis,
             'pegawai'=>$pegawai,
@@ -26,7 +67,8 @@ class Controller extends BaseController
             'jenis'=>$jenis,
             'r'=>$r,
             'kue'=>$kue,
-            'data'=>$data
+            'data'=>$data,
+            'notif_rm' => $notif_rm
         ]);
 	}
 

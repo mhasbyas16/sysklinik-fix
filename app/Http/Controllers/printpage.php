@@ -107,14 +107,8 @@ class printpage extends Controller
     public function printLaporanKeuangan($id){
 
         $data = DB::table('saldo')->select('*')->where('id_saldo', $id)->get();
-
-        set_time_limit(300);
-
-        $pdf = PDF::loadView('keuangan.print_laporan',[
-            'data' => $data
-        ]);
-        $pdf->setPaper('A4', 'potrait');
-
-        return $pdf->download('Laporan keuangan'.date('dmY').'.pdf');
+        return view ('keuangan.print_laporan',[
+            'data' => $data  
+            ]);
     }
 }

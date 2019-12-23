@@ -126,7 +126,18 @@
       </tr>
       <tr>
         <td colspan="2" align="center" style="border-bottom: 2px solid black">
-          <h1>Billing</h1>
+          <table width="100%" style="text-align: center">
+            <tr>
+              <td>
+                <h1>Billing</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size: 18pt">
+                {{ $id }}
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
       <tr>
@@ -179,7 +190,7 @@
                   Telp.
                 </td>
                 <td style="padding-top: 1%">
-                  : {{ $dp->tlp .' / '. $dp->tlp_ayah .' / '. $dp->tlp_ibu}}
+                  : {{ $dp->tlp .' / '. $dp->tlp_ayah .'(Ayah) / '. $dp->tlp_ibu.'(Ibu)'}}
                 </td>
               </tr>
             @endforeach

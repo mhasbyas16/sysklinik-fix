@@ -89,7 +89,9 @@
             </ul>
             <div class="tab-content no-padding">
               <!-- Morris chart - Sales -->
-              <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
+            <div id="poll_div"></div>
+            <?= Lava::render('BarChart', 'Votes', 'poll_div') ?>
+
             </div>
           </div>
           <!-- /.nav-tabs-custom -->
@@ -138,7 +140,6 @@
             </ul>
             <div class="tab-content no-padding">
               <!-- Morris chart - Sales -->
-              <div class="chart tab-pane active" id="revenue-chart" style="position: relative;"></div>
                 <div class="row">
                   <div class="col-xs-12">
                     <br>

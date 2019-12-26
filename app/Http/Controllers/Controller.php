@@ -6,70 +6,79 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Session;
 use DB;
+use Alert;
 use Khill\Lavacharts\Lavacharts;
 use App\m_jenisterapi;
 
 class Controller extends BaseController
 {
 	public function index(){
-    	$terapis = DB::table('h_pegawai')->select('id_pegawai')->where('h_pegawai.id_pegawai','like','T%')->count();
-    	$pegawai = DB::table('h_pegawai')->select('id_pegawai')->where('h_pegawai.id_pegawai','like','K%')->count();
-        $pasien=DB::table('h_pasien')->count();
-        $jenis = m_jenisterapi::all()->count();
-        $r=DB::table('request_dash')->select('*')->where('keterangan','Asses')->get();
-        $kue=DB::table('request_dash')->select('*')->where('keterangan','Kuesioner')->get();
-        $data=DB::table('request_dash')->select('id_pasien')->first();
 
-        $notif_rm = DB::table('h_rekam_medis')->where('status', 'Baru')->count();
+        if (Session::get('login')) {
+            
+	    	$terapis = DB::table('h_pegawai')->select('id_pegawai')->where('h_pegawai.id_pegawai','like','T%')->count();
+	    	$pegawai = DB::table('h_pegawai')->select('id_pegawai')->where('h_pegawai.id_pegawai','like','K%')->count();
+	        $pasien=DB::table('h_pasien')->count();
+	        $jenis = m_jenisterapi::all()->count();
+	        $r=DB::table('request_dash')->select('*')->where('keterangan','Asses')->get();
+	        $kue=DB::table('request_dash')->select('*')->where('keterangan','Kuesioner')->get();
+	        $data=DB::table('request_dash')->select('id_pasien')->first();
 
-        $dataa = DB::select('select count(id_pasien) as Total, terapi as jenis_terapi from assessment right join terapi_pasien on assessment.id_asses = terapi_pasien.id_asses right join jenis_terapi on terapi_pasien.id_terapi = jenis_terapi.id_terapi where assessment.status_pasien = "Asses" group by terapi_pasien.id_terapi');
-        
+	        $notif_rm = DB::table('h_rekam_medis')->where('status', 'Baru')->count();
 
-$lava = new Lavacharts; // See note below for Laravel
+	        $dataa = DB::select('select count(id_pasien) as Total, terapi as jenis_terapi from assessment right join terapi_pasien on assessment.id_asses = terapi_pasien.id_asses right join jenis_terapi on terapi_pasien.id_terapi = jenis_terapi.id_terapi where assessment.status_pasien = "Asses" group by terapi_pasien.id_terapi');
+	        
 
-$votes  = $lava->DataTable();
+			$lava = new Lavacharts; // See note below for Laravel
 
-$votes->addStringColumn('Jenis Terapi')
-      ->addNumberColumn('Total');
-foreach ($dataa as $d) {
-	$votes->addRow([$d->jenis_terapi, $d->Total]);
-}
+			$votes  = $lava->DataTable();
 
-\Lava::BarChart('Votes', $votes, [
-                'orientation' => 'horizontal',
-                'colors' => [
-                    '#c3db2f'
-                ],
-                'height' => 250,
-                'hAxis'=> [
-                    'gridlines'=> 9,
-                    'textStyle' => [
-                        'color' => '#000'
-                    ]
-                ],
-                'vAxis'=> [
-                    'gridlines'=> 9,
-                    'textStyle' => [
-                        'color' => '#000'
-                    ]
-                ],
-                'textColor' => 'white'
-            ]);
-     
+			$votes->addStringColumn('Jenis Terapi')
+			      ->addNumberColumn('Total');
+			foreach ($dataa as $d) {
+				$votes->addRow([$d->jenis_terapi, $d->Total]);
+			}
+
+			\Lava::BarChart('Votes', $votes, [
+	                'orientation' => 'horizontal',
+	                'colors' => [
+	                    '#c3db2f'
+	                ],
+	                'height' => 250,
+	                'hAxis'=> [
+	                    'gridlines'=> 9,
+	                    'textStyle' => [
+	                        'color' => '#000'
+	                    ]
+	                ],
+	                'vAxis'=> [
+	                    'gridlines'=> 9,
+	                    'textStyle' => [
+	                        'color' => '#000'
+	                    ]
+	                ],
+	                'textColor' => 'white'
+	            ]);
+	     
 
 
 
-        return view('index', [
-            'terapis'=>$terapis,
-            'pegawai'=>$pegawai,
-            'pasien'=>$pasien,
-            'jenis'=>$jenis,
-            'r'=>$r,
-            'kue'=>$kue,
-            'data'=>$data,
-            'notif_rm' => $notif_rm
-        ]);
+	        return view('index', [
+	            'terapis'=>$terapis,
+	            'pegawai'=>$pegawai,
+	            'pasien'=>$pasien,
+	            'jenis'=>$jenis,
+	            'r'=>$r,
+	            'kue'=>$kue,
+	            'data'=>$data,
+	            'notif_rm' => $notif_rm
+	        ]);
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
 	}
 
 	public function ubahstatus($id){

@@ -22,11 +22,17 @@ class rekam_medis extends Controller
      */
     public function index()
     {
-        $rekam_medis = DB::table('h_rekam_medis')->select('assessment.*', 'h_rekam_medis.id_rm', 'jenis_terapi.terapi', 'd_pasien.nama')->join('assessment', 'h_rekam_medis.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')->join('terapi_pasien', 'h_rekam_medis.id_asses', '=', 'terapi_pasien.id_asses')->join('jenis_terapi', 'terapi_pasien.id_terapi', '=', 'jenis_terapi.id_terapi')->groupBy('id_rm')->get();
-        $update = DB::table('h_rekam_medis')->where('status', 'Baru')->update(['status' => 'Lama']);
-        return view('rekam_medis.rekamedis', [
-            'list_rekam_medis' => $rekam_medis
-        ]);
+        if (Session::get('login')) {
+            
+            $rekam_medis = DB::table('h_rekam_medis')->select('assessment.*', 'h_rekam_medis.id_rm', 'jenis_terapi.terapi', 'd_pasien.nama')->join('assessment', 'h_rekam_medis.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')->join('terapi_pasien', 'h_rekam_medis.id_asses', '=', 'terapi_pasien.id_asses')->join('jenis_terapi', 'terapi_pasien.id_terapi', '=', 'jenis_terapi.id_terapi')->groupBy('id_rm')->get();
+            $update = DB::table('h_rekam_medis')->where('status', 'Baru')->update(['status' => 'Lama']);
+            return view('rekam_medis.rekamedis', [
+                'list_rekam_medis' => $rekam_medis
+            ]);
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
     }
 
     /**
@@ -36,14 +42,20 @@ class rekam_medis extends Controller
      */
     public function create()
     {
-        $pasien = DB::table('d_pasien')->select('d_pasien.*')->join('h_pasien', 'd_pasien.id_pasien', '=', 'h_pasien.id_pasien')->join('assessment', 'd_pasien.id_pasien', '=', 'assessment.id_pasien')->where('assessment.status_pasien', '=', 'Asses')->get();
-        $terapis = DB::table('d_pegawai')->select('d_pegawai.*')->join('jabatan', 'd_pegawai.id_jabatan', '=', 'jabatan.id_jabatan')->where('d_pegawai.id_jabatan','=','5')->get();
-        $asses = DB::table('assessment')->select('*')->get();
-        return view('rekam_medis.form_rekamMedis', [
-            'pasien' => $pasien,
-            'terapis' => $terapis,
-            'asses' => $asses
-        ]);
+        if (Session::get('login')) {
+            
+            $pasien = DB::table('d_pasien')->select('d_pasien.*')->join('h_pasien', 'd_pasien.id_pasien', '=', 'h_pasien.id_pasien')->join('assessment', 'd_pasien.id_pasien', '=', 'assessment.id_pasien')->where('assessment.status_pasien', '=', 'Asses')->get();
+            $terapis = DB::table('d_pegawai')->select('d_pegawai.*')->join('jabatan', 'd_pegawai.id_jabatan', '=', 'jabatan.id_jabatan')->where('d_pegawai.id_jabatan','=','5')->get();
+            $asses = DB::table('assessment')->select('*')->get();
+            return view('rekam_medis.form_rekamMedis', [
+                'pasien' => $pasien,
+                'terapis' => $terapis,
+                'asses' => $asses
+            ]);
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
     }
 
     /**
@@ -54,17 +66,23 @@ class rekam_medis extends Controller
      */
     public function store(Request $r)
     {
-        $data = [
-            'id_asses' => $r->id_asses,
-            'id_terapis' => $r->id_terapis,
-            'diagnosa' => $r->diagnosa
-        ];
+        if (Session::get('login')) {
+            
+            $data = [
+                'id_asses' => $r->id_asses,
+                'id_terapis' => $r->id_terapis,
+                'diagnosa' => $r->diagnosa
+            ];
 
-        RekamMedis::insert($data);
+            RekamMedis::insert($data);
 
 
-        Alert::success('Data berhasil ditambahkan')->autoclose(3500);
-        return redirect('rekam_medis');
+            Alert::success('Data berhasil ditambahkan')->autoclose(3500);
+            return redirect('rekam_medis');
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
     }
 
     /**
@@ -87,10 +105,16 @@ class rekam_medis extends Controller
     public function edit($id)
     {
 
-        $data = DB::table('h_rekam_medis')->select('nama', 'id_asses', 'diagnosa', 'id_rm')->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')->where('id_rm', $id)->get();
-        return view('rekam_medis.form_rekamMedis', [
-            'data' => $data
-        ]);
+        if (Session::get('login')) {
+            
+            $data = DB::table('h_rekam_medis')->select('nama', 'id_asses', 'diagnosa', 'id_rm')->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')->where('id_rm', $id)->get();
+            return view('rekam_medis.form_rekamMedis', [
+                'data' => $data
+            ]);
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
     }
 
     /**
@@ -102,17 +126,23 @@ class rekam_medis extends Controller
      */
     public function update(Request $r, $id)
     {
-        $id_asses = $r->id_asses;
-        $data = [
-            'diagnosa' => $r->diagnosa
-        ];
+        if (Session::get('login')) {
+            
+            $id_asses = $r->id_asses;
+            $data = [
+                'diagnosa' => $r->diagnosa
+            ];
 
-        $update = RekamMedis::where('id_rm', $id);
-        $update->update($data);
+            $update = RekamMedis::where('id_rm', $id);
+            $update->update($data);
 
 
-        Alert::success('Data berhasil diupdate')->autoclose(3500);
-        return redirect('rekam_medis');
+            Alert::success('Data berhasil diupdate')->autoclose(3500);
+            return redirect('rekam_medis');
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
     }
 
     /**
@@ -123,10 +153,16 @@ class rekam_medis extends Controller
      */
     public function destroy($id)
     {
-        $hapus = RekamMedis::where('id_rm', $id);
-        $hapus->delete();
+        if (Session::get('login')) {
+            
+            $hapus = RekamMedis::where('id_rm', $id);
+            $hapus->delete();
 
-        Alert::success('Data berhasil dihapus')->autoclose(3500);
-        return redirect('rekam_medis');
+            Alert::success('Data berhasil dihapus')->autoclose(3500);
+            return redirect('rekam_medis');
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
     }
 }

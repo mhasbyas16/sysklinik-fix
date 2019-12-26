@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use DB;
+use Alert;
 use Carbon\Carbon;
 
 class laporan_keuangan extends Controller
@@ -15,7 +17,13 @@ class laporan_keuangan extends Controller
      */
     public function index()
     {
-        return view('keuangan.lapkeu');
+        if (Session::get('login')) {
+            
+            return view('keuangan.lapkeu');
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
     }
 
     /**
@@ -37,18 +45,29 @@ class laporan_keuangan extends Controller
     public function store(Request $r)
     {
         
-        $data = DB::table('saldo')->select('*')->whereMonth('tgl', $r->month)->whereYear('tgl', $r->year)->get();
-        $a = new Carbon('1-'.$r->month.'-'.$r->year);
-        $b = $a->format('F');
-        $bulan = $r->month;
-        $tahun = $r->year;
+        if (Session::get('login')) {
+            
+            $data = DB::table('saldo')->select('*')->whereMonth('tgl', $r->month)->whereYear('tgl', $r->year)->count();
+            if ($data <= 0) {
+                Alert::warning('Data laporan keuangan tidak ditemukan.')->autoclose(3500);
+            }
 
-        return view('keuangan.lapkeu', [
-            'data' => $data,
-            'bulan' => $bulan,
-            'tahun' => $tahun,
-            'b' => $b
-        ]);
+            $data = DB::table('saldo')->select('*')->whereMonth('tgl', $r->month)->whereYear('tgl', $r->year)->get();
+            $a = new Carbon('1-'.$r->month.'-'.$r->year);
+            $b = $a->format('F');
+            $bulan = $r->month;
+            $tahun = $r->year;
+
+            return view('keuangan.lapkeu', [
+                'data' => $data,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                'b' => $b
+            ]);
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
     }
 
     /**

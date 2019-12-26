@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use App\Settings;
 use App\Acc;
 use DB;
+use Alert;
 
 class setting extends Controller
 {
@@ -18,6 +19,12 @@ class setting extends Controller
      */
     public function index()
     {
+        if (Session::get('login')) {
+            
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
         $account = DB::table('d_pegawai')->select('d_pegawai.*', 'jabatan', 'password')->where('d_pegawai.id_pegawai', Session::get('id_pegawai'))->join('jabatan', 'd_pegawai.id_jabatan', 'jabatan.id_jabatan')->join('h_pegawai', 'd_pegawai.id_pegawai', 'h_pegawai.id_pegawai')->first();
         $status = "";
         $jabatan = DB::table('jabatan')->select('*')->get();
@@ -68,6 +75,12 @@ class setting extends Controller
      */
     public function edit($id)
     {
+        if (Session::get('login')) {
+            
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
         $getPegawai = DB::table('h_pegawai')->select('d_pegawai.*', 'password', 'jabatan.jabatan')->where('h_pegawai.id_pegawai', $id)->join('d_pegawai', 'h_pegawai.id_pegawai', '=', 'd_pegawai.id_pegawai')->join('jabatan', 'd_pegawai.id_jabatan', '=', 'jabatan.id_jabatan')->first();
         $status = "edit";
         $jabatan = DB::table('jabatan')->select('*')->get();
@@ -87,6 +100,12 @@ class setting extends Controller
      */
     public function update(Request $r, $id)
     {
+        if (Session::get('login')) {
+            
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
         $data = [
             'nama' => $r->nama_P,
             'id_jabatan' => $r->id_jabatan

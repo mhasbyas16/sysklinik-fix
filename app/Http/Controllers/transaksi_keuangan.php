@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\TransaksiKeuangan;
 use App\Pemasukan;
 use App\Pengeluaran;
 use DB;
+use Alert;
 
 class transaksi_keuangan extends Controller
 {
@@ -17,18 +19,24 @@ class transaksi_keuangan extends Controller
      */
     public function index()
     {
-        $pemasukan_kategori = TransaksiKeuangan::getEnumColumnValues('pemasukan', 'kategori');
-        $pengeluaran_kategori = TransaksiKeuangan::getEnumColumnValues('pengeluaran', 'kategori');
-        $pemasukan = Pemasukan::select('pemasukan.*', 'nama')->join('d_pegawai', 'pemasukan.id_pegawai', '=', 'd_pegawai.id_pegawai')->get();
-        $pengeluaran = Pengeluaran::select('pengeluaran.*', 'nama')->join('d_pegawai', 'pengeluaran.id_pegawai', '=', 'd_pegawai.id_pegawai')->get();
-        $karyawan = DB::table('h_pegawai')->select('d_pegawai.*')->join('d_pegawai', 'h_pegawai.id_pegawai', '=', 'd_pegawai.id_pegawai')->get();
-        return view('keuangan.transkeu', [
-            'kategori_pengeluaran' => $pengeluaran_kategori,
-            'kategori_pemasukan' => $pemasukan_kategori,
-            'pemasukan_list' => $pemasukan,
-            'pengeluaran_list' => $pengeluaran,
-            'karyawan' => $karyawan
-        ]);
+        if (Session::get('login')) {
+            
+            $pemasukan_kategori = TransaksiKeuangan::getEnumColumnValues('pemasukan', 'kategori');
+            $pengeluaran_kategori = TransaksiKeuangan::getEnumColumnValues('pengeluaran', 'kategori');
+            $pemasukan = Pemasukan::select('pemasukan.*', 'nama')->join('d_pegawai', 'pemasukan.id_pegawai', '=', 'd_pegawai.id_pegawai')->get();
+            $pengeluaran = Pengeluaran::select('pengeluaran.*', 'nama')->join('d_pegawai', 'pengeluaran.id_pegawai', '=', 'd_pegawai.id_pegawai')->get();
+            $karyawan = DB::table('h_pegawai')->select('d_pegawai.*')->join('d_pegawai', 'h_pegawai.id_pegawai', '=', 'd_pegawai.id_pegawai')->get();
+            return view('keuangan.transkeu', [
+                'kategori_pengeluaran' => $pengeluaran_kategori,
+                'kategori_pemasukan' => $pemasukan_kategori,
+                'pemasukan_list' => $pemasukan,
+                'pengeluaran_list' => $pengeluaran,
+                'karyawan' => $karyawan
+            ]);
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
     }
 
     /**
@@ -49,21 +57,27 @@ class transaksi_keuangan extends Controller
      */
     public function store(Request $r)
     {
-        $val = [
-            'id_pegawai' => $r->id_karyawan,
-            'tgl' => date('Y-m-d', strtotime($r->tanggal)),
-            'keterangan' => $r->keterangan,
-            'jumlah' => str_replace('.', '', $r->jumlah),
-            'kategori' => $r->kategori
-        ];
-        if($r->formName == 'pemasukan') {
-            pemasukan::insert($val);
-        }elseif($r->formName == 'pengeluaran') {
-            pengeluaran::insert($val);
+        if (Session::get('login')) {
+            
+            $val = [
+                'id_pegawai' => $r->id_karyawan,
+                'tgl' => date('Y-m-d', strtotime($r->tanggal)),
+                'keterangan' => $r->keterangan,
+                'jumlah' => str_replace('.', '', $r->jumlah),
+                'kategori' => $r->kategori
+            ];
+            if($r->formName == 'pemasukan') {
+                pemasukan::insert($val);
+            }elseif($r->formName == 'pengeluaran') {
+                pengeluaran::insert($val);
+            }
+            
+            Alert::success('Data berhasil ditambahkan')->autoclose(3500);
+            return redirect('transaksi_keuangan');
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
         }
-        
-        Alert::success('Data berhasil ditambahkan')->autoclose(3500);
-        return redirect('transaksi_keuangan');
     }
 
     /**
@@ -109,19 +123,25 @@ class transaksi_keuangan extends Controller
     public function destroy($id)
     {
 
+        if (Session::get('login')) {
+            
 
-        $pemasukan = Pemasukan::where('id_income', $id);
-        $getPemasukan = $pemasukan->first();
+            $pemasukan = Pemasukan::where('id_income', $id);
+            $getPemasukan = $pemasukan->first();
 
 
-        if (isset($getPemasukan->id_income)) {
-            $hapusPemasukkan = $pemasukan->delete();
+            if (isset($getPemasukan->id_income)) {
+                $hapusPemasukkan = $pemasukan->delete();
+            }else{
+                $pengeluaran = Pengeluaran::where('id_outcome', $id);
+                $hapusPengeluaran = $pengeluaran->delete();
+            }
+
+            Alert::success('Data berhasil dihapus')->autoclose(3500);
+            return redirect('transaksi_keuangan');
         }else{
-            $pengeluaran = Pengeluaran::where('id_outcome', $id);
-            $hapusPengeluaran = $pengeluaran->delete();
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
         }
-
-        Alert::success('Data berhasil dihapus')->autoclose(3500);
-        return redirect('transaksi_keuangan');
     }
 }

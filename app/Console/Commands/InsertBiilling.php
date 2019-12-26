@@ -52,16 +52,11 @@ class InsertBiilling extends Command
         $bill_header = DB::table('d_billing')->select('*')->get();
         foreach ($jadwal_header as $jh) {
             $id_bill = 'B'.date('YmdHis'); 
-            $h_pasien = DB::table('h_pasien')->select('h_pasien.keterangan', 'assessment.status_pasien', 'asses', 'evaluasi')->join('assessment', 'h_pasien.id_pasien', '=', 'assessment.id_pasien')->where('id_asses', $jh->id_asses)->first();
+            $h_pasien = DB::table('h_pasien')->select('h_pasien.keterangan', 'assessment.uang_pangkal', 'assessment.status_pasien', 'asses', 'evaluasi')->join('assessment', 'h_pasien.id_pasien', '=', 'assessment.id_pasien')->where('id_asses', $jh->id_asses)->first();
 
-            if ($h_pasien->status_pasien == "Asses") {
-                $uang_pangkal = 500000;
-            }else{
-                $uang_pangkal = 0;
-            }
 
             $bill_headerCount = DB::table('h_billing')->select('id_asses')->where('id_asses', $jh->id_asses)->count();
-            $ttl_tagihan = $uang_pangkal + $h_pasien->asses + $h_pasien->evaluasi;
+            $ttl_tagihan = $h_pasien->uang_pangkal + $h_pasien->asses + $h_pasien->evaluasi;
 
 
             if ($bill_headerCount < 1) {

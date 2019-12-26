@@ -23,7 +23,7 @@ class Controller extends BaseController
 
         $notif_rm = DB::table('h_rekam_medis')->where('status', 'Baru')->count();
 
-        $dataa = DB::select('select count(id_pasien) as Total, terapi as jenis_terapi from assessment right join d_pegawai on assessment.id_pegawai = d_pegawai.id_pegawai right join jenis_terapi on d_pegawai.id_terapi = jenis_terapi.id_terapi where assessment.status_pasien = "Pasien" group by d_pegawai.id_terapi');
+        $dataa = DB::select('select count(id_pasien) as Total, terapi as jenis_terapi from assessment right join terapi_pasien on assessment.id_asses = terapi_pasien.id_asses right join jenis_terapi on terapi_pasien.id_terapi = jenis_terapi.id_terapi where assessment.status_pasien = "Asses" group by terapi_pasien.id_terapi');
         
 
 $lava = new Lavacharts; // See note below for Laravel

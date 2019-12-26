@@ -45,7 +45,7 @@ class login extends Controller
         $cek_log = DB::table('h_pegawai')->select('h_pegawai.*', 'nama', 'jabatan')->where('h_pegawai.id_pegawai', $id_pegawai)->join('d_pegawai', 'h_pegawai.id_pegawai', '=', 'd_pegawai.id_pegawai')->join('jabatan', 'd_pegawai.id_jabatan', '=', 'jabatan.id_jabatan')->first();
 
         if (isset($cek_log)) {
-            if ($password == $cek_log->password) {
+            if ($password == $cek_log->password && $cek_log->hakakses == "admin") {
                 Session::put('id_pegawai',$cek_log->id_pegawai);
                 Session::put('uname',$cek_log->nama);
                 Session::put('jabatan',$cek_log->jabatan);
@@ -54,9 +54,12 @@ class login extends Controller
 
                 Alert::success('Selamat datang, '.$cek_log->nama.'!')->autoclose(3500);
                 return redirect('/');
+            }elseif ($cek_log->hakakses != "admin") {
+                Alert::warning('Anda tidak memiliki hak untuk mengakses halaman ini!')->autoclose(3500);
+                return redirect('/login');
             }else{
                 
-                Alert::error('Password yang anda masukkan salah!')->autoclose(3500);
+                Alert::warning('Password yang anda masukkan salah!')->autoclose(3500);
                 return redirect('/login');
             }
         }else{

@@ -16,7 +16,8 @@
         "uxweb/sweet-alert": "~1.4",
         "laravelcollective/html": "^5.4",
         "barryvdh/laravel-dompdf": "^0.8.3",
-        "spatie/browsershot": "3.26.0"
+        "spatie/browsershot": "3.26.0",
+        "khill/lavacharts": "3.0.*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

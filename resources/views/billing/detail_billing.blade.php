@@ -1,5 +1,6 @@
 @extends('template.style')
 @section('isi')
+@include('sweet::alert')
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -43,7 +44,7 @@
                     <td>{{ $d->id_bukti}}</td>
                     <td>{{ $d->tgl_bayar}}</td>
                     <td>{{ $d->jml_bayar }}</td>
-                    <td><a href="{{ url('billing/'.$d->id_bukti.'/edit') }}">{{ $d->validasi }}</a></td>
+                    <td><a href="{{ url('billing/'.$d->id_bukti.'/edit') }}" class="btn btn-warning">{{ $d->validasi }}</a></td>
                   </tr>
                 @endforeach
               </tbody>

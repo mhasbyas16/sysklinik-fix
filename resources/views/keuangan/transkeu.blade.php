@@ -1,5 +1,6 @@
 @extends('template.style')
 @section('isi')
+@include('sweet::alert')
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -104,7 +105,7 @@
                           <div class="form-group">
                             <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Keterangan</label>
                             <div class="col-sm-7">
-                              <textarea name="keterangan" id="keterangan" class="form-control" cols="30" rows="10"></textarea>
+                              <textarea name="keterangan" id="keterangan" class="form-control" cols="30" rows="10" required=""></textarea>
                             </div>
                           </div>
                         </div>
@@ -113,7 +114,7 @@
                       <div class="button">
                         <ul class="left" style="padding-left: 390pt ">
                           <button class="btn btn-success" href="#">Simpan</button>
-                          <button class="btn btn-secondary" href="#">Batal</button>
+                          <a class="btn btn-secondary" href="#" onclick="goBack()">Batal</a>
                         </ul>
                       </div>
                     </div>
@@ -157,7 +158,11 @@
                             <td>{{ $p->keterangan }}</td>
                             <td>{{ $p->tgl }}</td>
                             <td>
-                              
+                              <form action="{{ url('transaksi_keuangan/'.$p->id_income) }}" method="POST" style="padding:0px; margin:0px" class="col-md-3">
+                                  @method('DELETE')
+                                  @csrf
+                                  <input type="submit" style="padding:0px; margin:0px; border: 0px; background: none" value="Hapus" class="btn btn-danger btn-delete">
+                              </form>
                             </td>
                           </tr>
                         @endforeach
@@ -264,7 +269,7 @@
                       <div class="button">
                         <ul class="left" style="padding-left: 390pt ">
                           <button class="btn btn-success" href="#">Simpan</button>
-                          <button class="btn btn-secondary" href="#">Batal</button>
+                          <a class="btn btn-secondary" href="#" onclick="goBack()">Batal</a>
                         </ul>
                       </div>
                     </div>
@@ -308,7 +313,11 @@
                             <td>{{ $p->keterangan }}</td>
                             <td>{{ $p->tgl }}</td>
                             <td>
-                               
+                              <form action="{{ url('transaksi_keuangan/'.$p->id_outcome) }}" id="transaksi_keuangan" method="POST" style="padding:0px; margin:0px" class="col-md-3">
+                                  @method('DELETE')
+                                  @csrf
+                                  <input type="submit" value="Hapus" class="btn btn-delete btn-danger">
+                              </form>
                             </td>
                           </tr>
                         @endforeach
@@ -337,4 +346,15 @@
   </div>
   <!-- /.content -->
 </div>
+
+<script>
+  $('.btn-delete').click(function(e) {
+        return confirm("Are you sure?");
+});
+  
+function goBack() {
+  window.history.back();
+}
+</script>
+</script>
 @endsection

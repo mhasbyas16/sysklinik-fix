@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use DB;
 use PDF;
+use Alert;
 
 class detail_kwitansi extends Controller
 {
@@ -47,11 +49,17 @@ class detail_kwitansi extends Controller
      */
     public function show($id)
     {
-        $data = DB::table('kwitansi')->select('kwitansi.*', 'h_billing.id_bill', 'h_billing.sisa_tagihan', 'd_pasien.nama')->leftJoin('bukti_billing', 'kwitansi.id_bukti', '=', 'bukti_billing.id_bukti')->leftJoin('h_billing', 'bukti_billing.id_bill', '=', 'h_billing.id_bill')->join('assessment', 'h_billing.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'assessment.id_pasien', '=', 'd_pasien.id_pasien')->where('kwitansi.id_bukti', $id)->get();
+        if (Session::get('login')) {
+            
+            $data = DB::table('kwitansi')->select('kwitansi.*', 'h_billing.id_bill', 'h_billing.sisa_tagihan', 'd_pasien.nama')->leftJoin('bukti_billing', 'kwitansi.id_bukti', '=', 'bukti_billing.id_bukti')->leftJoin('h_billing', 'bukti_billing.id_bill', '=', 'h_billing.id_bill')->join('assessment', 'h_billing.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'assessment.id_pasien', '=', 'd_pasien.id_pasien')->where('kwitansi.id_bukti', $id)->get();
 
-        return view('billing.list_kwitansi', [
-            'kwitansi' => $data
-        ]);
+            return view('billing.list_kwitansi', [
+                'kwitansi' => $data
+            ]);
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
     }
 
     /**
@@ -62,17 +70,23 @@ class detail_kwitansi extends Controller
      */
     public function edit($id)
     {
-        $data = DB::table('kwitansi')->select('kwitansi.*', 'h_billing.id_bill', 'h_billing.sisa_tagihan', 'd_pasien.nama')->leftJoin('bukti_billing', 'kwitansi.id_bukti', '=', 'bukti_billing.id_bukti')->leftJoin('h_billing', 'bukti_billing.id_bill', '=', 'h_billing.id_bill')->join('assessment', 'h_billing.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'assessment.id_pasien', '=', 'd_pasien.id_pasien')->where('kwitansi.id_kwitansi', $id)->get();
+        if (Session::get('login')) {
+            
+            $data = DB::table('kwitansi')->select('kwitansi.*', 'h_billing.id_bill', 'h_billing.sisa_tagihan', 'd_pasien.nama')->leftJoin('bukti_billing', 'kwitansi.id_bukti', '=', 'bukti_billing.id_bukti')->leftJoin('h_billing', 'bukti_billing.id_bill', '=', 'h_billing.id_bill')->join('assessment', 'h_billing.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'assessment.id_pasien', '=', 'd_pasien.id_pasien')->where('kwitansi.id_kwitansi', $id)->get();
 
-        set_time_limit(300);
+            set_time_limit(300);
 
-        $pdf = PDF::loadView('billing.detail_kwitansi',[
-            'kwitansi' => $data
-        ]);
-        $pdf->setPaper('A5', 'landscape');
+            $pdf = PDF::loadView('billing.detail_kwitansi',[
+                'kwitansi' => $data
+            ]);
+            $pdf->setPaper('A5', 'landscape');
 
-        return $pdf->download('Bukti Pembayaran '.date('dmY').'.pdf');
+            return $pdf->download('Bukti Pembayaran '.date('dmY').'.pdf');
 
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            return redirect('/login');
+        }
 
     }
 

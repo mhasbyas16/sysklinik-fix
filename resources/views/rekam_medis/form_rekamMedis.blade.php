@@ -76,7 +76,7 @@
                 <div class="button">
                   <ul>
                     <button class="btn btn-success" href="#">Simpan</button>
-                    <button class="btn btn-danger" href="#">Batal</button>
+                    <a class="btn btn-danger" onclick="goBack()">Batal</a>
                   </ul>
                 </div>
                 <br>
@@ -92,4 +92,10 @@
     </div>
   </section>
 </div>
+<script>
+  
+function goBack() {
+  window.history.back();
+}
+</script>
 @endsection

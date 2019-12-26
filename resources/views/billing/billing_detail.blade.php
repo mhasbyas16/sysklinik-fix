@@ -112,4 +112,11 @@
   </section>
   <!-- End Main content -->
 </div>
+
+<script>
+  
+function goBack() {
+  window.history.back();
+}
+</script>
 @endsection

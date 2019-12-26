@@ -45,7 +45,19 @@
                       <td>{{ $d->id_bill }}</td>
                       <td>{{ $d->nama }}</td>
                       <td>{{ $d->tgl }}</td>
-                      <td><a href="{{ url('billing/'.$d->id_bill) }}">Detail Pembayaran</a> || <a href="{{ url('detail_billing/'.$d->id_bill) }}">Detail Billing</a></td>
+                      <td>
+                        <a href="{{ url('billing/'.$d->id_bill) }}" class="btn btn-primary">Detail Pembayaran 
+                          @php
+                            $bBukti = \App\BuktiBilling::where('status', 'Baru')->where('id_bill', $d->id_bill)->count();
+                          @endphp
+                          @if (isset($bBukti))
+                            @if ($bBukti > 0)
+                              <span class="badge bg-white text-black">{{ $bBukti }}</span>
+                            @endif
+                          @endif
+                        </a>  
+                        <a href="{{ url('detail_billing/'.$d->id_bill) }}" class="btn btn-success">Detail Billing</a>
+                      </td>
                     </tr>
                   @endforeach
                 </tbody>

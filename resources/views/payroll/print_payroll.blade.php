@@ -1,6 +1,8 @@
 
 @extends('template.style')
 @section('isi')
+@include('sweet::alert')
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
@@ -54,7 +56,7 @@
                     <table cellspacing="0" cellpadding="0" width="100%">
                       <tr style="text-align: center">
                         <td style="font-weight: bold; font-size: 18pt; padding-top:20px" colspan="2">
-                          Slip Gaji Karyawan
+                          Slip Gaji @if (substr($d->id_pegawai, 0, 1) == "T") Terapis @else Karyawan @endif
                         </td>
                       </tr>
                       <tr style="text-align: center">
@@ -88,152 +90,279 @@
                         <th width="50%"><h4>Penghasilan</h4></th>
                         <th width="50%" style="padding-left: 15px !important;"><h4>Pengeluaran</h4></th>
                       </tr>
-                      <tr>
-                        <td width="50%">
-                          <table cellspacing="0" cellpadding="0" style="width: 100% !important">
-                            <tr style="background: #c1c0c0cf !important">
-                              <th width="5%" align="left" style="padding: 5px 0%;">No.</th>
-                              <th width="74%" align="left">Keterangan</th>
-                              <th colspan="2" align="center">Jumlah</th>
-                            </tr>
-                            <tr>
-                              <td>1.</td>
-                              <td>Gaji Pokok</td>
-                              <td>Rp. </td>
-                              <td align="right">
-                                <input type="text" value="{{ $d->gaji }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important" disabled>
-                              </td>
-                            </tr>
-                            <tr style="background: #e8e8e8cf">
-                              <td>2.</td>
-                              <td>Insentives</td>
-                              <td>Rp. </td>
-                              <td align="right">
-                                <input type="text" value="{{ $d->insentif }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important" disabled>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>3.</td>
-                              <td>Assessment</td>
-                              <td>Rp. </td>
-                              <td align="right">
-                                <input type="text" value="{{ $d->asses }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important" disabled>
-                              </td>
-                            </tr>
-                            <tr style="background: #e8e8e8cf">
-                              <td>4.</td>
-                              <td>Evaluasi</td>
-                              <td>Rp. </td>
-                              <td align="right">
-                                <input type="text" value="{{ $d->evaluasi }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important" disabled>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>5.</td>
-                              <td>Observasi</td>
-                              <td>Rp. </td>
-                              <td align="right">
-                                <input type="text" value="{{ $d->observasi }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important" disabled>
-                              </td>
-                            </tr>
-                            <tr style="background: #e8e8e8cf">
-                              <td>7.</td>
-                              <td>Transport</td>
-                              <td>Rp. </td>
-                              <td align="right">
-                                <input type="text" value="{{ $d->transport }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important" disabled>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>8.</td>
-                              <td>Konsumsi</td>
-                              <td>Rp. </td>
-                              <td align="right">
-                                <input type="text" value="{{ $d->konsumsi }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important" disabled>
-                              </td>
-                            </tr>
-                            <tr style="background: #e8e8e8cf">
-                              <td>9.</td>
-                              <td>Bonus</td>
-                              <td>Rp. </td>
-                              <td align="right">
-                                <input type="text" value="{{ $d->bonus }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important" disabled>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                        <td width="50%" style="vertical-align: top">
-                          <table cellspacing="0" cellpadding="0" width="100%">
-                            <tr style="background: #c1c0c0cf !important">
-                              <th width="5%" align="left" style="padding: 5px 8px;">No.</th>
-                              <th style="width: 74% !important" align="left">Keterangan</th>
-                              <th colspan="2" align="center">Jumlah</th>
-                            </tr>
-                            <tr>
-                              <td style="padding: 0px 8px;">1.</td>
-                              <td>PPh 21</td>
-                              <td>Rp. </td>
-                              <td align="right" class="pengurang">
-                                <input type="text" value="{{ $d->pph }}" maxlength="8" style="text-align: right; border:none; font-size: 12pt; width:80px !important" name="pph21" class="var_kurang" onkeypress="return hanyaAngka(event)">
-                              </td>
-                            </tr>
-                            <tr style="background: #e8e8e8cf">
-                              <td style="padding: 0px 8px;">2.</td>
-                              <td>Asuransi</td>
-                              <td>Rp. </td>
-                              <td align="right" class="pengurang">
-                                <input type="text" value="{{ $d->asuransi }}" maxlength="8" style="text-align: right; border:none; font-size: 12pt; background: none; width:80px !important" name="asuransi" class="var_kurang" onkeypress="return hanyaAngka(event)">
-                              </td>
-                            </tr>
-                            <tr>
-                              <td style="padding: 0px 8px;">3.</td>
-                              <td>Lain-lain</td>
-                              <td>Rp. </td>
-                              <td align="right" class="pengurang">
-                                <input type="text" value="{{ $d->lainnya }}" maxlength="8" style="text-align: right; border:none; font-size: 12pt; width:80px !important" name="lainnya" class="var_kurang" onkeypress="return hanyaAngka(event)">
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
+                      @if (substr($d->id_pegawai, 0, 1) == "T")
+                        <tr>
+                          <td width="50%" style="vertical-align: top !important">
+                            <table cellspacing="0" cellpadding="0" style="width: 100% !important; vertical-align: top !important">
+                              <tr style="background: #c1c0c0cf !important">
+                                <th width="5%" align="left" style="padding: 5px 0%;">No.</th>
+                                <th width="74%" align="left">Keterangan</th>
+                                <th colspan="2" align="center">Jumlah</th>
+                              </tr>
+                              <tr>
+                                <td>1.</td>
+                                <td>Gaji Pokok</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" onkeypress="return hanyaAngka(event)" name="gaji" value="{{ $d->gaji }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr style="background: #e8e8e8cf">
+                                <td>2.</td>
+                                <td>Insentives</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" onkeypress="return hanyaAngka(event)" name="insentif" value="{{ $d->insentif }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>3.</td>
+                                <td>Assessment</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" onkeypress="return hanyaAngka(event)" name="asses" value="{{ $d->asses }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr style="background: #e8e8e8cf">
+                                <td>4.</td>
+                                <td>Evaluasi</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" onkeypress="return hanyaAngka(event)" name="evaluasi" value="{{ $d->evaluasi }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>5.</td>
+                                <td>Assess/Eval Disc</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" onkeypress="return hanyaAngka(event)" name="eval_disc" value="0" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr style="background: #e8e8e8cf">
+                                <td>6.</td>
+                                <td>Transport</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" onkeypress="return hanyaAngka(event)" name="transport" value="{{ $d->transport }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr style="background: #e8e8e8cf">
+                                <td>7.</td>
+                                <td>Bonus/THR/dll</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" onkeypress="return hanyaAngka(event)" name="bonus" value="{{ $d->bonus }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td width="50%" style="vertical-align: top">
+                            <table cellspacing="0" cellpadding="0" width="100%">
+                              <tr style="background: #c1c0c0cf !important">
+                                <th width="5%" align="left" style="padding: 5px 8px;">No.</th>
+                                <th style="width: 74% !important" align="left">Keterangan</th>
+                                <th colspan="2" align="center">Jumlah</th>
+                              </tr>
+                              <tr>
+                                <td style="padding: 0px 8px;">1.</td>
+                                <td>PPh 21</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" value="{{ $d->pph }}" style="text-align: right; border:none; font-size: 12pt; width:80px !important" name="pph" maxlength="8" class="var_kurang" onkeypress="return hanyaAngka(event)">
+                                </td>
+                              </tr>
+                              <tr style="background: #e8e8e8cf">
+                                <td style="padding: 0px 8px;">2.</td>
+                                <td>Asuransi</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" value="{{ $d->asuransi }}" maxlength="8" style="text-align: right; border:none; font-size: 12pt; background: none; width:80px !important" name="asuransi" class="var_kurang" onkeypress="return hanyaAngka(event)">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="padding: 0px 8px;">3.</td>
+                                <td>Lain-lain</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" value="{{ $d->lainnya }}" maxlength="8" style="text-align: right; border:none; font-size: 12pt; width:80px !important" name="lainnya" class="var_kurang" onkeypress="return hanyaAngka(event)">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      @elseif (substr($d->id_pegawai, 0, 1) != "T")
+                        <tr>
+                          <td width="50%">
+                            <table cellspacing="0" cellpadding="0" style="width: 100% !important">
+                              <tr style="background: #c1c0c0cf !important">
+                                <th width="5%" align="left" style="padding: 5px 0%;">No.</th>
+                                <th width="74%" align="left">Keterangan</th>
+                                <th colspan="2" align="center">Jumlah</th>
+                              </tr>
+                              <tr>
+                                <td>1.</td>
+                                <td>Gaji Pokok</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" name="gaji" value="{{ $d->gaji }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr style="background: #e8e8e8cf">
+                                <td>2.</td>
+                                <td>Insentives</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" name="insentif" value="{{ $d->insentif }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>3.</td>
+                                <td>Overtime</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" name="overtime" value="0" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr style="background: #e8e8e8cf">
+                                <td>4.</td>
+                                <td>Overtime Sabtu</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" name="overtime_sabtu" value="0" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>5.</td>
+                                <td>Tunjangan Jabatan</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" name="jabatan" value="0" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr style="background: #e8e8e8cf">
+                                <td>7.</td>
+                                <td>Tunjangan Tempat Tinggal</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" name="tempat_tinggal" value="0" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>8.</td>
+                                <td>Transport</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" name="transport" value="{{ $d->transport }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                              <tr style="background: #e8e8e8cf">
+                                <td>9.</td>
+                                <td>Bonus/THR/dll</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" maxlength="8" class="var_tambah" name="bonus" value="{{ $d->bonus }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:80px !important">
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td width="50%" style="vertical-align: top">
+                            <table cellspacing="0" cellpadding="0" width="100%">
+                              <tr style="background: #c1c0c0cf !important">
+                                <th width="5%" align="left" style="padding: 5px 8px;">No.</th>
+                                <th style="width: 74% !important" align="left">Keterangan</th>
+                                <th colspan="2" align="center">Jumlah</th>
+                              </tr>
+                              <tr>
+                                <td style="padding: 0px 8px;">1.</td>
+                                <td>PPh 21</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" value="{{ $d->pph }}" maxlength="8" style="text-align: right; border:none; font-size: 12pt; width:80px !important" name="pph" class="var_kurang" onkeypress="return hanyaAngka(event)">
+                                </td>
+                              </tr>
+                              <tr style="background: #e8e8e8cf">
+                                <td style="padding: 0px 8px;">2.</td>
+                                <td>Asuransi</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" value="{{ $d->asuransi }}" maxlength="8" style="text-align: right; border:none; font-size: 12pt; background: none; width:80px !important" name="asuransi" class="var_kurang" onkeypress="return hanyaAngka(event)">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="padding: 0px 8px;">3.</td>
+                                <td>Lain-lain</td>
+                                <td>Rp. </td>
+                                <td align="right" class="var">
+                                  <input type="text" value="{{ $d->lainnya }}" maxlength="8" style="text-align: right; border:none; font-size: 12pt; width:80px !important" name="lainnya" class="var_kurang" onkeypress="return hanyaAngka(event)">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      @endif
                       <tr>
                         <td width="50%">
                           <table cellspacing="0" cellpadding="0" width="100%">
                             <tr>
                               <td style="padding: 10px 0px 5px 0px; font-weight: bold" colspan="2" width="79%">Total Pemasukkan</td>
                               <td>Rp. </td>
-                              <td align="right" class="pengurang">
-                                <input type="text" value="{{ $d->gaji_kotor }}" name="ttl_pemasukkan" id="total_pemasukkan" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:83px !important" class="" disabled>
+                              <td align="right" class="var">
+                                <input type="text" value="{{ $d->gaji_kotor }}" name="gaji_kotor" id="total_pemasukkan" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:83px !important" class="">
                               </td>
                             </tr>
                           </table>
@@ -243,8 +372,8 @@
                             <tr>
                               <td style="padding: 10px 0px 5px 10px; font-weight: bold" colspan="2" width="80%">Total Pengeluaran</td>
                               <td>Rp. </td>
-                              <td align="right" class="pengurang">
-                                <input type="text" value="{{ $d->total_pengeluaran }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:82px !important" name="ttl_pengeluaran" id="total_pengeluaran" class="tk " disabled>
+                              <td align="right" class="var">
+                                <input type="text" value="{{ $d->total_pengeluaran }}" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:82px !important" name="ttl_pengeluaran" id="total_pengeluaran" class="tk">
                               </td>
                             </tr>
                           </table>
@@ -257,7 +386,7 @@
                               <td style="padding: 10px 0px; font-weight: bold" width="90%">Gaji Bersih</td>
                               <td>Rp. </td>
                               <td align="right">
-                                <input type="text" name="total" id="gaji_bersih" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:83px !important" value="{{ $d->gaji_bersih }}" disabled>
+                                <input type="text" name="gaji_bersih" id="gaji_bersih" style="text-align: right; border:none; font-size: 12pt; background: none; color: black; width:83px !important" value="{{ $d->gaji_bersih }}">
                               </td>
                             </tr>
                           </table>
@@ -300,9 +429,9 @@
       return true;
     }
 
-    $('.pengurang').on('input', '.var_kurang', function(){
+    $('.var').on('input', '.var_kurang', function(){
         var total_min = 0;
-        $('.pengurang .var_kurang').each(function(){
+        $('.var .var_kurang').each(function(){
             var input_val2 = $(this).val();
             if ($.isNumeric(input_val2)) {
                 total_min += parseFloat(input_val2);
@@ -311,14 +440,20 @@
         $('#total_pengeluaran').val(total_min);
     });
 
-    $('.pengurang').on('input', function(){
-      const formatter = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0  
-      })
+    $('.var').on('input', '.var_tambah', function(){
+        var total_in = 0;
+        $('.var .var_tambah').each(function(){
+            var input_val2 = $(this).val();
+            if ($.isNumeric(input_val2)) {
+                total_in += parseFloat(input_val2);
+            }
+        });
+        $('#total_pemasukkan').val(total_in);
+    });
 
-
+    $('.var').on('input', function(){
         var total = 0;
-        $('.pengurang').each(function(){
+        $('.var').each(function(){
             var input_vall = $('#total_pemasukkan').val();
             var input_val2 = $('#total_pengeluaran').val();
             var input_val = input_vall.replace(/,/gi, "");

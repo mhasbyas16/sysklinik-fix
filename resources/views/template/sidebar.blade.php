@@ -40,13 +40,34 @@
         </a>
         <ul class="treeview-menu">
           <li class="{{Request::is('register-list','register-list/*')?'active':''}}">
-            <a href="{{url('/register-list')}}"><i class="fa fa-circle-o"></i> Register List</a></li>
+            <a href="{{url('/register-list')}}"><i class="fa fa-circle-o"></i> Register List
+              @php
+                $h_regist = \DB::table('assessment')->where('status', 'Baru')->count();
+              @endphp
+              @if (isset($h_regist))
+                @if ($h_regist > 0)
+                  <span class="badge bg-red">New</span>
+                @endif
+              @endif</a>
+            </a>
+          </li>
           <li class="{{Request::is('absensi','absensi/*')?'active':''}}">
-            <a href="{{url('/absensi')}}"><i class="fa fa-circle-o"></i> Absensi</a></li>
+            <a href="{{url('/absensi')}}"><i class="fa fa-circle-o"></i> Absensi</a>
+          </li>
           <li class="{{Request::is('jadwal-terapi')?'active':''}}">
-            <a href="{{url('/jadwal-terapi')}}"><i class="fa fa-circle-o"></i> Jadwal Terapi</a></li>
+            <a href="{{url('/jadwal-terapi')}}"><i class="fa fa-circle-o"></i> Jadwal Terapi</a>
+          </li>
           <li class="{{Request::is('jadwal-evaluasi','jadwal-evaluasi/*')?'active':''}}">
-            <a href="{{url('/jadwal-evaluasi')}}"><i class="fa fa-circle-o"></i> Jadwal Evaluasi</a></li>
+            <a href="{{url('/jadwal-evaluasi')}}"><i class="fa fa-circle-o"></i> Jadwal Evaluasi 
+            @php
+              $h_jadwal = \DB::table('jadwal_terapis')->where('status', 'Baru')->count();
+            @endphp
+            @if (isset($h_jadwal))
+              @if ($h_jadwal > 0)
+                <span class="badge bg-red">New</span>
+              @endif
+            @endif</a>
+          </li>
         </ul>
       </li>
       <li class="treeview {{Request::is('karyawan','karyawan/*','data-terapis','data-terapi','data-pasien')?'active':''}}">
@@ -71,11 +92,27 @@
       <li class="{{Request::is('billing')?'active':''}}">
           <a href="{{url('/billing')}}">
             <i class="glyphicon glyphicon-list-alt"></i> <span>Billing</span>
+            @php
+              $h_bill = \App\Bill::where('status', 'Baru')->count();
+            @endphp
+            @if (isset($h_bill))
+              @if ($h_bill > 0)
+                <span class="badge bg-red">New</span>
+              @endif
+            @endif
           </a>
       </li>
       <li class="{{Request::is('rekam_medis')?'active':''}}">
           <a href="{{url('/rekam_medis')}}">
             <i class="fa fa-plus-square"></i> <span>Rekam medis</span>
+            @php
+              $h_rm = \App\RekamMedis::where('status', 'Baru')->count();
+            @endphp
+            @if (isset($h_rm))
+              @if ($h_rm > 0)
+                <span class="badge bg-red">New</span>
+              @endif
+            @endif
           </a>
       </li>
       <li class="treeview {{Request::is('transaksi_keuangan','laporan_keuangan')?'active':''}}">

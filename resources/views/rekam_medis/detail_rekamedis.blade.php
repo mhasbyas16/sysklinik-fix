@@ -86,7 +86,7 @@
               <div class="button">
                 <ul>
                   <button class="btn btn-success" href="#">Simpan</button>
-                  <button class="btn btn-danger" href="#">Batal</button>
+                  <a class="btn btn-danger" onclick="goBack()">Batal</a>
                 </ul>
               </div>
               <br>
@@ -130,11 +130,11 @@
                     <td>{{ $detail->keterangan }}</td>
                     <td>{{ $detail->tgl }}</td>
                     <td>
-                      <form action="{{ url('detail_rekam_medis/'.$detail->id_sesirm) }}" method="POST" style="padding:0px; margin:0px" class="col-md-3">
+                      <form action="{{ url('detail_rekam_medis/'.$detail->id_sesirm) }}" id="rekam_medis" method="POST" style="padding:0px; margin:0px" class="col-md-3">
                           @method('DELETE')
                           @csrf
                           <input type="hidden" name="id_rm" value="{{ $detail->id_rm }}">
-                          <input type="submit" style="padding:0px; margin:0px; border: 0px; background: none" value="Hapus" class="btn-link">
+                          <input type="submit" value="Hapus" class="btn btn-danger btn-delete">
                       </form>
                     </td>
                   </tr>
@@ -158,4 +158,16 @@
   </section>
   <!-- End Main content -->
 </div>
+
+<script>
+  
+  $('.btn-delete').click(function(e) {
+        return confirm("Are you sure?");
+});
+
+  
+function goBack() {
+  window.history.back();
+}
+</script>
 @endsection

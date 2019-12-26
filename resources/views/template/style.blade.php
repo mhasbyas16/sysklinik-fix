@@ -1,3 +1,6 @@
+@if (!Session::has('id_pegawai'))
+<script>window.location = "{{url('/login')}}";</script>
+@endif
 <!DOCTYPE html>
 <html>
 <head>

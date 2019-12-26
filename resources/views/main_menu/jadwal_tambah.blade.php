@@ -19,8 +19,9 @@
           <!-- jQuery Knob -->
           <div class = "box box-solid">
             <!-- /.box-header -->
-            <form method = ""  action="" enctype="multipart/form-data" class="form-horizontal">
-            <div class = "box-body">
+            <form method = "post"  action="{{url('/tambah_jadwal/store')}}" enctype="multipart/form-data" class="form-horizontal">
+            {{ csrf_field() }}
+              <div class = "box-body">
               @if(\Session::has('alert'))
               <div class = "alert alert-danger alert-dismissible">
                 <button type = "button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>

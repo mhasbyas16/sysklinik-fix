@@ -32,6 +32,37 @@ class mainmenuController extends Controller
     ]);
   }
 
+  public function tambah_jadwal_store(Request $req){
+    $id_pasien = $req->pasien;
+    $Jterapi = $req->Jterapi;
+    $tgl = $req->tgl;
+    $jam_masuk = $req->jam_masuk;
+    $jam_keluar = $req->jam_keluar;
+    $terapis = $req->terapis;
+    $biaya = $req->biaya;
+
+    $in=[
+      'id_pegawai'=>$terapis,
+      'id_asses'=>$id_pasien,
+      'id_terapipasien'=>$Jterapi,
+      'tgl'=>$tgl,
+      'jam_masuk'=>$jam_masuk,
+      'jam_keluar'=>$jam_keluar,
+      'keterangan'=>'Terapi',
+      'biaya'=>$biaya,
+      'status_pasien'=>'Alpha',
+      'status_terapis'=>'Alpha',
+      'status'=>'Baru'
+    ];
+    $isi=DB::table('jadwal_terapis')->insert($in);
+    if ($isi) {
+      return redirect('/jadwal-terapi');
+    }else{
+      return redirect()->back()->with('alert','gagal menyimpan data');
+    }
+
+  }
+
   public function jterapiPasien(Request $req){
     $id=$req->id_asses;
     $j_terapi=DB::table('terapi_pasien')

@@ -243,6 +243,7 @@ class datamasterController extends Controller
       'Hindu',
       'Buddha'
     ];
+
     $j_terapi=DB::table('jenis_terapi')->get();
     $jabatan=DB::table('jabatan')->get();
     if ($kt=='terapis') {
@@ -250,11 +251,13 @@ class datamasterController extends Controller
     }elseif ($kt=='karyawan') {
       $id='K'.$date.$random;
     }
+    $data=$jabatan->first();
     return view('data_master.pegawai_data',[
       'id'=>$id,
       'agama'=>$agama,
       'j_terapi'=>$j_terapi,
-      'jabatan'=>$jabatan
+      'jabatan'=>$jabatan,
+      'data'=>$data
     ]);
   }
 
@@ -304,6 +307,7 @@ class datamasterController extends Controller
     $j_terapi=$req->j_terapi;
     $alamat=$req->alamat;
     $no_tlp=$req->no_tlp;
+    $email=$req->email;
     $hakakses=$req->hakakses;
     //Foto
     if ($req->file('foto')=='') {
@@ -362,6 +366,7 @@ class datamasterController extends Controller
       'alamat'=>$alamat,
       'tlp'=>$no_tlp,
       'pend_akhir'=>$pend_akhir,
+      'email'=>$email,
       'foto'=>$Nfoto,
       'tgl_masuk'=>$tanggal_masuk,
       'gaji'=>$gaji,

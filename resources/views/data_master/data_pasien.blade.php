@@ -26,19 +26,19 @@
                   <div class="box box-solid">
 
                                         <!-- begin data alat-->
-                                        <form class="form-horizontal" method="post" action="{{url('data-pasien/update')}}" enctype="multipart/form-data">
-                                          {{csrf_field()}}
-                                        <div class="box-body">
-                                          <div class="row">
-                                            <div class="col-xs-7 col-md-12 text-left">
-                                                <div class="form-group">
-                                                  <label class="col-sm-12"><h3>Data Pasien</h3><hr></label>
-                                                </div>
-                                            </div>
-                                          </div>
+                    <form class="form-horizontal" method="post" action="{{url('data-pasien/update')}}" enctype="multipart/form-data">
+                      {{csrf_field()}}
+                      <div class="box-body">
+                        <div class="row">
+                          <div class="col-xs-7 col-md-12 text-left">
+                              <div class="form-group">
+                                <label class="col-sm-12"><h3>Data Pasien</h3><hr></label>
+                              </div>
+                          </div>
+                        </div>
 
 
-                                          <input type="hidden" class="form-control" name="id_pasien" value="{{$data->id_pasien}}">
+                        <input type="hidden" class="form-control" name="id_pasien" value="{{$data->id_pasien}}">
 
                                           <div class="row">
                                             <div class="col-xs-7 col-md-8 text-center">
@@ -161,6 +161,7 @@
                                                 </div>
                                             </div>
                                           </div>
+
                                           <!-- /.row -->
                                           <div class="row">
                                             <div class="col-xs-7 col-md-8 text-center">
@@ -198,15 +199,15 @@
                                           </div>
                                           <!-- end data pasien-->
 
-                                                <div class="box-body">
-                                                  <div class="row">
+                                              <div class="box-body">
+                                                <div class="row">
                                                   <div class="col-xs-7 col-md-12 text-left">
                                                       <div class="form-group">
                                                         <label class="col-sm-12"><h3>Data Orangtua - Ayah</h3><hr></label>
                                                       </div>
                                                   </div>
                                                   <!-- ./col -->
-                                                  </div>
+                                                </div>
 
                                                   <div class="row">
                                                     <div class="col-xs-7 col-md-6 text-center">
@@ -505,7 +506,7 @@
                                             <div class="button">
                                                 <ul style="padding-left: 680pt ">
                                                   <button type="submit" class="btn btn-success">Simpan</button>
-                                                  <a href="#"><div class="btn btn-danger">Batal</div></a>
+                                                  <a href="{{url('/data-pasien')}}"><div class="btn btn-danger">Batal</div></a>
                                                 </ul>
                                             </div>
                                         <br>

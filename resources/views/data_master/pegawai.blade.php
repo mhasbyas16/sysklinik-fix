@@ -49,7 +49,7 @@
                           <th>ID Karyawan</th>
                           <th>Nama</th>
                           <th>Jabatan</th>
-                          <th>Alamat</th>
+                          <th>E-mail</th>
                           <th>Aksi</th>
                         </tr>
                         </thead>
@@ -59,7 +59,7 @@
                           <td>{{$data->id_pegawai}}</td>
                           <td>{{$data->nama}}</td>
                           <td>{{$data->jabatan}}</td>
-                          <td>{{$data->alamat}}</td>
+                          <td>{{$data->email}}</td>
                           <td><div class="btn-group">
                               <a href="{{url('/karyawan/edit-data')}}/{{$data->id_pegawai}}">
                                 <button type="button" class="btn btn-success">Edit</button></a>
@@ -95,6 +95,7 @@ No Telepon    : {{$data->tlp}}
 Alamat        : {{$data->alamat}}
 Pend Terakhir : {{$data->pend_akhir}}
 Tanggal Masuk : {{$data->tgl_masuk}}
+email         : {{$data->email}}
 NO. BPJS      : {{$data->bpjs}}
 NO. NPWP      : {{$data->npwp}}
                                   </pre>

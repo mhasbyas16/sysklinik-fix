@@ -39,7 +39,7 @@
                       <div class="col-xs-7 col-md-12 text-left">
                           <div class="form-group">
                             <div class="box-tools pull-right">
-                              <a href="{{url('/register-list')}}"<button type="button" class="btn btn-box-tool"><i class="fa fa-times"></i></button>
+                              <a href="{{url('/register-list')}}" button type="button" class="btn btn-box-tool"><i class="fa fa-times"></i></button>
                             </button></a>
                             &nbsp;&nbsp;&nbsp;
                             </div>
@@ -157,9 +157,9 @@
                 <!-- ./col -->
                 <div class="col-xs-7 col-md-4 text-center">
                     <div class="form-group">
-                      <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt">Agama</label>
+                      <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Agama</label>
 
-                      <div class="col-sm-9" style="padding-left: 30pt">
+                      <div class="col-sm-6">
                           <select class="form-control select2" style="width: 100%;" name="agama" value=" ">
                             <option value="{{$data->agama}}" hidden>{{$data->agama}}</option>
                             @foreach($agama as $isi)
@@ -170,7 +170,7 @@
                     </div>
                 </div>
               </div>
-              <!-- /.row -->
+
               <div class="row">
                 <div class="col-xs-7 col-md-8 text-center">
                     <div class="form-group">
@@ -182,6 +182,46 @@
                     </div>
                 </div>
               </div>
+
+              <div class="row col-md-12">
+                <div class="col-xs-1 col-md-1 text-left">
+                      <div class="form-group">
+                        <label class="col-sm-1" style="text-align: left;">Besar Nominal:</label>
+                      </div>
+                </div>
+              
+                <div class="col-xs-4 col-md-4 text-left">
+                      <div class="form-group">
+                        <label class="col-sm-5 control-label">Uang Pangkal</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="b_pangkal" required="">
+                        </div>
+                      </div>
+                </div>
+
+                <div class="col-xs-4 col-md-4 text-left">
+                      <div class="form-group">
+                        <label class="col-sm-5 control-label">Assessment</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="b_asses" required="">
+                        </div>
+                      </div>
+                </div>
+
+                <div class="col-xs-3 col-md-3 text-left">
+                      <div class="form-group">
+                        <label class="col-sm-5 control-label">Evaluasi</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="b_eval" required="">
+                        </div>
+                      </div>
+                </div>
+              </div>
+              
+
               <div class="row">
                 <div class="col-xs-7 col-md-5 text-center">
                     <div class="form-group">
@@ -507,7 +547,7 @@
                 <div class="button">
                     <ul style="padding-left: 680pt ">
                       <button type="submit" class="btn btn-success">Simpan</button>
-                      <a href="{{url('/register-list')}}"><div class="btn btn-danger">Batal</div></a>
+                      <a href="{{url('/data-pasien')}}"><div class="btn btn-danger">Batal</div></a>
                     </ul>
                 </div>
             <br>

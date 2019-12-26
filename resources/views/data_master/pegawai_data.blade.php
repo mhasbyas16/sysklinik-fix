@@ -243,6 +243,15 @@
                           </div>
                         </div>
                     </div>
+                    <div class="col-xs-7 col-md-6 text-center">
+                        <div class="form-group">
+                          <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">E-mail</label>
+
+                          <div class="col-sm-6">
+                            <input type="text" class="form-control" name="email" maxlength="13" value="{{Request::is('karyawan/tambah-data/*')?'-':$data->email}}">
+                          </div>
+                        </div>
+                    </div>
                   </div>
 
                     <div class="row">
@@ -286,7 +295,7 @@
                             <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Rp.</label>&nbsp;
                           </div>
                           <div class="col-sm-5">
-                            <input type="text" class="form-control" id="gaji" maxlength="15" name="gaji" value="{{Request::is('karyawan/tambah-data/*')?'':$data->gaji}}" required>
+                            <input type="text" class="form-control" id="gaji" maxlength="15" name="gaji" value="{{Request::is('karyawan/tambah-data/*')?'0':$data->gaji}}" required>
                           </div>
                         </div>
                     </div>
@@ -300,7 +309,7 @@
                             <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Rp.</label>&nbsp;
                           </div>
                           <div class="col-sm-5">
-                            <input type="text" class="form-control" maxlength="15" name="observasi" id='observasi' value="{{Request::is('karyawan/tambah-data/*')?'':$data->observasi}}" required>
+                            <input type="text" class="form-control" maxlength="15" name="observasi" id='observasi' value="{{Request::is('karyawan/tambah-data/*')?'0':$data->observasi}}" required>
                           </div>
                         </div>
                     </div>
@@ -312,7 +321,7 @@
                             <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Rp.</label>&nbsp;
                           </div>
                           <div class="col-sm-5">
-                            <input type="text" class="form-control" name="Asses" maxlength="15" id="asses" value="{{Request::is('karyawan/tambah-data/*')?'':$data->asses}}" required>
+                            <input type="text" class="form-control" name="Asses" maxlength="15" id="asses" value="{{Request::is('karyawan/tambah-data/*')?'0':$data->asses}}" required>
                           </div>
                         </div>
                     </div>
@@ -326,7 +335,7 @@
                             <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Rp.</label>&nbsp;
                           </div>
                           <div class="col-sm-5">
-                            <input type="text" class="form-control" maxlength="15" name="konsumsi" id="konsumsi" value="{{Request::is('karyawan/tambah-data/*')?'':$data->konsumsi}}" required>
+                            <input type="text" class="form-control" maxlength="15" name="konsumsi" id="konsumsi" value="{{Request::is('karyawan/tambah-data/*')?'0':$data->konsumsi}}" required>
                           </div>
                         </div>
                     </div>
@@ -338,7 +347,7 @@
                             <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Rp.</label>&nbsp;
                           </div>
                           <div class="col-sm-5">
-                            <input type="text" class="form-control" maxlength="15" name="transport" id="transport" value="{{Request::is('karyawan/tambah-data/*')?'':$data->transport}}" required>
+                            <input type="text" class="form-control" maxlength="15" name="transport" id="transport" value="{{Request::is('karyawan/tambah-data/*')?'0':$data->transport}}" required>
                           </div>
                         </div>
                     </div>
@@ -352,7 +361,7 @@
                             <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Rp.</label>&nbsp;
                           </div>
                           <div class="col-sm-5">
-                            <input type="text" class="form-control" maxlength="15" name="bonus" id="bonus" value="{{Request::is('karyawan/tambah-data/*')?'':$data->bonus}}" required>
+                            <input type="text" class="form-control" maxlength="15" name="bonus" id="bonus" value="{{Request::is('karyawan/tambah-data/*')?'0':$data->bonus}}" required>
                           </div>
                         </div>
                     </div>
@@ -364,7 +373,7 @@
                             <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Rp.</label>&nbsp;
                           </div>
                           <div class="col-sm-5">
-                            <input type="text" class="form-control" maxlength="15" id="lembur" name="lembur" value="{{Request::is('karyawan/tambah-data/*')?'':$data->lembur}}" required>
+                            <input type="text" class="form-control" maxlength="15" id="lembur" name="lembur" value="{{Request::is('karyawan/tambah-data/*')?'0':$data->lembur}}" required>
                           </div>
                         </div>
                     </div>
@@ -374,7 +383,11 @@
                     <div class="button">
                         <ul style="padding-left: 680pt ">
                           <button class="btn btn-success" href="#">Simpan</button>
+                          @if($data->jabatan=="Terapis")
+                          <a href="{{url('/data-terapis')}}" onclick="return confirm('Apakah anda yakin meninggalkan halaman ini?')"><div class="btn btn-danger">Batal</div></a>
+                          @else
                           <a href="{{url('/karyawan')}}" onclick="return confirm('Apakah anda yakin meninggalkan halaman ini?')"><div class="btn btn-danger">Batal</div></a>
+                          @endif
                         </ul>
                     </div>
                     <br>

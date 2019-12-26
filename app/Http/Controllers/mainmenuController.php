@@ -261,6 +261,9 @@ public function jadwalevaluasifilter(Request $req){
     $tanggal_daftar=$req->tanggal_daftar;
     $agama=$req->agama;
     $keluhan=$req->keluhan;
+    $uang_pangkal=$req->b_pangkal;
+    $uang_asses=$req->b_asses;
+    $uang_eval=$req->b_eval;
     //foto
     if ($req->file('foto')=='') {
       $Nfoto=$id_pasien;
@@ -314,7 +317,11 @@ public function jadwalevaluasifilter(Request $req){
       'id_pegawai'=>$assesor,
       'tgl_mulai_terapi'=>$tgl_mulai_terapi,
       'tgl_selesai_terapi'=>$tgl_selesai_terapi,
-      'status_pasien'=>$status];
+      'status_pasien'=>$status,
+      'evaluasi'=>$uang_eval,
+      'asses'=>$uang_asses,
+      'uang_pangkal'=>$uang_pangkal
+    ];
     $data_DP=[
       'nama'=>$nama_P,
       'tempat_lahir'=>$tempat_lahir,

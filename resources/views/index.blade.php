@@ -66,7 +66,7 @@
             <div class="inner">
               <h3 value="{{$jenis}}">{{$jenis}}</h3>
 
-              <p><a href="{{url('data_terapi')}}" style="color: white">Total Jenis Terapi</a></p>
+              <p><a href="{{url('data-terapi')}}" style="color: white">Total Jenis Terapi</a></p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>

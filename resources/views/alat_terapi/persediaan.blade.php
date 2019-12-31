@@ -40,6 +40,7 @@
               <table id="pegawais" class="table table-bordered table-striped text-center">
                 <thead>
                 <tr>
+                  <th>No</th>
                   <th>ID Barang</th>
                   <th>Nama Barang</th>
                   <th>Stok Awal</th>
@@ -48,17 +49,25 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($at as $x)
+                  @php
+                    $no=1;
+                  @endphp
+                  @foreach($at as $x)
                 <tr>
+                  <td>{{$no}}</td>
                   <td>{{$x->id_barang}}</td>
                   <td>{{$x->nama_barang}}</td>
                   <td>{{$x->stok_awal}}</td>
                   <td>{{$x->stok}}</td>
                 </tr>
-                @endforeach
+                  @php
+                    $no++;
+                  @endphp
+                  @endforeach
                 </tbody>
                 <tfoot>
                 <tr>
+                  <th>No</th>
                   <th>ID Barang</th>
                   <th>Nama Barang</th>
                   <th>Stok Awal</th>

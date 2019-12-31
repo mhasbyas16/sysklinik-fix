@@ -15,17 +15,11 @@
       </ol>
       -->
     </section>
-
     <!-- Main content -->
-    <section class="content">
-
-              <!-- row -->
+          <section class="content">
               <div class="row">
                 <div class="col-xs-12">
-                  <!-- jQuery Knob -->
                   <div class="box box-solid">
-
-                                        <!-- begin data alat-->
                     <form class="form-horizontal" method="post" action="{{url('data-pasien/update')}}" enctype="multipart/form-data">
                       {{csrf_field()}}
                       <div class="box-body">
@@ -36,9 +30,7 @@
                               </div>
                           </div>
                         </div>
-
-
-                        <input type="hidden" class="form-control" name="id_pasien" value="{{$data->id_pasien}}">
+                                          <input type="hidden" class="form-control" name="id_pasien" value="{{$data->id_pasien}}">
 
                                           <div class="row">
                                             <div class="col-xs-7 col-md-8 text-center">
@@ -66,7 +58,6 @@
                                             </div>
                                             <!-- ./col -->
                                           </div>
-                                          <!-- /.row -->
                                           <div class="row">
                                             <div class="col-xs-7 col-md-8 text-center">
                                                 <div class="form-group">
@@ -78,7 +69,6 @@
                                                 </div>
                                             </div>
                                           </div>
-                                          <!-- /.row -->
                                           <div class="row">
                                             <div class="col-xs-7 col-md-4 text-center">
                                                 <div class="form-group">
@@ -117,7 +107,6 @@
                                             </div>
                                             <!-- ./col -->
                                           </div>
-                                          <!-- /.row -->
                                           <div class="row">
                                             <div class="col-xs-7 col-md-4 text-center">
                                                 <div class="form-group">
@@ -161,8 +150,6 @@
                                                 </div>
                                             </div>
                                           </div>
-
-                                          <!-- /.row -->
                                           <div class="row">
                                             <div class="col-xs-7 col-md-8 text-center">
                                                 <div class="form-group">
@@ -198,17 +185,15 @@
                                             </div>
                                           </div>
                                           <!-- end data pasien-->
-
                                               <div class="box-body">
-                                                <div class="row">
-                                                  <div class="col-xs-7 col-md-12 text-left">
-                                                      <div class="form-group">
-                                                        <label class="col-sm-12"><h3>Data Orangtua - Ayah</h3><hr></label>
-                                                      </div>
+                                                  <div class="row">
+                                                    <div class="col-xs-7 col-md-12 text-left">
+                                                        <div class="form-group">
+                                                          <label class="col-sm-12"><h3>Data Orangtua - Ayah</h3><hr></label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- ./col -->
                                                   </div>
-                                                  <!-- ./col -->
-                                                </div>
-
                                                   <div class="row">
                                                     <div class="col-xs-7 col-md-6 text-center">
                                                         <div class="form-group">
@@ -231,7 +216,6 @@
                                                     </div>
                                                     <!-- ./col -->
                                                   </div>
-                                                  <!-- /.row -->
                                                   <div class="row">
                                                     <div class="col-xs-7 col-md-4 text-center">
                                                         <div class="form-group">
@@ -259,11 +243,9 @@
                                                           </div>
                                                         </div>
                                                     </div>
-
                                                   </div>
-
                                                   <div class="row">
-                                                     <div class="col-xs-7 col-md-4 text-center">
+                                                    <div class="col-xs-7 col-md-4 text-center">
                                                         <div class="form-group">
                                                           <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt; padding-top: 0pt">Pekerjaan
                                                           </label>
@@ -280,10 +262,9 @@
                                                           <div class="col-sm-4" style="padding-left: 47pt; padding-top: 0pt">
                                                             <input type="text" class="form-control" value="{{Request::is('data-pasien/view/*') ? $data->pend_ayah:''}}" name="pendTerakhir_A">
                                                           </div>
+                                                        </div>
                                                     </div>
                                                   </div>
-
-                                                  <!-- /.row -->
                                                   <div class="row">
                                                     <div class="col-xs-7 col-md-6 text-center">
                                                         <div class="form-group">
@@ -307,17 +288,16 @@
                                                     <!-- ./col -->
                                                   </div>
                                               </div>
-                                              <!-- end data ayah-->
+                                          <!-- end data ayah-->
                                               <div class="box-body">
-                                                <div class="row">
-                                                  <div class="col-xs-7 col-md-12 text-left">
-                                                      <div class="form-group">
-                                                        <label class="col-sm-12"><h3>Data Orangtua - Ibu</h3><hr></label>
-                                                      </div>
+                                                  <div class="row">
+                                                    <div class="col-xs-7 col-md-12 text-left">
+                                                        <div class="form-group">
+                                                          <label class="col-sm-12"><h3>Data Orangtua - Ibu</h3><hr></label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- ./col -->
                                                   </div>
-                                                  <!-- ./col -->
-                                                </div>
-
                                                   <div class="row">
                                                     <div class="col-xs-7 col-md-6 text-center">
                                                         <div class="form-group">
@@ -340,7 +320,6 @@
                                                     </div>
                                                     <!-- ./col -->
                                                   </div>
-                                                  <!-- /.row -->
                                                   <div class="row">
                                                     <div class="col-xs-7 col-md-4 text-center">
                                                         <div class="form-group">
@@ -368,11 +347,9 @@
                                                           </div>
                                                         </div>
                                                     </div>
-
                                                   </div>
-
                                                   <div class="row">
-                                                     <div class="col-xs-7 col-md-4 text-center">
+                                                    <div class="col-xs-7 col-md-4 text-center">
                                                         <div class="form-group">
                                                           <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt; padding-top: 0pt">Pekerjaan
                                                           </label>
@@ -384,14 +361,13 @@
                                                     <!-- ./col -->
                                                     <div class="col-xs-7 col-md-8 text-center">
                                                         <div class="form-group">
-                                                          <label class="col-sm-3 control-label" style="text-align: left; padding-left: 153pt">Pend. Terakhir
-                                                          </label>
+                                                          <label class="col-sm-3 control-label" style="text-align: left; padding-left: 153pt">Pend. Terakhir</label>
                                                           <div class="col-sm-4" style="padding-left: 47pt; padding-top: 0pt">
                                                             <input type="text" class="form-control" value="{{Request::is('data-pasien/view/*') ? $data->pend_ibu:''}}" name="pendTerakhir_I">
                                                           </div>
+                                                        </div>
                                                     </div>
                                                   </div>
-                                                  <!-- /.row -->
                                                   <div class="row">
                                                     <div class="col-xs-7 col-md-6 text-center">
                                                         <div class="form-group">
@@ -414,9 +390,8 @@
                                                     </div>
                                                     <!-- ./col -->
                                                   </div>
-                                            </div>
-                                            <!-- end data ibu-->
-                                          <!-- /.row -->
+                                              </div>
+                                          <!-- end data ibu-->
                                           <div class="row">
                                             <hr>
                                             <br>
@@ -452,7 +427,6 @@
                                             </div>
                                             <!-- ./col -->
                                           </div>
-                                          <!-- /.row -->
                                           <div class="row">
                                             <div class="col-xs-7 col-md-4 text-center">
                                                 <div class="form-group">
@@ -509,13 +483,14 @@
                                                   <a href="{{url('/data-pasien')}}"><div class="btn btn-danger">Batal</div></a>
                                                 </ul>
                                             </div>
-                                        <br>
-                                        <br>
-                                      <!-- ./col -->
+                                            <br>
+                                            <br>
                                           </div>
-                                        </div>
-
-                                      </form>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
           </section>
     <!-- /.content -->
   </div>

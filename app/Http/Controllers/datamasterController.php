@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
 use Illuminate\Support\Facades\Session;
+use DB;
 use File;
 use Str;
 
@@ -20,7 +20,7 @@ class datamasterController extends Controller
   //pasien
   public function datapasien(){
     $data=DB::table('h_pasien')
-    ->select('assessment.*','d_pasien.nama as namaPAS','d_pegawai.nama as namaPEG')
+    ->select('h_pasien.*','assessment.*', 'd_pasien.*', 'd_pasien.nama as namaPAS','d_pegawai.nama as namaPEG')
     ->leftJoin('assessment','h_pasien.id_pasien','=','assessment.id_pasien')
     ->leftJoin('d_pegawai','assessment.id_pegawai','=','d_pegawai.id_pegawai')
     ->join('d_pasien','d_pasien.id_pasien','=','h_pasien.id_pasien')->get();
@@ -33,6 +33,7 @@ class datamasterController extends Controller
       'Hindu',
       'Buddha'
     ];
+
     $kar=DB::table('d_pegawai')->orderBy('nama','asc')->get();
     $j_terapi=DB::table('jenis_terapi')->orderBY('terapi','asc')->get();
     $status=[

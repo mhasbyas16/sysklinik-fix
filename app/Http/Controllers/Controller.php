@@ -76,7 +76,7 @@ class Controller extends BaseController
 	            'notif_rm' => $notif_rm
 	        ]);
         }else{
-            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(1400);
             return redirect('/login');
         }
 	}

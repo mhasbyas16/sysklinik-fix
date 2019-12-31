@@ -24,7 +24,7 @@ class mainmenuController extends Controller
     ->where('keterangan','Pasien')->get();
     $pasien=DB::table('record_status_pasien')
     ->join('d_pasien','d_pasien.id_pasien','=','record_status_pasien.id_pasien')
-    ->where('record_status_pasien.keterangan','Pasien')->get();
+    ->where('record_status_pasien.keterangan','Pasien')->groupBy('d_pasien.id_pasien')->get();
     return view('main_menu.jadwal_tambah',[
       'terapis'=>$terapis,
       'j_terapi'=>$j_terapi,
@@ -556,16 +556,166 @@ public function jadwalevaluasifilter(Request $req){
       return redirect ('/register-list');
   }
 
+  public function datapasienupdate(request $req){
+    //pasien
+    $id_pasien=$req->id_pasien;
+    $nama_P=$req->nama_P;
+    $jk=$req->jk;
+    $alamat_P=$req->alamat_P;
+    $tempat_lahir=$req->tempat_lahir;
+    $tanggal_lahir=$req->tanggal_lahir;
+    $umur=$req->umur;
+    $notelp_P=$req->notelp_P;
+    $tanggal_daftar=$req->tanggal_daftar;
+    $agama=$req->agama;
+    $keluhan=$req->keluhan;
+    $uang_pangkal=$req->b_pangkal;
+    $uang_asses=$req->b_asses;
+    $uang_eval=$req->b_eval;
+    //foto
+    if ($req->file('foto')=='') {
+      $Nfoto=$id_pasien;
+    }else{
+    $foto=$req->file('foto');
+    $size=$foto->getSize();
+    $tipe=$foto->getClientOriginalExtension();
+    if ($size>=1024000) {
+      return redirect('/register-list'.'/'.$id_pasien)->with('alert','file foto tidak boleh melebihi dari 1MB');
+    }
+    $Nfoto=$id_pasien;
+    $idfoto=$req->$Nfoto;
+      if ($idfoto==$id_pasien) {
+
+      }elseif($idfoto!=$id_pasien) {
+          $data=DB::table('d_pasien')->select('foto')->where('id_pasien',$id_pasien)->first();
+          File::delete('foto/pasien/'.$data->foto);
+          $pict=$req->file('foto');
+          $pict->move(public_path().'/foto/pasien',$Nfoto);
+      }
+    }
+    //Ayah
+    $nama_A=$req->nama_A;
+    $nik_A=$req->nik_A;
+    $agama_A=$req->agama_A;
+    $alamat_A=$req->alamat_A;
+    $pekerjaan_A=$req->pekerjaan_A;
+    $pendTerakhir_A=$req->pendTerakhir_A;
+    $noTelp_A=$req->noTelp_A;
+    $email_A=$req->email_A;
+    //ibu
+    $nama_I=$req->nama_I;
+    $nik_I=$req->nik_I;
+    $agama_I=$req->agama_I;
+    $alamat_I=$req->alamat_I;
+    $pekerjaan_I=$req->pekerjaan_I;
+    $pendTerakhir_I=$req->pendTerakhir_I;
+    $noTelp_I=$req->noTelp_I;
+    $email_I=$req->email_I;
+    //
+    $assesor=$req->assesor;
+    $J_terapi=$req->J_terapi;
+    $tgl_mulai_terapi=$req->tgl_mulai_terapi;
+    $tgl_selesai_terapi=$req->tgl_selesai_terapi;
+    $status=$req->status;
+
+    $now=date('ymd');
+    //id_asses
+
+    $data_A=[
+      'id_pegawai'=>$assesor,
+      'tgl_mulai_terapi'=>$tgl_mulai_terapi,
+      'tgl_selesai_terapi'=>$tgl_selesai_terapi,
+      'status_pasien'=>$status,
+      'evaluasi'=>$uang_eval,
+      'asses'=>$uang_asses,
+      'uang_pangkal'=>$uang_pangkal
+    ];
+    $data_DP=[
+      'nama'=>$nama_P,
+      'tempat_lahir'=>$tempat_lahir,
+      'tgl_lahir'=>$tanggal_lahir,
+      'jk'=>$jk,
+      'agama'=>$agama,
+      'alamat'=>$alamat_P,
+      'tlp'=>$notelp_P,
+      'keluhan'=>$keluhan,
+      'foto'=>$Nfoto,
+      'nama_ayah'=>$nama_A,
+      'nik_ayah'=>$nik_A,
+      'agama_ayah'=>$agama_A,
+      'alamat_ayah'=>$alamat_A,
+      'pend_ayah'=>$pendTerakhir_A,
+      'tlp_ayah'=>$noTelp_A,
+      'pekerjaan'=>$pekerjaan_A,
+      'email_ayah'=>$email_A,
+      'nama_ibu'=>$nama_I,
+      'nik_ibu'=>$nik_I,
+      'agama_ibu'=>$agama_I,
+      'alamat_ibu'=>$alamat_I,
+      'pend_ibu'=>$pendTerakhir_I,
+      'pekerjaan_ibu'=>$pekerjaan_I,
+      'tlp_ibu'=>$noTelp_I,
+      'email_ibu'=>$email_I,
+    ];
+
+
+    $cariA=DB::table('assessment')->where('id_pasien',$id_pasien);
+    if ($cariA->count()==0) {
+      DB::table('assessment')->insert($data_A);
+    }else{
+      DB::table('assessment')->where('id_pasien',$id_pasien)->update($data_A);
+    }
+    $id_asses=$cariA->first();
+
+    $record=[
+      'id_asses'=>$id_asses->id_asses,
+      'id_pasien'=>$id_pasien,
+      'keterangan'=>$status,
+      'tgl'=>$now
+    ];
+      DB::table('d_pasien')->where('id_pasien',$id_pasien)->update($data_DP);
+
+      DB::table('daftar')->where('id_pasien',$id_pasien)->orderBY('id_daftar','desc')->limit('1')->update(['status'=>'1']);
+      DB::table('record_status_pasien')->insert($record);
+      if ($req->J_terapi=="") {
+
+      }else{
+        foreach ($req->J_terapi as $J_terapi) {
+          $T_pasien=[
+            'id_asses'=>$id_asses->id_asses,
+            'id_terapi'=>$J_terapi,
+            'status'=>'0',
+            'keterangan'=>'Asses'
+          ];
+          DB::table('terapi_pasien')->insert($T_pasien);
+        }
+      }
+
+      return redirect ('/data-pasien');
+  }
+
   //Jadwal Terapi
   public function jadwalasses($id){
+    $tabel = DB::table('jadwal_terapis')
+    ->select('jadwal_terapis.*','d_pasien.nama as namaP','d_pegawai.nama','terapi_pasien.id_terapi')
+    ->join('terapi_pasien','terapi_pasien.id_terapipasien','=','jadwal_terapis.id_terapipasien')
+    ->join('d_pegawai','d_pegawai.id_pegawai','=','jadwal_terapis.id_pegawai')
+    ->leftJoin('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
+    ->leftJoin('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
+    ->where('jadwal_terapis.id_asses',$id)->get();
+    
     $isi=DB::table('terapi_pasien')
     ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
     ->where('id_asses',$id)->get();
+
     $terapis=DB::table('d_pegawai')->where('id_pegawai','like','T%')->get();
+
     return view('main_menu.jadwal-add',[
       'isi'=>$isi,
       'id'=>$id,
-      'terapis'=>$terapis]);
+      'tabel'=>$tabel,
+      'terapis'=>$terapis
+    ]);
   }
 
   public function addjadwal(Request $req){
@@ -603,7 +753,6 @@ public function jadwalevaluasifilter(Request $req){
       DB::table('assessment')->where('id_asses',$id_asses)->update(['status_pasien'=>'Pasien']);
       DB::table('terapi_pasien')->where('id_asses',$id_asses)->update(['keterangan'=>'Pasien']);
       DB::table('jadwal_terapis')->insert($sql);
-
     }
     $now=date('ymd');
     $id_pasien=DB::table('assessment')->where('id_asses',$id_asses)->first();
@@ -614,22 +763,21 @@ public function jadwalevaluasifilter(Request $req){
       'tgl'=>$now
     ];
     DB::table('record_status_pasien')->insert($record);
-
     $data = [
       'id_rm' => 'RM'.date('YmdHis'),
       'id_pasien' => $id_pasien->id_pasien,
       'id_asses' => $id_asses,
       'diagnosa' => $id_pasien->diagnosa
     ];
-
     DB::table('h_rekam_medis')->insert($data);
 
-    return redirect('jadwal-terapi');
+    return redirect()->back();
   }
 
   public function jadwalterapi(){
     $sql = DB::table('jadwal_terapis')
-    ->select('jadwal_terapis.*','d_pasien.nama as namaP','d_pegawai.nama')
+    ->select('jadwal_terapis.*','d_pasien.nama as namaP','d_pegawai.nama','terapi_pasien.id_terapi')
+    ->join('terapi_pasien','terapi_pasien.id_terapipasien','=','jadwal_terapis.id_terapipasien')
     ->join('d_pegawai','d_pegawai.id_pegawai','=','jadwal_terapis.id_pegawai')
     ->leftJoin('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
     ->leftJoin('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien');
@@ -684,8 +832,9 @@ public function jadwalevaluasifilter(Request $req){
                   ->orderBy('deskripsi','desc');
          $rpasien=$sqlrpasien->get();
          $countrpasien=$sqlrpasien->where('deskripsi','Request')->count();
-         //
-         $data2=$sql->where('jadwal_terapis.tgl',date('Y-m-d'))->orderBY('jadwal_terapis.jam_masuk','asc')->get();
+         //jadwalkeseluruhan->where('jadwal_terapis.tgl',date('Y-m-d'))
+         $data2=$sql->orderBY('jadwal_terapis.tgl','asc')->orderBY('jadwal_terapis.jam_masuk','asc')->get();
+         //assessment
          $sqlassessment=DB::table('assessment')
                       ->select('assessment.*','d_pasien.nama as namaP', 'd_pegawai.nama as namaA')
                       ->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
@@ -721,4 +870,5 @@ public function jadwalevaluasifilter(Request $req){
     }
     return redirect('/jadwal-terapi');
   }
+
 }

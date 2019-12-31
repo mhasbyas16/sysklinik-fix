@@ -45,6 +45,7 @@
                 <table id="absensiKaryawan" class="display text-center" style="width:100%;" >
                   <thead>
                     <tr>
+                      <th>No</th>
                       <th>Nama</th>
                       <th>Tanggal</th>
                       <th>Jam Masuk</th>
@@ -55,9 +56,13 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php
+                      $no=1;
+                    @endphp
                     @foreach ($karyawan as $isi)
                     @if ($isi->status_hadir=="hadir" OR $isi->status_hadir=="telat" )
                     <tr>
+                        <td>{{$no}}</td>
                         <td>{{$isi->nama}}</td>
                         <td>{{$isi->tgl}}</td>
                         <td>{{$isi->jam_masuk}}</td>
@@ -72,10 +77,14 @@
                         </td>
                     </tr>  
                     @endif                      
+                    @php
+                      $no++;
+                    @endphp
                     @endforeach
                   </tbody>
                   <tfoot>
                     <tr>
+                        <th>No</th>
                         <th>Nama</th>
                         <th>Tanggal</th>
                         <th>Jam Masuk</th>

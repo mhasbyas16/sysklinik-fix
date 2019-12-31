@@ -74,6 +74,7 @@
               <table id="pegawais" class="table table-bordered table-striped">
                 <thead>
                   <tr>
+                    <th>No</th>
                     <th>ID Billing</th>
                     <th>Nama Pasien</th>
                     <th>Untuk Pembayaran</th>
@@ -84,8 +85,13 @@
                   </tr>
                 </thead>
                 <tbody>
+                  
+                  @php
+                    $no=1;
+                  @endphp
                   @foreach ($kwitansi as $k)
                     <tr>
+                      <td>{{$no}}</td>
                       <td>{{ $k->id_bill }}</td>
                       <td>{{ $k->nama }}</td>
                       <td>{{ $k->kategori }}</td>
@@ -94,10 +100,15 @@
                       <td>{{ $k->tgl }}</td>
                       <td><a href="{{ url('kwitansi/'.$k->id_kwitansi.'/edit') }}">Print Kwitansi</a></td>
                     </tr>
+                  
+                  @php
+                    $no++;
+                  @endphp
                   @endforeach
                 </tbody>
                 <tfoot>
                   <tr>
+                    <th>No</th>
                     <th>ID Billing</th>
                     <th>Nama Pasien</th>
                     <th>Untuk Pembayaran</th>

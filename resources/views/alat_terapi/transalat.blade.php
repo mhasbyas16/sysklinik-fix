@@ -216,6 +216,7 @@
                     <table id="pegawais" class="table table-bordered table-striped text-center">
                       <thead>
                       <tr>
+                        <th>No</th>
                         <th>Tanggal</th>
                         <th>No. Kwitansi</th>
                         <th>ID Barang</th>
@@ -225,8 +226,12 @@
                       </tr>
                       </thead>
                       <tbody>
-                        @foreach($at as $x)
+                      @php
+                        $no=1;
+                      @endphp
+                      @foreach($at as $x)
                       <tr>
+                        <td>{{$no}}</td>
                         <td>{{$x->tgl}}</td>
                         <td>{{$x->no_kwitansi}}</td>
                         <td>{{$x->id_barang}}</td>
@@ -239,10 +244,14 @@
                           </form>
                         </td>
                       </tr>
+                      @php
+                        $no++;
+                      @endphp
                       @endforeach
                       </tbody>
                       <tfoot>
                       <tr>
+                        <th>No</th>
                         <th>Tanggal</th>
                         <th>No. Kwitansi</th>
                         <th>ID Barang</th>
@@ -445,6 +454,7 @@
                     <table id="pegawais" class="table table-bordered table-striped text-center">
                       <thead>
                       <tr>
+                        <th>No</th>
                         <th>Tanggal</th>
                         <th>No. Kwitansi</th>
                         <th>ID Barang</th>
@@ -454,8 +464,12 @@
                       </tr>
                       </thead>
                       <tbody>
-                        @foreach($out as $x)
+                      @php
+                        $no=1;
+                      @endphp
+                      @foreach($out as $x)
                       <tr>
+                        <td>{{$no}}</td>
                         <td>{{$x->tgl}}</td>
                         <td>{{$x->no_kwitansi}}</td>
                         <td>{{$x->id_barang}}</td>
@@ -468,10 +482,14 @@
                           </form>
                         </td>
                       </tr>
+                      @php
+                        $no++;
+                      @endphp
                       @endforeach
                       </tbody>
                       <tfoot>
                       <tr>
+                        <th>No</th>
                         <th>Tanggal</th>
                         <th>No. Kwitansi</th>
                         <th>ID Barang</th>

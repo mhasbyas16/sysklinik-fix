@@ -45,6 +45,7 @@
                 <table id="absensiTerapis" class="display text-center" style="width:100%;" >
                   <thead>
                     <tr>
+                      <th>No</th>
                       <th>Nama</th>
                       <th>Tanggal</th>
                       <th>Jam Masuk</th>
@@ -54,8 +55,12 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php
+                      $no=1;
+                    @endphp
                     @foreach ($terapis as $isi)
                       <tr>
+                        <td>{{$no}}</td>
                         <td>{{$isi->nama}}</td>
                         <td>{{$isi->tgl}}</td>
                         <td>{{$isi->jam_masuk}}</td>
@@ -63,10 +68,14 @@
                         <td>{{$isi->id_jadwal}}</td>
                         <td>{{$isi->status_terapis}}</td>
                       </tr>
+                    @php
+                      $no++;
+                    @endphp
                     @endforeach
                   </tbody>
                   <tfoot>
                     <tr>
+                      <th>No</th>
                       <th>Nama</th>
                       <th>Tanggal</th>
                       <th>Jam Masuk</th>

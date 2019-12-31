@@ -94,22 +94,31 @@
                       <table id="terapi" class="table table-bordered table-striped text-center">
                         <thead>
                         <tr>
+                          <th>No</th>
                           <th>ID Terapi</th>
                           <th>Nama Terapi</th>
                           <th>Aksi</th>
                         </tr>
                         </thead>
                         <tbody>
-                          @foreach($data as $data)
+                        @php
+                          $no=1;
+                        @endphp
+                        @foreach($data as $data)
                         <tr>
+                          <td>{{$no}}</td>
                           <td>{{$data->id_terapi}}</td>
                           <td style="text-align:left">{{$data->terapi}}</td>
                           <td><a href="{{url('/data-terapi/delete')}}/{{$data->id_terapi}}" onclick="return confirm('apakah anda yakin akan menghapus data ini')"><button class="btn btn-danger" href="#">Delete</button></a></td>
                         </tr>
-                          @endforeach
+                        @php
+                          $no++;
+                        @endphp
+                        @endforeach
                         </tbody>
                         <tfoot>
                           <tr>
+                            <th>No</th>
                             <th>ID Terapi</th>
                             <th>Nama Terapi</th>
                             <th>Aksi</th>

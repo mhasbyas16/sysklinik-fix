@@ -33,6 +33,7 @@
             <table id="pegawais" class="table table-bordered table-striped">
               <thead>
                 <tr>
+                <th>No</th>
                 <th>ID Pegawai</th>
                 <th>Nama Pegawai</th>
                 <th>Jabatan</th>
@@ -40,19 +41,27 @@
               </thead>
               <tfoot>
               <tr>
+                <th>No</th>
                 <th>ID Pegawai</th>
                 <th>Nama Pegawai</th>
                 <th>Jabatan</th>
               </tr>
               </tfoot>
               <tbody>
-                @foreach ($data as $d)
+                  @php
+                    $no=1;
+                  @endphp
+                  @foreach ($data as $d)
                   <tr>
+                    <td>{{$no}}</td>
                     <td><a href="{{ url('payroll/'.$d->id_p.'/edit') }}">{{ $d->id_p }}</a></td>
                     <td style="text-transform: capitalize">{{ $d->nama }}</td>
                     <td>{{ $d->jabatan }}</td>
                   </tr>
-                @endforeach
+                  @php
+                    $no++;
+                  @endphp
+                  @endforeach
               </tbody>
             </table>
           </div>

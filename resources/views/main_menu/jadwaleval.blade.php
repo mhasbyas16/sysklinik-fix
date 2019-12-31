@@ -79,6 +79,7 @@
                       <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
+                      <th>No</th>
                       <th>Nama</th>
                       <th>TGL Asses</th>
                       <th>TGL Eval 1</th>
@@ -92,8 +93,12 @@
                     </tr>
                     </thead>
                     <tbody>
+                      @php
+                        $no=1;
+                      @endphp
                       @foreach($isi as $data)
                       <tr>
+                        <td>{{$no}}</td>
                         <td>{{$data->nama}}</td>
                         <td>{{$data->tgl_mulai_terapi}}</td>
                         <td>{{$data->tgl_eval1}}</td>
@@ -111,10 +116,14 @@
                           @endif
                         </div></td>
                       </tr>
+                      @php
+                        $no++;
+                      @endphp
                       @endforeach
                     </tbody>
                     <tfoot>
                     <tr>
+                      <th>No</th>
                       <th>Nama</th>
                       <th>TGL Asses</th>
                       <th>TGL Eval 1</th>

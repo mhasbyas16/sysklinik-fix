@@ -80,29 +80,37 @@
                       <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
+                      <th>No</th>
                       <th>Nama</th>
+                      <th>ID Pasien</th>
                       <th>ID Asses</th>
                       <th>Status</th>
-                      <th>Aksi</th>
                     </tr>
                     </thead>
                     <tbody>
+                      @php
+                        $no=1;
+                      @endphp
                       @foreach($isi as $data)
                       <tr>
+                        <td>{{$no}}</td>
                         <td>{{$data->nama}}</td>
+                        <td>{{$data->id_pasien}}</td>
                         <td>{{$data->id_asses}}</td>
                         <td><a href="{{url('/register-list')}}/{{$data->id_pasien}}">{{$data->status_pasien}}</a></td>
-                        <td><div class="btn-group">
-                        </div></td>
                       </tr>
+                      @php
+                        $no++;
+                      @endphp
                       @endforeach
                     </tbody>
                     <tfoot>
                     <tr>
+                        <th>No</th>
                         <th>Nama</th>
+                        <th>ID Pasien</th>
                         <th>ID Asses</th>
                         <th>Status</th>
-                        <th>Aksi</th>
                     </tr>
                     </tfoot>
                   </table>

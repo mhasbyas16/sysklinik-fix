@@ -31,6 +31,7 @@
             <table id="pegawais" class="table table-bordered table-striped">
               <thead>
                 <tr>
+                <th>No</th>
                 <th>ID Rekam Medis</th>
                 <th>Nama Pasien</th>
                 <th>Jenis Terapi</th>
@@ -40,6 +41,7 @@
               </thead>
               <tfoot>
               <tr>
+                <th>No</th>
                 <th>ID Rekam Medis</th>
                 <th>Nama Pasien</th>
                 <th>Jenis Terapi</th>
@@ -48,8 +50,12 @@
               </tr>
               </tfoot>
               <tbody>
-                @foreach ($list_rekam_medis as $list_rm)
+                  @php
+                    $no=1;
+                  @endphp
+                  @foreach ($list_rekam_medis as $list_rm)
                   <tr>
+                    <td>{{$no}}</td>
                     <td><a href="{{ url('detail_rekam_medis/'.$list_rm->id_rm) }}">{{ $list_rm->id_rm }}</a></td>
                     <td>{{ $list_rm->nama }}</td>
                     <td>{{ $list_rm->terapi }}</td>
@@ -63,7 +69,10 @@
                       </form>
                     </td>
                   </tr>
-                @endforeach
+                  @php
+                    $no++;
+                  @endphp
+                  @endforeach
               </tbody>
             </table>
           </div>

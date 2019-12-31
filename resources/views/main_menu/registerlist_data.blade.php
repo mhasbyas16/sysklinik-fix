@@ -547,7 +547,7 @@
                 <div class="button">
                     <ul style="padding-left: 680pt ">
                       <button type="submit" class="btn btn-success">Simpan</button>
-                      <a href="{{url('/data-pasien')}}"><div class="btn btn-danger">Batal</div></a>
+                      <a href="{{url('/register-list')}}"><div class="btn btn-danger">Batal</div></a>
                     </ul>
                 </div>
             <br>

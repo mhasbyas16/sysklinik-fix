@@ -46,6 +46,7 @@
                       <table id="pegawais" class="table table-bordered table-striped text-center">
                         <thead>
                         <tr>
+                          <th>No</th>
                           <th>ID Karyawan</th>
                           <th>Nama</th>
                           <th>Jenis Terapi</th>
@@ -54,8 +55,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                          @foreach($data as $data)
+                        @php
+                          $no=1;
+                        @endphp
+                        @foreach($data as $data)
                         <tr>
+                          <td>{{$no}}</td>
                           <td>{{$data->id_pegawai}}</td>
                           <td>{{$data->nama}}</td>
                           <td>{{$data->id_terapi}}</td>
@@ -113,10 +118,14 @@ NO. NPWP      : {{$data->npwp}}
                           </div>
                           <!-- /.modal -->
                         </tr>
+                        @php
+                          $no++;
+                        @endphp
                         @endforeach
                         </tbody>
                         <tfoot>
                         <tr>
+                            <th>No</th>
                             <th>ID Karyawan</th>
                             <th>Nama</th>
                             <th>Jabatan</th>

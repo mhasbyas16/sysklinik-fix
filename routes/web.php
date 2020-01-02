@@ -46,7 +46,7 @@ Route::post('/jadwal-evaluasi/filter-date','mainmenuController@jadwalevaluasifil
 //Data Pasien
 Route::get('/data-pasien','datamasterController@datapasien');
 Route::get('/data-pasien/view/{id}','mainmenuController@registerlistdata');
-Route::post('/data-pasien/update','mainmenuController@registerlistupdate');
+Route::post('/data-pasien/update','mainmenuController@datapasienupdate');
 Route::get('/data-pasien/record/{id}','datamasterController@recordpasien');
 //Data Karyawan
 Route::get('/karyawan','datamasterController@karyawan');

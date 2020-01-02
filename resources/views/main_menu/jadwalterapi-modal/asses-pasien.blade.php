@@ -14,22 +14,31 @@
               <table id="pegawais" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                  <th>No</th>
                   <th>Nama</th>
                   <th>Assesor</th>
                   <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
+                  @php
+                    $no=1;
+                  @endphp
                   @foreach($assessment as $asses)
                   <tr>
+                    <td>{{$no}}</td>
                     <td><a href="{{url('/jadwal-terapi/asses')}}/{{$asses->id_asses}}">{{$asses->namaP}}</a></td>
                     <td>{{$asses->namaA}}</td>
                     <td>{{$asses->status_pasien}}</td>
                   </tr>
+                  @php
+                    $no++;
+                  @endphp
                   @endforeach
                 </tbody>
                 <tfoot>
                 <tr>
+                  <th>No</th>
                   <th>Nama</th>
                   <th>Assesor</th>
                   <th>Status</th>

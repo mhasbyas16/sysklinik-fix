@@ -1,9 +1,7 @@
 @extends('template.style')
 @section('isi')
 @include('sweet::alert')
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         Dashboard Administrator Klinik Liliput
@@ -14,9 +12,7 @@
       </ol>
     </section>
 
-    <!-- Main content -->
     <section class="content">
-      <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -75,8 +71,6 @@
         </div>
         <!-- ./col -->
       </div>
-      <!-- /.row -->
-      <!-- Main row -->
       <div class="row">
         <!-- Left col -->
         <section class="col-lg-7 connectedSortable">
@@ -202,7 +196,6 @@
       </div>
 
       <div class="row">
-
         <section class="col-lg-12 connectedSortable">
           <!-- Custom tabs (Charts with tabs)-->
           <div class="nav-tabs-custom">
@@ -304,20 +297,17 @@
                 <strong> Success </strong> {{Session::get('alert-success')}}
               </div>
             @endif
-
         </section>
-    <!-- /.content -->
+      </div>
+    </section>
+
+    <script type="text/javascript">
+      var table=$('#pegawaiis').Datatable();
+      $('#pegawaiis').on('click', 'tr', function(){
+        var id=table.row(this).id();
+        $('#ids').val(id);
+      });
+    </script>
+
   </div>
-
-  <script type="text/javascript">
-    var table=$('#pegawaiis').Datatable();
-
-    $('#pegawaiis').on('click', 'tr', function(){
-      var id=table.row(this).id();
-      $('#ids').val(id);
-    });
-  </script>
-
-
-  <!-- /.content-wrapper -->
-  @endsection
+@endsection

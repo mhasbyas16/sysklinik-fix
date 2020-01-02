@@ -33,6 +33,7 @@
               <table id="pegawais" class="table table-bordered table-striped">
                 <thead>
                   <tr>
+                    <th>No</th>
                     <th>ID Billing</th>
                     <th>Nama</th>
                     <th>Tanggal</th>
@@ -40,8 +41,12 @@
                   </tr>
                 </thead>
                 <tbody>
+                  @php
+                    $no=1;
+                  @endphp
                   @foreach ($data as $d)
                     <tr>
+                      <td>{{$no}}</td>
                       <td>{{ $d->id_bill }}</td>
                       <td>{{ $d->nama }}</td>
                       <td>{{ $d->tgl }}</td>
@@ -59,10 +64,14 @@
                         <a href="{{ url('detail_billing/'.$d->id_bill) }}" class="btn btn-success">Detail Billing</a>
                       </td>
                     </tr>
+                  @php
+                    $no++;
+                  @endphp
                   @endforeach
                 </tbody>
                 <tfoot>
                   <tr>
+                    <th>No</th>
                     <th>ID Billing</th>
                     <th>Nama</th>
                     <th>Tanggal</th>

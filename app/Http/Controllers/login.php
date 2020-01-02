@@ -52,14 +52,14 @@ class login extends Controller
                 Session::put('role',$cek_log->hakakses);
                 Session::put('login',TRUE);
 
-                Alert::success('Selamat datang, '.$cek_log->nama.'!')->autoclose(3500);
+                Alert::success('Selamat datang, '.$cek_log->nama.'!')->autoclose(1400);
                 return redirect('/');
             }elseif ($cek_log->hakakses != "admin") {
-                Alert::warning('Anda tidak memiliki hak untuk mengakses halaman ini!')->autoclose(3500);
+                Alert::warning('Anda tidak memiliki hak untuk mengakses halaman ini!')->autoclose(1400);
                 return redirect('/login');
             }else{
                 
-                Alert::warning('Password yang anda masukkan salah!')->autoclose(3500);
+                Alert::warning('Password yang anda masukkan salah!')->autoclose(1400);
                 return redirect('/login');
             }
         }else{

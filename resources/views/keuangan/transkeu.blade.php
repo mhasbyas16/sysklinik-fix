@@ -141,6 +141,7 @@
                     <table id="pegawais" class="table table-bordered table-striped">
                       <thead>
                         <tr>
+                          <th>No</th>
                           <th>Penanggung Jawab</th>
                           <th>Kategori</th>
                           <th>Jumlah</th>
@@ -150,8 +151,12 @@
                         </tr>
                       </thead>
                       <tbody>
+                        @php
+                          $no=1;
+                        @endphp
                         @foreach ($pemasukan_list as $p)
                           <tr>
+                            <td>{{$no}}</td>
                             <td>{{ $p->nama }}</td>
                             <td>{{ $p->kategori }}</td>
                             <td>{{ $p->jumlah }}</td>
@@ -165,10 +170,14 @@
                               </form>
                             </td>
                           </tr>
+                        @php
+                          $no++;
+                        @endphp
                         @endforeach
                       </tbody>
                       <tfoot>
                       <tr>
+                        <th>No</th>
                         <th>Penanggung Jawab</th>
                         <th>Kategori</th>
                         <th>Jumlah</th>
@@ -296,6 +305,7 @@
                     <table id="pegawais" class="table table-bordered table-striped">
                       <thead>
                         <tr>
+                          <th>No</th>
                           <th>Penanggung Jawab</th>
                           <th>Kategori</th>
                           <th>Jumlah</th>
@@ -305,8 +315,12 @@
                         </tr>
                       </thead>
                       <tbody>
+                        @php
+                          $no=1;
+                        @endphp
                         @foreach ($pengeluaran_list as $p)
                           <tr>
+                            <td>{{$no}}</td>
                             <td>{{ $p->nama }}</td>
                             <td>{{ $p->kategori }}</td>
                             <td>{{ $p->jumlah }}</td>
@@ -320,10 +334,14 @@
                               </form>
                             </td>
                           </tr>
+                        @php
+                          $no++;
+                        @endphp
                         @endforeach
                       </tbody>
                       <tfoot>
                       <tr>
+                        <th>No</th>
                         <th>Penanggung Jawab</th>
                         <th>Kategori</th>
                         <th>Jumlah</th>

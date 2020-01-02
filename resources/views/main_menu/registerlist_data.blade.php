@@ -195,7 +195,7 @@
                         <label class="col-sm-5 control-label">Uang Pangkal</label>
 
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" name="b_pangkal" required="">
+                            <input type="text" class="form-control" name="b_pangkal" value="0" required="">
                         </div>
                       </div>
                 </div>
@@ -205,7 +205,7 @@
                         <label class="col-sm-5 control-label">Assessment</label>
 
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" name="b_asses" required="">
+                            <input type="text" class="form-control" name="b_asses" value="0" required="">
                         </div>
                       </div>
                 </div>
@@ -215,7 +215,7 @@
                         <label class="col-sm-5 control-label">Evaluasi</label>
 
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" name="b_eval" required="">
+                            <input type="text" class="form-control" name="b_eval" value="0" required="">
                         </div>
                       </div>
                 </div>
@@ -547,7 +547,7 @@
                 <div class="button">
                     <ul style="padding-left: 680pt ">
                       <button type="submit" class="btn btn-success">Simpan</button>
-                      <a href="{{url('/data-pasien')}}"><div class="btn btn-danger">Batal</div></a>
+                      <a href="{{url('/register-list')}}"><div class="btn btn-danger">Batal</div></a>
                     </ul>
                 </div>
             <br>

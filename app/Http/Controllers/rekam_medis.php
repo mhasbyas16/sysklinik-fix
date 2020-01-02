@@ -24,7 +24,7 @@ class rekam_medis extends Controller
     {
         if (Session::get('login')) {
             
-            $rekam_medis = DB::table('h_rekam_medis')->select('assessment.*', 'h_rekam_medis.id_rm', 'jenis_terapi.terapi', 'd_pasien.nama')->join('assessment', 'h_rekam_medis.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')->join('terapi_pasien', 'h_rekam_medis.id_asses', '=', 'terapi_pasien.id_asses')->join('jenis_terapi', 'terapi_pasien.id_terapi', '=', 'jenis_terapi.id_terapi')->groupBy('id_rm')->get();
+            $rekam_medis = DB::table('h_rekam_medis')->select('assessment.*', 'h_rekam_medis.id_rm', 'jenis_terapi.terapi', 'd_pasien.nama')->join('assessment', 'h_rekam_medis.id_asses', '=', 'assessment.id_asses')->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')->join('terapi_pasien', 'h_rekam_medis.id_asses', '=', 'terapi_pasien.id_asses')->join('jenis_terapi', 'terapi_pasien.id_terapi', '=', 'jenis_terapi.id_terapi')->groupBy('id_asses', 'd_pasien.id_pasien')->get();
             $update = DB::table('h_rekam_medis')->where('status', 'Baru')->update(['status' => 'Lama']);
             return view('rekam_medis.rekamedis', [
                 'list_rekam_medis' => $rekam_medis

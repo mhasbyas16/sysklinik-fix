@@ -14,6 +14,7 @@
               <table id="pegawais" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                  <th>No</th>
                   <th>Nama</th>
                   <th>Hari</th>
                   <th>Waktu</th>
@@ -21,8 +22,12 @@
                 </tr>
                 </thead>
                 <tbody>
+                  @php
+                    $no=1;
+                  @endphp
                   @foreach ($rterapis as $isi)
                   <tr>
+                    <td>{{$no}}</td>
                     <td>{{$isi->nama}}</td>
                     <td>{{$isi->hari}}</td>
                     <td>{{$isi->waktu}}</td>
@@ -39,10 +44,14 @@
                       @endif
                       </td>
                   </tr>
+                  @php
+                    $no++;
+                  @endphp
                   @endforeach
                 </tbody>
                 <tfoot>
                 <tr>
+                  <th>No</th>
                   <th>Nama</th>
                   <th>Hari</th>
                   <th>Waktu</th>

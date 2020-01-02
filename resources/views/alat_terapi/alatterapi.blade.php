@@ -74,7 +74,7 @@
                           <div class="form-group">
                             <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">ID Alat Terapi</label>
                             <div class="col-sm-7">
-                               <input type="text" name="idd" id="idd" value="{{$id}}" hidden="true">
+                               <input type="text" name="idd" id="idd" value="{{$id}}" hidden="false">
                                <input type="text" class="form-control" name="idat" id="idat" value="{{$nama->id_barang}}" readonly>
                             </div>
                           </div>
@@ -216,6 +216,7 @@
               <table id="pegawais" class="table table-bordered table-striped text-center">
                 <thead>
                 <tr>
+                  <th>No</th>
                   <th>ID Barang</th>
                   <th>Nama Barang</th>
                   <th>Stok Awal</th>
@@ -224,8 +225,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($at as $x)
+                  @php
+                    $no=1;
+                  @endphp
+                  @foreach($at as $x)
                 <tr>
+                  <td>{{$no}}</td>
                   <td>{{$x->id_barang}}</td>
                   <td>{{$x->nama_barang}}</td>
                   <td>{{$x->stok_awal}}</td>
@@ -237,10 +242,14 @@
                     </form>
                   </td>
                 </tr>
-                @endforeach
+                  @php
+                    $no++;
+                  @endphp
+                  @endforeach
                 </tbody>
                 <tfoot>
                 <tr>
+                  <th>No</th>
                   <th>ID Barang</th>
                   <th>Nama Barang</th>
                   <th>Stok Awal</th>

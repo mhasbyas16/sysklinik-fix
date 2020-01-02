@@ -165,10 +165,13 @@
                               <td>{{$xx->email}}</td>
                               <td>{{$xx->jenis_terapi}}</td>
                               <td>
-                                <form action="" method="">
-                                    
-                                    <input type="submit" class="btn btn-info btn-sm" href="#" value="Kirim E-Mail">
-                                </form>
+                                @if ($xx->status == "Request")
+                                  <a class="btn btn-info btn-sm" href="{{ url('/send/email/'.$xx->id) }}">
+                                    Kirim E-Mail
+                                  </a>
+                                @else
+                                  Telah {{ $xx->status }}
+                                @endif
                               </td>
                               <td>{{$xx->status}}</td>
                             </tr>

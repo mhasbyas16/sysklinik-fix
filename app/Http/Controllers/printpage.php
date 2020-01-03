@@ -93,7 +93,7 @@ class printpage extends Controller
                 'id' => $id
             ]);
         }else{
-            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(1500);
             return redirect('/login');
         }
 
@@ -113,11 +113,77 @@ class printpage extends Controller
                 $message->to($dt->email)->subject('Your billing data generated on '.date('F Y'));
             });
         }else{
-            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(1500);
             return redirect('/login');
         }
     }
 
+    public function sendEmail($id){
+        if (Session::get('login')) {
+            
+            $data = DB::table('request_dash')->select('*')->where('keterangan','Kuesioner')->where('status','Request')->where('id', $id)->groupBy('id_pasien', 'tgl');
+            $dt = $data->first();
+            $data = $data->get();
+
+            Mail::send('sendemail', compact('data'), function($message) use($dt){
+                $message->priority('importance');
+
+                $message->to($dt->email)->subject('Your Kuesioner');
+                
+                if ($dt->jenis_terapi == 'OT') {
+                    $message->attachData(asset('/kuesioner/KUISIONER_FISIOTERAPI.docx'), 'Kuesioner 1');
+                }
+                if ($dt->jenis_terapi == 'TW') {
+                    $message->attachData(asset('/kuesioner/KUISIONER_OP.docx'), 'Kuesioner 2');
+                }
+                if ($dt->jenis_terapi == 'FT') {
+                    $message->attachData(asset('/kuesioner/KUISIONER_OTSI.docx'), 'Kuesioner 3');
+                }
+                if ($dt->jenis_terapi == 'OP') {
+                    $message->attachData(asset('/kuesioner/KUISIONER_WICARA.docx'), 'Kuesioner 4');
+                }
+            });
+
+            DB::table('request_dash')->where('id', $id)->update(['status' =>'Terkirim']);
+            Alert::success('Kuisioner sudah terkirim!')->autoclose(1500);
+            return redirect('/');
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(2000);
+            return redirect('/login');
+        }
+    }
+
+    public function sendEmaill($id){
+        if (Session::get('login')) {
+            
+            $data = DB::table('request_dash')->select('*')->where('keterangan','Kuesioner')->where('status','Request')->where('id', $id)->groupBy('id_pasien', 'tgl');
+            $dt = $data->first();
+            $data = $data->get();
+
+            Mail::send('sendemail', compact('data'), function($message) use($dt){
+                $message->priority('importance');
+
+                $message->to($dt->email)->subject('Your Kuesioner');
+                
+                if ($d->jenis_terapi == 'OT') {
+                    $message->attachData(asset('/kuesioner/KUISIONER FISIOTERAPI.docx'), 'Kuesioner 1');
+                }
+                if ($d->jenis_terapi == 'TW') {
+                    $message->attachData(asset('/kuesioner/KUISIONER OP.docx'), 'Kuesioner 2');
+                }
+                if ($d->jenis_terapi == 'FT') {
+                    $message->attachData(asset('/kuesioner/KUISIONER OTSI.docx'), 'Kuesioner 3');
+                }
+                if ($d->jenis_terapi == 'OP') {
+                    $message->attachData(asset('/kuesioner/KUISIONER WICARA.docx'), 'Kuesioner 4');
+                }
+            });
+            redirect('/');
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(1500);
+            return redirect('/login');
+        }
+    }
 
     public function printLaporanKeuangan($id){
 
@@ -128,7 +194,7 @@ class printpage extends Controller
                 'data' => $data  
                 ]);
         }else{
-            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(1500);
             return redirect('/login');
         }
     }

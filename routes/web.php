@@ -92,6 +92,7 @@ Route::resource('setting', 'setting');
 //Print Page and Send Email
 Route::get('/print/billing/{id}', 'printpage@printBilling');
 Route::get('/send/billing/{id}', 'printpage@sendBilling');
+Route::get('/send/email/{id}', 'printpage@sendEmail');
 Route::get('/print/laporan/{id}', 'printpage@printLaporanKeuangan');
 
 

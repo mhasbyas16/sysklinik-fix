@@ -779,8 +779,8 @@ public function jadwalevaluasifilter(Request $req){
     ->select('jadwal_terapis.*','d_pasien.nama as namaP','d_pegawai.nama','terapi_pasien.id_terapi')
     ->join('terapi_pasien','terapi_pasien.id_terapipasien','=','jadwal_terapis.id_terapipasien')
     ->join('d_pegawai','d_pegawai.id_pegawai','=','jadwal_terapis.id_pegawai')
-    ->leftJoin('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
-    ->leftJoin('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien');
+    ->Join('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
+    ->Join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien');
     //fullcalendar
       $events = [];
       $data=$sql->get();

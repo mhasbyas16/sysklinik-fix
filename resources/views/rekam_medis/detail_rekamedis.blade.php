@@ -63,7 +63,7 @@
                           <div class="col-sm-7">
                             <select class="form-control" name="id_jadwal" required>
                               @foreach($jadwal as $jadwal)
-                                <option value="{{ $jadwal->id_jadwal }}">{{ $jadwal->tgl }}</option>
+                                <option value="{{ $jadwal->id_jadwal }}">{{ $jadwal->tgl }}: {{ $jadwal->id_terapi }}</option>
                               @endforeach
                             </select>
                           </div>
@@ -116,9 +116,10 @@
               <thead>
                 <tr>
                   <th>ID Sesi</th>
-                  <th>Tindakan</th>
-                  <th>Evaluasi</th>
-                  <th>Tanggal</th>
+                  <th>Jadwal</th>
+                  <th>Jenis Terapi</th>
+                  <th>Area Stimulasi</th>
+                  <th>Keterangan</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -126,9 +127,10 @@
                 @foreach($detail as $detail)
                   <tr>
                     <td>{{ $detail->id_sesirm }}</td>
+                    <td>{{ $detail->tgl }}</td>
+                    <td>{{ $detail->id_terapi }}</td>
                     <td>{{ $detail->area_stimulasi }}</td>
                     <td>{{ $detail->keterangan }}</td>
-                    <td>{{ $detail->tgl }}</td>
                     <td>
                       <form action="{{ url('detail_rekam_medis/'.$detail->id_sesirm) }}" id="rekam_medis" method="POST" style="padding:0px; margin:0px" class="col-md-3">
                           @method('DELETE')
@@ -143,9 +145,10 @@
               <tfoot>
               <tr>
                 <th>ID Sesi</th>
-                <th>Tindakan</th>
-                <th>Evaluasi</th>
-                <th>Engine version</th>
+                <th>Jadwal</th>
+                <th>Jenis Terapi</th>
+                <th>Area Stimulasi</th>
+                <th>Keterangan</th>
                 <th>Aksi</th>
               </tr>
               </tfoot>

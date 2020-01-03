@@ -67,15 +67,27 @@ class detail_rekam_medis extends Controller
     {
         if (Session::get('login')) {
             
-            $jadwal = DB::table('jadwal_terapis')->select('jadwal_terapis.*')->join('h_rekam_medis', 'jadwal_terapis.id_asses', '=', 'h_rekam_medis.id_asses')->where('h_rekam_medis.id_rm', $id)->whereNotIn('id_jadwal', DB::table('d_rekam_medis')->pluck('id_jadwal'))->where('status_terapis',  '=', 'Hadir')->get();
-            $detail = DetailRekamMedis::join('jadwal_terapis', 'd_rekam_medis.id_jadwal', '=', 'jadwal_terapis.id_jadwal')->where('id_rm', $id)->get();
+            $jadwal = DB::table('jadwal_terapis')
+            ->select('jadwal_terapis.*', 'terapi_pasien.id_terapi')
+            ->join('h_rekam_medis', 'jadwal_terapis.id_asses', '=', 'h_rekam_medis.id_asses')
+            ->join('terapi_pasien', 'terapi_pasien.id_terapipasien','=','jadwal_terapis.id_terapipasien')
+            ->where('h_rekam_medis.id_rm', $id)
+            ->whereNotIn('id_jadwal', DB::table('d_rekam_medis')
+            ->pluck('id_jadwal'))->where('status_terapis',  '=', 'Alpha')
+            ->get();
+
+            $detail = DetailRekamMedis::join('jadwal_terapis', 'd_rekam_medis.id_jadwal', '=', 'jadwal_terapis.id_jadwal')
+            ->join('terapi_pasien', 'terapi_pasien.id_terapipasien','=','jadwal_terapis.id_terapipasien')
+            ->where('id_rm', $id)
+            ->get();
+
             return view('rekam_medis.detail_rekamedis', [
                 'detail' => $detail,
                 'id_rm' => $id,
                 'jadwal' => $jadwal
             ]);
         }else{
-            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(1400);
             return redirect('/login');
         }
     }
@@ -116,10 +128,10 @@ class detail_rekam_medis extends Controller
             $hapus = DetailRekamMedis::where('id_sesirm', $id);
             $hapus->delete();
 
-            Alert::success('Data berhasil dihapus')->autoclose(3500);
+            Alert::success('Data berhasil dihapus')->autoclose(1400);
             return redirect('detail_rekam_medis/'.$r->id_rm);
         }else{
-            Alert::error('Silahkan login terlebih dahulu!')->autoclose(3500);
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(1400);
             return redirect('/login');
         }
     }

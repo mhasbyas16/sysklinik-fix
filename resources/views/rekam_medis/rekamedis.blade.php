@@ -58,7 +58,7 @@
                     <td>{{$no}}</td>
                     <td><a href="{{ url('detail_rekam_medis/'.$list_rm->id_rm) }}">{{ $list_rm->id_rm }}</a></td>
                     <td>{{ $list_rm->nama }}</td>
-                    <td>{{ $list_rm->terapi }}</td>
+                    <td>{{ $a }}</td>
                     <td>{{ $list_rm->diagnosa }}</td>
                     <td>
                       <a href="{{url('rekam_medis/'.$list_rm->id_rm.'/edit')}}" class="col-md-3 btn btn-primary">Edit</a> 

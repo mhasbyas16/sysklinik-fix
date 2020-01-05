@@ -48,7 +48,7 @@
                 <div class = "row">
                   <div class = "col-xs-8 col-md-12 text-left">
                       <div class = "form-group col-md-12">
-                          
+                          <label><input type="text" name="jdid" value="{{$tabel->id_jadwal}}" hidden></label>
                           <div class = "col-sm-3">
                             <select class = "form-control select2" style="width: 100%;" name="keterangan" id="keterangan" value="{{$tabel->keterangan}}" required>
                             <option value = "">{{$tabel->keterangan}}</option>

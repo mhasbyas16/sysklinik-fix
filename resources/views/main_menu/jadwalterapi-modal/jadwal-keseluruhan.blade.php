@@ -19,8 +19,9 @@
                   <th>Jam</th>
                   <th>Terapis</th>
                   <th>Pasien</th>
-                  <th>Jenis Terapi</th>
+                  <!-- <th>Jenis Terapi</th> -->
                   <th>Keterangan</th>
+                  <th>Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,8 +35,18 @@
                     <td>{{$data->jam_masuk}} - {{$data->jam_keluar}}</td>
                     <td>{{$data->nama}}</td>
                     <td>{{$data->namaP}}</td>
-                    <td>{{$data->id_terapi}}</td>
+                    <!-- <td>{{$data->id_terapi}}</td> -->
                     <td>{{$data->keterangan}}</td>
+                    <td>
+                      <div class="inline">
+                        <a class="btn btn-warning btn-sm" href="{{url('/edit_jadwal')}}/{{$data->id_jadwal}}">
+                          Edit
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="{{url('/jadwal-terapi/hapus')}}/{{$data->id_jadwal}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data Ini {{$data->id_jadwal}}?')">
+                          Hapus
+                        </a>
+                      </div>
+                    </td>
                   </tr>
                   @php
                     $no++;
@@ -49,8 +60,9 @@
                   <th>Jam</th>
                   <th>Terapis</th>
                   <th>Pasien</th>
-                  <th>Jenis Terapi</th>
+                  <!-- <th>Jenis Terapi</th> -->
                   <th>Keterangan</th>
+                  <th>Aksi</th>
                 </tr>
                 </tfoot>
               </table>

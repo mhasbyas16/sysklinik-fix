@@ -19,7 +19,7 @@
           <!-- jQuery Knob -->
           <div class = "box box-solid">
             <!-- /.box-header -->
-            <form method = "post"  action="{{url('/tambah_jadwal/store')}}" enctype="multipart/form-data" class="form-horizontal">
+            <form method = "post"  action="{{url('/edit_jadwal/store')}}" enctype="multipart/form-data" class="form-horizontal">
             {{ csrf_field() }}
               <div class = "box-body">
                 @if(\Session::has('alert-success'))
@@ -39,7 +39,7 @@
                 <div class = "row">
                   <div class = "col-xs-7 col-md-12 text-left">
                       <div class = "form-group">
-                        <label class = "col-sm-12"><h3>&nbsp;&nbsp;&nbsp;Atur Penjadwalan</h3>
+                        <label class = "col-sm-12"><h3>&nbsp;&nbsp;&nbsp;Atur Jadwal {{$tabel->namaP}}</h3>
                         <hr></label>
                       </div>
                   </div>
@@ -48,8 +48,10 @@
                 <div class = "row">
                   <div class = "col-xs-8 col-md-12 text-left">
                       <div class = "form-group col-md-12">
+                          
                           <div class = "col-sm-3">
-                            <select class = "form-control select2" style="width: 100%;" name="keterangan" id="keterangan" required>
+                            <select class = "form-control select2" style="width: 100%;" name="keterangan" id="keterangan" value="{{$tabel->keterangan}}" required>
+                            <option value = "">{{$tabel->keterangan}}</option>
                             <option value = "null">-- Pilih --</option>
                             @foreach($ket as $ket)
                             <option value = "{{$ket}}">{{$ket}}</option>
@@ -58,7 +60,8 @@
                           </div>
 
                           <div class = "col-sm-3">
-                              <select class = "form-control select2" style="width: 100%;" name="pasien" value=" " id="Pasien" required>
+                              <select class = "form-control select2" style="width: 100%;" name="pasien" value="{{$tabel->namaP}}" id="Pasien" required>
+                                <option value = "">{{$tabel->namaP}}</option>
                                 <option value = "null">-- Pilih --</option>
                                 @foreach ($j_terapi as $P)
                                 <option value = "{{$P->id_asses}}">{{$P->nama}}</option>    
@@ -89,15 +92,15 @@
                           </div>
 
                           <div class = "col-sm-3">
-                            <select class = "form-control select2" style="width: 100%;" name="Jterapi" id="J_Terapi" value=" " required>
-                              <option value = "null">-- Pilih --</option>
-                                @foreach ($isi as $P)
-                                <option value = "{{$P->id_terapipasien}}">{{$P->id_terapi}}</option>    
-                                @endforeach
+                            <select class = "form-control select2" style="width: 100%;" name="Jterapi" id="J_Terapi" value="{{$tabel->id_terapipasien}}" required>
+                                <option value = "">{{$tabel->id_terapi}}</option>
+                                <option value = "null">-- Pilih --</option>
+                                
                             </select>
                           </div>
                           <div class = "col-sm-3">
-                            <select class = "form-control select2" style="width: 100%;" name="terapis" id="terapiss" value=" " required>
+                            <select class = "form-control select2" style="width: 100%;" name="terapis" id="terapiss" value="{{$tabel->nama}}" required>
+                              <option value = "">{{$tabel->nama}}</option>
                               <option value = "null">-- Pilih --</option>
                               @foreach($terapis as $isi)
                               <option value = "{{$isi->id_pegawai}}">{{$isi->nama}}</option>
@@ -111,106 +114,30 @@
                             <div class = "input-group-addon">
                               <i class = "fa fa-calendar"></i>
                             </div>
-                            <input type = "text" class="form-control pull-right" value="" id="datepicker" placeholder="Tanggal" name="tgl" required>
+                            <input type = "text" class="form-control pull-right" value="{{$tabel->tglterapi}}" id="datepicker" placeholder="Tanggal" name="tgl" required>
                           </div>
                         </div>                      
                       
                         <div class = "col-sm-3">
-                            <input type = "time" class="form-control pull-right" value="" placeholder="jam Masuk" name="jam_masuk" required>
+                            <input type = "time" class="form-control pull-right" value="{{$tabel->jam_masuk}}" placeholder="jam Masuk" name="jam_masuk" required>
                         </div>
 
                         <div class = "col-sm-3">
-                            <input type = "time" class="form-control pull-right" value="" placeholder="jam keluar" name="jam_keluar" required>
+                            <input type = "time" class="form-control pull-right" value="{{$tabel->jam_keluar}}" placeholder="jam keluar" name="jam_keluar" required>
                         </div>
                         
                         <div class = "col-sm-3">
-                            <input type = "text" class="form-control pull-right" placeholder="Biaya" value="" name="biaya" required>
+                            <input type = "text" class="form-control pull-right" placeholder="Biaya" value="{{$tabel->biaya}}" name="biaya" required>
                         </div>
                       </div>
                   </div>
                   <div class = "row col-xs-12 col-md-12" style="padding-top: 20px; padding-bottom: 20px; padding-left: 40px">
                       <div class = "col-sm-1 text-left">
-                        <input type = "submit" class="btn btn-success" name="" value="Tambah">
+                        <input type = "submit" class="btn btn-success" name="" value="Update">
                       </div>
                       <div class = "col-sm-1 text-left">
-                        <a href = "{{url('/jadwal-terapi')}}"><div class="btn btn-danger">Batal</div></a>
+                        <a href = "{{url('/jadwal-terapi')}}"><div class="btn btn-danger">Batal</div></a> 
                       </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-xs-12">
-                    <hr>
-                    <div class="box box-solid">
-                      <div class="box-header">
-                        <i class="fa fa-bar-chart-o"></i>
-                        <h3 class="box-title">Preview Jadwal Terapi</h3>
-                      </div>
-                      <div class="box-body">
-                        <table id="tambahjadwal" class="table table-bordered table-striped text-center">
-                          <thead>
-                          <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Jam</th>
-                            <th>Terapis</th>
-                            <th>Pasien</th>
-                            <th>Jenis Terapi</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                            @php
-                              $no=1;
-                            @endphp
-                            @foreach($tabel as $data)
-                            <tr>
-                              <td>{{$no}}</td>
-                              <td>{{$data->tgl}}</td>
-                              <td>{{$data->jam_masuk}} - {{$data->jam_keluar}}</td>
-                              <td>{{$data->nama}}</td>
-                              <td>{{$data->namaP}}</td>
-                              <td>{{$data->id_terapi}}</td>
-                              <td>{{$data->keterangan}}</td>
-                              <td>
-                                <div class="inline">
-                                  <a class="btn btn-danger btn-sm" href="{{url('/jadwal-terapi/hapus')}}/{{$data->id_jadwal}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data Ini?')">
-                                    Hapus
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            @php
-                              $no++;
-                            @endphp
-                            @endforeach
-                          </tbody>
-                          <tfoot>
-                          <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Jam</th>
-                            <th>Terapis</th>
-                            <th>Pasien</th>
-                            <th>Jenis Terapi</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
-                          </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <!-- /.box-body -->
-                    </div>
-                  </div>
-                  <br>
-                  <div class="row col-xs-12 col-md-12" style="padding-top: 20px; padding-bottom: 20px">
-                    <!-- <div class="col-md-1 text-left">
-                      <input type="submit" class="btn btn-success" name="" value="Simpan">
-                    </div> -->
-                    <div class="col-md-1 text-left">
-                      <a href="{{url('/jadwal-terapi')}}"><div class="btn btn-warning">Keluar</div></a>
-                    </div>
                   </div>
                 </div>
               </div>

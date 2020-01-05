@@ -121,26 +121,32 @@ class printpage extends Controller
     public function sendEmail($id){
         if (Session::get('login')) {
             
-            $data = DB::table('request_dash')->select('*')->where('keterangan','Kuesioner')->where('status','Request')->where('id', $id)->groupBy('id_pasien', 'tgl');
+            $data = DB::table('request_dash')
+            ->select('request_dash.*')
+            ->where('keterangan','Kuesioner')
+            ->where('status','Request')
+            ->where('request_dash.id', $id)
+            ->groupBy('id_pasien', 'tgl');
+
             $dt = $data->first();
             $data = $data->get();
 
             Mail::send('sendemail', compact('data'), function($message) use($dt){
                 $message->priority('importance');
 
-                $message->to($dt->email)->subject('Your Kuesioner');
+                $message->to($dt->email)->subject('File Kuesioner Klinik Liliput');
                 
                 if ($dt->jenis_terapi == 'OT') {
-                    $message->attachData(asset('/kuesioner/KUISIONER_FISIOTERAPI.docx'), 'Kuesioner 1');
+                    $message->attachData(asset('kuisioner/KUISIONER_FISIOTERAPI.pdf'), 'Kuesioner 1');
                 }
                 if ($dt->jenis_terapi == 'TW') {
-                    $message->attachData(asset('/kuesioner/KUISIONER_OP.docx'), 'Kuesioner 2');
+                    $message->attachData(asset('kuisioner/KUISIONER_OP.pdf'), 'Kuesioner 2');
                 }
                 if ($dt->jenis_terapi == 'FT') {
-                    $message->attachData(asset('/kuesioner/KUISIONER_OTSI.docx'), 'Kuesioner 3');
+                    $message->attachData(asset('kuisioner/KUISIONER_OTSI.pdf'), 'Kuesioner 3');
                 }
                 if ($dt->jenis_terapi == 'OP') {
-                    $message->attachData(asset('/kuesioner/KUISIONER_WICARA.docx'), 'Kuesioner 4');
+                    $message->attachData(asset('kuisioner/KUISIONER_WICARA.pdf'), 'Kuesioner 4');
                 }
             });
 

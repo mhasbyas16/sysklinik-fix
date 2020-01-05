@@ -20,7 +20,11 @@ class Controller extends BaseController
             
 	    	$terapis = DB::table('h_pegawai')->select('id_pegawai')->where('h_pegawai.id_pegawai','like','T%')->count();
 	    	$pegawai = DB::table('h_pegawai')->select('id_pegawai')->where('h_pegawai.id_pegawai','like','K%')->count();
-	        $pasien=DB::table('h_pasien')->count();
+	        $all=DB::table('h_pasien')->count();
+	        $pasien=DB::table('h_pasien')
+	        ->join('assessment', 'assessment.id_pasien','=','h_pasien.id_pasien')
+	        ->join('terapi_pasien', 'terapi_pasien.id_asses','=','assessment.id_asses')
+	        ->count();
 	        $jenis = m_jenisterapi::all()->count();
 	        $r=DB::table('request_dash')->select('*')->where('keterangan','Asses')->get();
 	        $kue=DB::table('request_dash')->select('*')->where('keterangan','Kuesioner')->get();
@@ -68,6 +72,7 @@ class Controller extends BaseController
 	        return view('index', [
 	            'terapis'=>$terapis,
 	            'pegawai'=>$pegawai,
+	            'all'=>$all,
 	            'pasien'=>$pasien,
 	            'jenis'=>$jenis,
 	            'r'=>$r,
@@ -81,42 +86,48 @@ class Controller extends BaseController
         }
 	}
 
-	public function ubahstatus($id){
+	public function ubahstatusterima($id_pasien){
+
+		$data=DB::table('request_dash')
+        ->select('id_pasien')
+        ->where('id_pasien', $id_pasien)->first();
+
+        $cek=DB::table('request_dash')->where('id_pasien',$id_pasien)->count();
+	    if ($cek==0) {
+	        return redirect('/')->with('alertwarn','Data tidak ditemukan');
+	    }else {
+	      DB::table('request_dash')->where('id_pasien',$id_pasien)->update(['status' =>'Terima']);
+	      return redirect('/')->with('alertwarn','Berhasil diubah');
+	    }
+
+	}
+
+	public function ubahstatustolak($id){
 
 		$data=DB::table('request_dash')
         ->select('id_pasien')
         ->where('id_pasien', $id)->first();
 
-        $list= $request->input('status');
-
-		$data1=[
-            'status' => $list
-        ];
-
-        $cek=DB::table('h_pasien')->where('id_pasien',$id)->count();
+        $cek=DB::table('request_dash')->where('id_pasien',$id)->count();
 	    if ($cek==0) {
-	        return redirect('/data-terapis')->with('alertwarn','Data tidak ditemukan');
+	        return redirect('/')->with('alertwarn','Data tidak ditemukan');
 	    }else {
-	      //DB::table('h_pegawai')->where('id_pegawai',$id)->delete();
-	      DB::table('h_pasien')->where('id_pasien',$id)->update($data1);
-	      //return redirect('/data-terapis')->with('alertwarn','Berhasil Menghapus Data');
-	    //$apa=m_daftarpasien::where('id_pasien', $id);
-		//$apa->update($data1);
-		return redirect('/')->with('alertwarn','Berhasil');
+	      DB::table('request_dash')->where('id_pasien',$id)->update(['status' =>'Tolak']);
+	      return redirect('/')->with('alertwarn','Berhasil diubah');
 	    }
 
 	}
 
-	public function hapus($id){
+	public function hapus($id_pasien){
 		$data=DB::table('request_dash')
 	    ->select('id_pasien')
-	    ->where(['id_pasien'=>$id])->first();
+	    ->where(['id_pasien'=>$id_pasien])->first();
 
-	    $cek=DB::table('h_pasien')->where('id_pasien',$id)->count();
+	    $cek=DB::table('request_dash')->where('id_pasien',$id_pasien)->count();
 	    if ($cek==0) {
 	        return redirect('/')->with('alertwarn','Data tidak ditemukan');
 	    }else {
-	      DB::table('h_pasien')->where('id_pasien',$id)->delete();
+	      DB::table('request_dash')->where('id_pasien',$id_pasien)->delete();
 	      return redirect('/')->with('alertwarn','Berhasil Menghapus Data');
 	    }
 

@@ -46,7 +46,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3 value="{{$pasien}}">{{$pasien}}</h3>
+              <h3 value="{{$all}}">{{$all}}</h3>
 
               <p><a href="{{url('data-pasien')}}" style="color: white">Total Pasien</a></p>
             </div>
@@ -210,7 +210,7 @@
                   <div class="col-xs-12">
                     <br>
                       <div class="box-body">
-                        <table id="pegawaiis" class="table table-bordered table-striped text-center">
+                        <table id="assesnew" class="table table-bordered table-striped text-center">
                           <thead>
                           <tr>
                             <th>Tanggal</th>
@@ -231,12 +231,18 @@
                               <td>{{$x->status}}</td>
                               <td>
                                 <div class="inline">
-                                  <a href="#">
-                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#update" id="ubah">Ubah</button>
+                                  @if ($x->status == "Request")
+                                  <a class="btn btn-info btn-sm" href="{{url('/terima')}}/{{$x->id_pasien}}">
+                                    Terima
                                   </a>
-                                  <a href="{{url('/hapus')}}/{{$data->id_pasien}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data Ini?')">
-                                    <button type="button" class="btn btn-danger">Hapus</button>
+                                  <a class="btn btn-warning btn-sm" href="{{url('/tolak')}}/{{$x->id_pasien}}">
+                                    Tolak
                                   </a>
+                                  @else
+                                    <a class="btn btn-danger btn-sm" href="{{url('/hapus')}}/{{$x->id_pasien}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data Ini?')">
+                                      Hapus
+                                    </a>
+                                  @endif
                                 </div>
                               </td>
                             </tr>
@@ -259,7 +265,7 @@
                 </div>
             </div>
           </div>
-          <!-- /.nav-tabs-custom -->
+          <!--
           <form action="{{url('/ubahstatus')}}" method="post">
           <div class="modal" id="update">
               <div class="modal-dialog">
@@ -290,13 +296,22 @@
                 </div>
               </div>
           </div>
-          </form>
+          </form> -->
 
           @if(\Session::has('alertwarn'))
               <div class="alert alert-success">
                 <strong> Success </strong> {{Session::get('alert-success')}}
               </div>
             @endif
+
+            <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+            <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+            <script>
+                $(document).ready(function() {
+                    $('#assesnew').DataTable();
+                });
+            </script>
         </section>
       </div>
     </section>

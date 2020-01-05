@@ -15,20 +15,52 @@ class mainmenuController extends Controller
 
   //tambah jadwal dan asses
   public function tambah_jadwal(){
+    $tabel = DB::table('jadwal_terapis')
+    ->select('jadwal_terapis.*','d_pasien.nama as namaP','d_pegawai.nama','terapi_pasien.id_terapi')
+    ->join('terapi_pasien','terapi_pasien.id_terapipasien','=','jadwal_terapis.id_terapipasien')
+    ->join('d_pegawai','d_pegawai.id_pegawai','=','jadwal_terapis.id_pegawai')
+    ->leftJoin('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
+    ->leftJoin('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
+    //->where('jadwal_terapis.id_asses',$id)
+    ->get();
+    
     $terapis=DB::table('d_pegawai')->where('id_pegawai','like','T%')->get();
+
     $isi=DB::table('terapi_pasien')
     ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
-   ->get();
+    ->groupBy('terapi_pasien.id_terapi')
+    ->get();
+
+    /*$isi=DB::table('terapi_pasien')
+    ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
+    ->where('id_asses',$id)
+    ->get();*/
+
     $j_terapi=DB::table('terapi_pasien')
     ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
-    ->where('keterangan','Pasien')->get();
+    ->join('assessment','assessment.id_asses','=','terapi_pasien.id_asses')
+    ->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
+    ->where('keterangan','Pasien')
+    ->groupBy('d_pasien.id_pasien')
+    ->get();
+
     $pasien=DB::table('record_status_pasien')
     ->join('d_pasien','d_pasien.id_pasien','=','record_status_pasien.id_pasien')
-    ->where('record_status_pasien.keterangan','Pasien')->groupBy('d_pasien.id_pasien')->get();
+    ->where('record_status_pasien.keterangan','Pasien')
+    ->groupBy('d_pasien.id_pasien')
+    ->get();
+
+    $ket=[
+      'Terapi', 'Assesment', 'Evaluasi', 'Tambahan'
+    ];
+
     return view('main_menu.jadwal_tambah',[
       'terapis'=>$terapis,
       'j_terapi'=>$j_terapi,
-      'pasien'=>$pasien
+      'pasien'=>$pasien,
+      'tabel'=>$tabel,
+      'isi'=>$isi,
+      'ket'=>$ket
     ]);
   }
 
@@ -40,6 +72,7 @@ class mainmenuController extends Controller
     $jam_keluar = $req->jam_keluar;
     $terapis = $req->terapis;
     $biaya = $req->biaya;
+    $ket = $req->keterangan;
 
     $in=[
       'id_pegawai'=>$terapis,
@@ -48,32 +81,117 @@ class mainmenuController extends Controller
       'tgl'=>$tgl,
       'jam_masuk'=>$jam_masuk,
       'jam_keluar'=>$jam_keluar,
-      'keterangan'=>'Terapi',
+      'keterangan'=>$ket,
       'biaya'=>$biaya,
       'status_pasien'=>'Alpha',
       'status_terapis'=>'Alpha',
       'status'=>'Baru'
     ];
-    $isi=DB::table('jadwal_terapis')->insert($in);
-    if ($isi) {
+    DB::table('jadwal_terapis')->insert($in);
+    return redirect()->back()->with('alert-success','Success');
+    /*if ($isi) {
       return redirect('/jadwal-terapi');
     }else{
       return redirect()->back()->with('alert','gagal menyimpan data');
-    }
+    }*/
+  }
 
+  public function edit_jadwal($id_jadwal){
+    $tabel = DB::table('jadwal_terapis')
+    ->select('jadwal_terapis.*','jadwal_terapis.tgl as tglterapi','d_pasien.nama as namaP','d_pegawai.nama','terapi_pasien.id_terapi')
+    ->join('d_pegawai','d_pegawai.id_pegawai','=','jadwal_terapis.id_pegawai')
+    ->join('terapi_pasien','terapi_pasien.id_terapipasien','=','jadwal_terapis.id_terapipasien')
+    ->leftJoin('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
+    ->leftJoin('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
+    ->where('jadwal_terapis.id_jadwal',$id_jadwal)
+    ->first();
+
+    /*$data=DB::table('d_pasien')
+    ->leftJoin('h_pasien','h_pasien.id_pasien','=','d_pasien.id_pasien')
+    ->leftJoin('record_status_pasien','record_status_pasien.id_pasien','=','h_pasien.id_pasien')
+    ->leftJoin('assessment','assessment.id_pasien','=','d_pasien.id_pasien')
+    ->where('d_pasien.id_pasien',$id)->orderBY('record_status_pasien.id_status','desc')->first();*/
+    
+    $terapis=DB::table('d_pegawai')->where('id_pegawai','like','T%')->get();
+
+    $isi=DB::table('terapi_pasien')
+    ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
+    ->groupBy('terapi_pasien.id_terapi')
+    ->get();
+
+    $j_terapi=DB::table('terapi_pasien')
+    ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
+    ->join('assessment','assessment.id_asses','=','terapi_pasien.id_asses')
+    ->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
+    ->where('keterangan','Pasien')
+    ->groupBy('d_pasien.id_pasien')
+    ->get();
+
+    $pasien=DB::table('record_status_pasien')
+    ->join('d_pasien','d_pasien.id_pasien','=','record_status_pasien.id_pasien')
+    ->where('record_status_pasien.keterangan','Pasien')
+    ->groupBy('d_pasien.id_pasien')
+    ->get();
+
+    $ket=[
+      'Terapi', 'Assesment', 'Evaluasi', 'Tambahan'
+    ];
+
+    return view('main_menu.jadwal_edit',[
+      'terapis'=>$terapis,
+      'j_terapi'=>$j_terapi,
+      'pasien'=>$pasien,
+      'tabel'=>$tabel,
+      'isi'=>$isi,
+      'ket'=>$ket
+    ]);
+  }
+
+  public function edit_jadwal_store(Request $req){
+    $id_jadwal = $req->jdid;
+    $id_pasien = $req->pasien;
+    $Jterapi = $req->Jterapi;
+    $tgl = $req->tgl;
+    $jam_masuk = $req->jam_masuk;
+    $jam_keluar = $req->jam_keluar;
+    $terapis = $req->terapis;
+    $biaya = $req->biaya;
+    $ket = $req->keterangan;
+
+    $in=[
+      'id_pegawai'=>$terapis,
+      'id_asses'=>$id_pasien,
+      'id_terapipasien'=>$Jterapi,
+      'tgl'=>$tgl,
+      'jam_masuk'=>$jam_masuk,
+      'jam_keluar'=>$jam_keluar,
+      'keterangan'=>$ket,
+      'biaya'=>$biaya,
+      'status_pasien'=>'Alpha',
+      'status_terapis'=>'Alpha',
+      'status'=>'Baru'
+    ];
+    DB::table('jadwal_terapis')->where('id_jadwal',$id_jadwal)->update($in);
+    return redirect('/jadwal-terapi')->with('alert-success','Success');
+    /*if ($isi) {
+      return redirect('/jadwal-terapi');
+    }else{
+      return redirect()->back()->with('alert','gagal menyimpan data');
+    }*/
   }
 
   public function jterapiPasien(Request $req){
     $id=$req->id_asses;
     $j_terapi=DB::table('terapi_pasien')
     ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
-    ->where('keterangan','Pasien')->where('id_asses',$id)->get();
+    ->where('id_asses',$id)
+    ->groupBy('terapi_pasien.id_terapi')
+    ->get();
    // $j_terapi=json_decode($j_terapi2,true);
     return response()->json(['j_terapi'=>$j_terapi]);
-
   }
 
-  public function store_tambah(){
+  /*public function store_tambah(){
     $id_terapi=$req->Jterapi;
     $jam_masuk=$req->jam_masuk;
     $jam_keluar=$req->jam_keluar;
@@ -125,10 +243,15 @@ class mainmenuController extends Controller
     RekamMedis::insert($data);
 
     return redirect('jadwal-terapi');
-  }
+  }*/
 
   public function tambah_asses(){
-    $pasien=DB::table('assessment')->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')->where('status_pasien','Pasien')->get();
+    $pasien=DB::table('assessment')
+    ->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
+    ->join('record_status_pasien','record_status_pasien.id_pasien','=','assessment.id_pasien')
+    ->where('status_pasien','Pasien')
+    ->where('status_pasien','Lulus')
+    ->get();
     $kar=DB::table('d_pegawai')->orderBy('nama','asc')->get();
     $j_terapi=DB::table('jenis_terapi')->orderBY('terapi','asc')->get();
     $status=[
@@ -282,8 +405,7 @@ class mainmenuController extends Controller
       'sumKaryawanT'=>$sumKaryawanT,
       'awal'=>$awal,
       'akhir'=>$akhir]);
-    }
-    
+    }   
   }
 
 //jadwal Evaluasi
@@ -304,6 +426,7 @@ public function jadwalevaluasi(){
   return view ('main_menu.jadwaleval',[
     'isi'=>$isi]);
 }
+
 public function jadwalevaluasifilter(Request $req){
   $min=$req->min;
   $max=$req->max;
@@ -388,7 +511,8 @@ public function jadwalevaluasifilter(Request $req){
       'Daftar',
       'Cancel',
       'Asses',
-      'Pasien'
+      'Pasien',
+      'Lulus'
     ];
     if ($bulan_now>=$bulan) {
       $diff=$tahun_now-$tahun;
@@ -517,10 +641,10 @@ public function jadwalevaluasifilter(Request $req){
       'pend_ibu'=>$pendTerakhir_I,
       'pekerjaan_ibu'=>$pekerjaan_I,
       'tlp_ibu'=>$noTelp_I,
-      'email_ibu'=>$email_I,
+      'email_ibu'=>$email_I
     ];
 
-
+    //update data assessment
     $cariA=DB::table('assessment')->where('id_pasien',$id_pasien);
     if ($cariA->count()==0) {
       DB::table('assessment')->insert($data_A);
@@ -535,25 +659,116 @@ public function jadwalevaluasifilter(Request $req){
       'keterangan'=>$status,
       'tgl'=>$now
     ];
-      DB::table('d_pasien')->where('id_pasien',$id_pasien)->update($data_DP);
 
-      DB::table('daftar')->where('id_pasien',$id_pasien)->orderBY('id_daftar','desc')->limit('1')->update(['status'=>'1']);
-      DB::table('record_status_pasien')->insert($record);
-      if ($req->J_terapi=="") {
-
-      }else{
-        foreach ($req->J_terapi as $J_terapi) {
-          $T_pasien=[
-            'id_asses'=>$id_asses->id_asses,
-            'id_terapi'=>$J_terapi,
-            'status'=>'0',
-            'keterangan'=>'Asses'
-          ];
-          DB::table('terapi_pasien')->insert($T_pasien);
-        }
+    //update data
+    DB::table('d_pasien')->where('id_pasien',$id_pasien)->update($data_DP);
+    DB::table('daftar')->where('id_pasien',$id_pasien)->orderBY('id_daftar','desc')->limit('1')->update(['status'=>'1']);
+    DB::table('record_status_pasien')->insert($record);
+    
+    //simpat jenis terapi pasien
+    /*if ($req->J_terapi=="") {
+    }else{
+      foreach ($req->J_terapi as $J_terapii) {
+        $T_pasien=[
+          'id_asses'=>$id_asses->id_asses,
+          'id_terapi'=>$J_terapii,
+          'status'=>'0',
+          'keterangan'=>'Asses'
+        ];
+        DB::table('terapi_pasien')->insert($T_pasien);
       }
+    }*/
 
-      return redirect ('/register-list');
+    $cek=DB::table('terapi_pasien')->where('id_asses',$id_asses->id_asses)->where('id_terapi',$req->J_terapi)->count();
+      if ($cek==0) {
+        if ($req->J_terapi=="") {
+        }else{
+          foreach ($req->J_terapi as $J_terapi) {
+            $T_pasien=[
+              'id_asses'=>$id_asses->id_asses,
+              'id_terapi'=>$J_terapi,
+              'status'=>'0',
+              'keterangan'=>'Asses'
+            ];
+            DB::table('terapi_pasien')->insert($T_pasien);
+          }
+        }
+      }else {
+        DB::table('terapi_pasien')->where('id_asses',$id_asses->id_asses)->where('id_terapi',$req->J_terapi)->delete();
+      }
+      
+    return redirect ('/jadwal-terapi');
+
+  }
+
+  public function datapasiendata($id){
+    $data=DB::table('d_pasien')
+    ->leftJoin('h_pasien','h_pasien.id_pasien','=','d_pasien.id_pasien')
+    ->leftJoin('record_status_pasien','record_status_pasien.id_pasien','=','h_pasien.id_pasien')
+    ->leftJoin('assessment','assessment.id_pasien','=','d_pasien.id_pasien')
+    ->where('d_pasien.id_pasien',$id)->orderBY('record_status_pasien.id_status','desc')->first();
+
+    $dataa=DB::table('d_pasien')
+    ->leftJoin('h_pasien','h_pasien.id_pasien','=','d_pasien.id_pasien')
+    ->leftJoin('record_status_pasien','record_status_pasien.id_pasien','=','h_pasien.id_pasien')
+    ->leftJoin('assessment','assessment.id_pasien','=','d_pasien.id_pasien')
+    ->join('terapi_pasien', 'terapi_pasien.id_asses','=','assessment.id_asses')
+    ->where('d_pasien.id_pasien',$id)
+    ->orderBY('record_status_pasien.id_status','desc')
+    ->orderBY('terapi_pasien.id_asses')
+    ->first();
+
+    //$dataasses=$data->orderBY('terapi_pasien.id_asses')->first();
+
+    $assessment=DB::table('assessment');
+    $count=$assessment->where('id_pasien',$id)->count();
+    //lahir
+    $tgl_lahir=explode('-',$data->tgl_lahir);
+    $tahun=$tgl_lahir[0];
+    $bulan=$tgl_lahir[1];
+    $tahun_now=date('Y');
+    $bulan_now=date('m');
+    $agama=[
+      'Islam',
+      'Kristen',
+      'Katolik',
+      'Protestan',
+      'Hindu',
+      'Buddha'
+    ];
+    $status=[
+      'Daftar',
+      'Cancel',
+      'Asses',
+      'Pasien',
+      'Lulus'
+    ];
+    if ($bulan_now>=$bulan) {
+      $diff=$tahun_now-$tahun;
+    }else{
+      $diff=$tahun_now-$tahun-1;
+    }
+    $umur=$diff;
+
+    $kar=DB::table('d_pegawai')->orderBy('nama','asc')->get();
+    $j_terapi=DB::table('jenis_terapi')->orderBY('terapi','asc')->get();
+    if ($count==0) {
+      $isiA='';
+    }else {
+      $isiA=$assessment
+      ->where('id_pasien',$id)->first();
+    }
+    return view ('data_master.data_pasien',[
+      'data'=>$data,
+      'kar'=>$kar,
+      'j_terapi'=>$j_terapi,
+      'id'=>$id,
+      'umur'=>$umur,
+      'isiA'=>$isiA,
+      'count'=>$count,
+      'agama'=>$agama,
+      'status'=>$status
+    ]);
   }
 
   public function datapasienupdate(request $req){
@@ -677,18 +892,23 @@ public function jadwalevaluasifilter(Request $req){
 
       DB::table('daftar')->where('id_pasien',$id_pasien)->orderBY('id_daftar','desc')->limit('1')->update(['status'=>'1']);
       DB::table('record_status_pasien')->insert($record);
-      if ($req->J_terapi=="") {
 
-      }else{
-        foreach ($req->J_terapi as $J_terapi) {
-          $T_pasien=[
-            'id_asses'=>$id_asses->id_asses,
-            'id_terapi'=>$J_terapi,
-            'status'=>'0',
-            'keterangan'=>'Asses'
-          ];
-          DB::table('terapi_pasien')->insert($T_pasien);
+      $cek=DB::table('terapi_pasien')->where('id_asses',$id_asses->id_asses)->where('id_terapi',$req->J_terapi)->count();
+      if ($cek==0) {
+        if ($req->J_terapi=="") {
+        }else{
+          foreach ($req->J_terapi as $J_terapi) {
+            $T_pasien=[
+              'id_asses'=>$id_asses->id_asses,
+              'id_terapi'=>$J_terapi,
+              'status'=>'0',
+              'keterangan'=>'Asses'
+            ];
+            DB::table('terapi_pasien')->insert($T_pasien);
+          }
         }
+      }else {
+        DB::table('terapi_pasien')->where('id_asses',$id_asses->id_asses)->where('id_terapi',$req->J_terapi)->delete();
       }
 
       return redirect ('/data-pasien');
@@ -706,7 +926,9 @@ public function jadwalevaluasifilter(Request $req){
     
     $isi=DB::table('terapi_pasien')
     ->join('jenis_terapi','jenis_terapi.id_terapi','=','terapi_pasien.id_terapi')
-    ->where('id_asses',$id)->get();
+    ->where('id_asses',$id)
+    ->groupBy('terapi_pasien.id_terapi')
+    ->get();
 
     $terapis=DB::table('d_pegawai')->where('id_pegawai','like','T%')->get();
 
@@ -747,7 +969,7 @@ public function jadwalevaluasifilter(Request $req){
         'jam_masuk'=>$masuk,
         'jam_keluar'=>$keluar,
         'keterangan'=>'Terapi',
-        'status_pasien'=>'Hadir'
+        'status_pasien'=>'Alpha'
       ];
 
       DB::table('assessment')->where('id_asses',$id_asses)->update(['status_pasien'=>'Pasien']);
@@ -772,6 +994,21 @@ public function jadwalevaluasifilter(Request $req){
     DB::table('h_rekam_medis')->insert($data);
 
     return redirect()->back();
+  }
+
+  public function hapusjadwal_asses($id_jadwal){
+    $data=DB::table('jadwal_terapis')
+      ->select('id_jadwal')
+      ->where(['id_jadwal'=>$id_jadwal])->first();
+
+      $cek=DB::table('jadwal_terapis')->where('id_jadwal',$id_jadwal)->count();
+      if ($cek==0) {
+          return redirect()->back()->with('alertwarn','Data tidak ditemukan');
+      }else {
+        DB::table('jadwal_terapis')->where('id_jadwal',$id_jadwal)->delete();
+        return redirect()->back()->with('alertwarn','Berhasil Menghapus Data');
+      }
+
   }
 
   public function jadwalterapi(){

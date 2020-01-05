@@ -33,9 +33,12 @@ Route::get('/absensi/export/{awal}/{akhir}/{validate}','mainmenuController@expor
 Route::get('/jadwal-terapi','mainmenuController@jadwalterapi');
 Route::get('/jadwal-terapi/asses/{id}','mainmenuController@jadwalasses');
 Route::post('/jadwal-terapi/add','mainmenuController@addjadwal');
+Route::get('/jadwal-terapi/hapus/{id}','mainmenuController@hapusjadwal_asses');
 Route::get('/jadwal-terapi/{idJ}/{id}/{validate}/{type}','mainmenuController@validatejadwal')->name('jadwal_validate');
 
 Route::get('/tambah_jadwal', 'mainmenuController@tambah_jadwal');
+Route::get('/edit_jadwal/{id}', 'mainmenuController@edit_jadwal');
+Route::post('/edit_jadwal/store', 'mainmenuController@edit_jadwal_store');
 Route::post('/tambah_jadwal/store', 'mainmenuController@tambah_jadwal_store');
 Route::get('/tambah_asses', 'mainmenuController@tambah_asses');
 Route::post('/store_asses','mainmenuController@store_asses');
@@ -45,7 +48,7 @@ Route::get('/jadwal-evaluasi','mainmenuController@jadwalevaluasi');
 Route::post('/jadwal-evaluasi/filter-date','mainmenuController@jadwalevaluasifilter');
 //Data Pasien
 Route::get('/data-pasien','datamasterController@datapasien');
-Route::get('/data-pasien/view/{id}','mainmenuController@registerlistdata');
+Route::get('/data-pasien/view/{id}','mainmenuController@datapasiendata');
 Route::post('/data-pasien/update','mainmenuController@datapasienupdate');
 Route::get('/data-pasien/record/{id}','datamasterController@recordpasien');
 //Data Karyawan
@@ -110,7 +113,8 @@ Route::get('/merk/{id}','alatterapi@merkAjax');
 Route::get('/ambil/{id}','alatterapi@merkAjax');
 
 //dashboard asses baru
-Route::get('/ubahstatus/{id}','Controller@ubahstatus');
-Route::post('/hapus/{id}','Controller@hapus');
+Route::get('/terima/{id}','Controller@ubahstatusterima');
+Route::get('/tolak/{id}','Controller@ubahstatustolak');
+Route::get('/hapus/{id}','Controller@hapus');
 
 // ------------------------------------ DINDIN PART END ---------------------------------- //

@@ -5,8 +5,8 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Main Menu
-        <small>Register List</small>
+        Data Master
+        <small>Detail Data Pasien</small>
       </h1>
       <!--
       <ol class="breadcrumb">

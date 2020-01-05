@@ -35,7 +35,6 @@ class rekam_medis extends Controller
             $a = DB::table('terapi_pasien')
             ->select('terapi_pasien.id_terapi')
             ->join('h_rekam_medis', 'terapi_pasien.id_asses', '=', 'h_rekam_medis.id_asses')
-            ->where('terapi_pasien.id_asses','h_rekam_medis.id_asses')
             ->get();
 
             $update = DB::table('h_rekam_medis')->where('status', 'Baru')->update(['status' => 'Lama']);

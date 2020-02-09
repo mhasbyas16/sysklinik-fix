@@ -40,6 +40,7 @@
                     <thead>
                     <tr>
                       <th>No</th>
+                      <th>ID Pasien</th>
                       <th>Nama</th>
                       <th>ID Asses</th>
                       <th>Assesor</th>
@@ -54,6 +55,7 @@
                       @foreach($data as $data)
                       <tr>
                         <td>{{$no}}</td>
+                        <td>{{$data->id_pasien}}</td>
                         <td>{{$data->namaPAS}}</td>
                         <td>{{$data->id_asses}}</td>
                         <td>{{$data->namaPEG}}</td>
@@ -113,6 +115,7 @@ email         : {{$data->email}}
                     <tfoot>
                     <tr>
                         <th>No</th>
+                        <th>ID Pasien</th>
                         <th>Nama</th>
                         <th>ID Asses</th>
                         <th>Assesor</th>

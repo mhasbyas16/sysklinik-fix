@@ -232,14 +232,14 @@
                               <td>
                                 <div class="inline">
                                   @if ($x->status == "Request")
-                                  <a class="btn btn-info btn-sm" href="{{url('/terima')}}/{{$x->id_pasien}}">
+                                  <a class="btn btn-info btn-sm" href="{{url('/terima/asses')}}/{{$x->id}}">
                                     Terima
                                   </a>
-                                  <a class="btn btn-warning btn-sm" href="{{url('/tolak')}}/{{$x->id_pasien}}">
+                                  <a class="btn btn-warning btn-sm" href="{{url('/tolak/asses')}}/{{$x->id}}">
                                     Tolak
                                   </a>
                                   @else
-                                    <a class="btn btn-danger btn-sm" href="{{url('/hapus')}}/{{$x->id_pasien}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data Ini?')">
+                                    <a class="btn btn-danger btn-sm" href="{{url('/hapus')}}/{{$x->id}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data Ini?')">
                                       Hapus
                                     </a>
                                   @endif

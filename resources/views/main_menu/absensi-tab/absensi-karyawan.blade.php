@@ -42,7 +42,7 @@
                   </tr>
                 </tbody></table>
                 <br>
-                <table id="absensiKaryawan" class="display text-center" style="width:100%;" >
+                <table id="absen3" class="display text-center" style="width:100%;" >
                   <thead>
                     <tr>
                       <th>No</th>

@@ -1,9 +1,6 @@
 @extends('template.style')
 @section('isi')
-<script>
-</script>
   <div class = "content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class = "content-header">
       <h1>
         Tambah Jadwal Terapi
@@ -11,14 +8,10 @@
       </h1>
     </section>
 
-    <!-- Main content -->
     <section class = "content">
-   <!-- row -->
       <div class = "row">
         <div class = "col-xs-12">
-          <!-- jQuery Knob -->
           <div class = "box box-solid">
-            <!-- /.box-header -->
             <form method = "post"  action="{{url('/tambah_jadwal/store')}}" enctype="multipart/form-data" class="form-horizontal">
             {{ csrf_field() }}
               <div class = "box-body">
@@ -49,18 +42,18 @@
                   <div class = "col-xs-8 col-md-12 text-left">
                       <div class = "form-group col-md-12">
                           <div class = "col-sm-3">
-                            <select class = "form-control select2" style="width: 100%;" name="keterangan" id="keterangan" required>
-                            <option value = "null">-- Pilih --</option>
-                            @foreach($ket as $ket)
-                            <option value = "{{$ket}}">{{$ket}}</option>
-                            @endforeach
+                            <select class = "form-control" style="width: 100%;" name="keterangan" id="keterangan" required>
+                              <option value = "null">-- Pilih --</option>
+                              @foreach($ket as $ket)
+                              <option value = "{{$ket}}">{{$ket}}</option>
+                              @endforeach
                             </select>
                           </div>
 
                           <div class = "col-sm-3">
-                              <select class = "form-control select2" style="width: 100%;" name="pasien" value=" " id="Pasien" required>
+                              <select class = "form-control" style="width: 100%;" name="pasien" value=" " id="Pasien" required>
                                 <option value = "null">-- Pilih --</option>
-                                @foreach ($j_terapi as $P)
+                                @foreach ($pasien as $P)
                                 <option value = "{{$P->id_asses}}">{{$P->nama}}</option>    
                                 @endforeach
                               </select>
@@ -80,7 +73,7 @@
                                       $('#J_Terapi').empty();
                                       $('#J_Terapi').append("<option value = 'null'>-- Pilih --</option>");
                                       $.each(result.j_terapi,function(key,value){
-                                       $('#J_Terapi').append("<option value = "+value.id_terapipasien+">"+value.id_terapi+"</option>");
+                                      $('#J_Terapi').append("<option value = "+value.id_terapipasien+">"+value.id_terapi+"</option>");
                                       });
                                     }});
                                   });
@@ -89,15 +82,15 @@
                           </div>
 
                           <div class = "col-sm-3">
-                            <select class = "form-control select2" style="width: 100%;" name="Jterapi" id="J_Terapi" value=" " required>
-                              <option value = "null">-- Pilih --</option>
+                            <select class = "form-control" style="width: 100%;" name="Jterapi" id="J_Terapi" value=" " required>
+                                <option value = "null">-- Pilih --</option>
                                 @foreach ($isi as $P)
                                 <option value = "{{$P->id_terapipasien}}">{{$P->id_terapi}}</option>    
                                 @endforeach
                             </select>
                           </div>
                           <div class = "col-sm-3">
-                            <select class = "form-control select2" style="width: 100%;" name="terapis" id="terapiss" value=" " required>
+                            <select class = "form-control" style="width: 100%;" name="terapis" id="terapiss" value=" " required>
                               <option value = "null">-- Pilih --</option>
                               @foreach($terapis as $isi)
                               <option value = "{{$isi->id_pegawai}}">{{$isi->nama}}</option>
@@ -116,15 +109,15 @@
                         </div>                      
                       
                         <div class = "col-sm-3">
-                            <input type = "time" class="form-control pull-right" value="" placeholder="jam Masuk" name="jam_masuk" required>
+                          <input type = "time" class="form-control pull-right" value="" placeholder="jam Masuk" name="jam_masuk" required>
                         </div>
 
                         <div class = "col-sm-3">
-                            <input type = "time" class="form-control pull-right" value="" placeholder="jam keluar" name="jam_keluar" required>
+                          <input type = "time" class="form-control pull-right" value="" placeholder="jam keluar" name="jam_keluar" required>
                         </div>
                         
                         <div class = "col-sm-3">
-                            <input type = "text" class="form-control pull-right" placeholder="Biaya" value="" name="biaya" required>
+                          <input type = "text" class="form-control pull-right" placeholder="Biaya" value="" name="biaya" required>
                         </div>
                       </div>
                   </div>
@@ -141,14 +134,9 @@
                 <div class="row">
                   <div class="col-xs-12">
                     <hr>
-                    <div class="box box-solid">
-                      <div class="box-header">
-                        <i class="fa fa-bar-chart-o"></i>
-                        <h3 class="box-title">Preview Jadwal Terapi</h3>
-                      </div>
-                      <div class="box-body">
-                        <table id="tambahjadwal" class="table table-bordered table-striped text-center">
-                          <thead>
+                    <br>
+                      <table id="tambah" class="table table-bordered table-striped text-center">
+                        <thead>
                           <tr>
                             <th>No</th>
                             <th>Tanggal</th>
@@ -159,8 +147,8 @@
                             <th>Keterangan</th>
                             <th>Aksi</th>
                           </tr>
-                          </thead>
-                          <tbody>
+                        </thead>
+                        <tbody>
                             @php
                               $no=1;
                             @endphp
@@ -185,8 +173,8 @@
                               $no++;
                             @endphp
                             @endforeach
-                          </tbody>
-                          <tfoot>
+                        </tbody>
+                        <tfoot>
                           <tr>
                             <th>No</th>
                             <th>Tanggal</th>
@@ -197,40 +185,30 @@
                             <th>Keterangan</th>
                             <th>Aksi</th>
                           </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <!-- /.box-body -->
-                    </div>
+                        </tfoot>
+                      </table>
                   </div>
                   <br>
                   <div class="row col-xs-12 col-md-12" style="padding-top: 20px; padding-bottom: 20px">
-                    <!-- <div class="col-md-1 text-left">
-                      <input type="submit" class="btn btn-success" name="" value="Simpan">
-                    </div> -->
                     <div class="col-md-1 text-left">
                       <a href="{{url('/jadwal-terapi')}}"><div class="btn btn-warning">Keluar</div></a>
                     </div>
                   </div>
                 </div>
               </div>
-        <!-- /.col -->
+            </form>
+          </div>
+        </div>
       </div>
-      <!-- /.row -->
-    </form>
-
-      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-      <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-
-      <script>
-          $(document).ready(function() {
-              $('#tambahjadwal').DataTable();
-          });
-      </script>
-
-    </section>
-    <!-- /.content -->
+    </section>    
   </div>
-</div>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+  <script>
+      $(document).ready(function() {
+          $('#tambah').DataTable();
+      });
+  </script>
 
 @endsection

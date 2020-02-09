@@ -41,6 +41,7 @@
   <link rel="stylesheet" href="{{asset('AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{asset('AdminLTE/bower_components/datatables.net/css/jquery.dataTables.min.css')}}">
   <link rel="stylesheet" href="{{asset('AdminLTE/bower_components/datatables.net/css/buttons.dataTables.min.css')}}">
+  <script src="{{ asset('js/main.js') }}"></script>
   <!--fullcalendar--><!--
   <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
 -->
@@ -161,9 +162,38 @@ $(document).ready(function(){
         }
     });
 });
+
+$(function () {
+  $('#absen1, #absen2, #absen3').DataTable({
+    dom: 'Bfrtip',
+    buttons:[
+      {extend:'excelHtml5',
+       title:'Assesment Exportaa'},
+      {extend:'pdfHtml5',
+       title:'Assesment Exportaa'},
+       'print'],
+       select:true,
+        "pageLength": 20
+  });
+});
+
 //datatables assesment
 $(function () {
   $('#example1').DataTable({
+    dom: 'Bfrtip',
+    buttons:[
+      {extend:'excelHtml5',
+       title:'Assesment Exportaa'},
+      {extend:'pdfHtml5',
+       title:'Assesment Exportaa'},
+       'print'],
+       select:true,
+        "pageLength": 20
+  });
+});
+
+$(function () {
+  $('#example2').DataTable({
     dom: 'Bfrtip',
     buttons:[
       {extend:'excelHtml5',
@@ -294,5 +324,8 @@ $(function () {
 */
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+
+
+
 </body>
 </html>

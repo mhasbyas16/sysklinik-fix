@@ -347,7 +347,7 @@
                               <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Email</label>
 
                               <div class="col-sm-9">
-                                <input type="email" class="form-control" name="email_A" value="{{$data->email_ayah}}" maxlength="16" required>
+                                <input type="email" class="form-control" name="email_A" value="{{$data->email_ayah}}" required>
                               </div>
                             </div>
                         </div>
@@ -454,7 +454,7 @@
                               <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Email</label>
 
                               <div class="col-sm-9">
-                                <input type="email" class="form-control" value="{{$data->email_ibu}}" name="email_I" maxlength="16" required>
+                                <input type="email" class="form-control" value="{{$data->email_ibu}}" name="email_I" required>
                               </div>
                             </div>
                         </div>
@@ -547,7 +547,7 @@
                 <div class="button">
                     <ul style="padding-left: 680pt ">
                       <button type="submit" class="btn btn-success">Simpan</button>
-                      <a href="{{url('/jadwal-terapi')}}"><div class="btn btn-danger">Batal</div></a>
+                      <a href="{{url('/register-list')}}"><div class="btn btn-danger">Batal</div></a>
                     </ul>
                 </div>
             <br>

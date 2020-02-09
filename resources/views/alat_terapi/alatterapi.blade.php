@@ -91,19 +91,19 @@
                             </div>
                           </div>
                       </div>
-                    </div>     
+                    </div>      
 
                     <div class="row">
-                  <div class="col-xs-7 col-md-8 text-center">
-                      <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Stok Awal</label>
+                      <div class="col-xs-7 col-md-8 text-center">
+                          <div class="form-group">
+                            <label class="col-sm-4 control-label" style="text-align: left; padding-left: 40pt">Stok Awal</label>
 
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" name="stokawal" required>
-                        </div>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="stokawal" required>
+                            </div>
+                          </div>
                       </div>
-                  </div>
-                </div>
+                    </div>
                     
                     <div class="button">
                       <ul class="left" style="padding-left: 385pt ">
@@ -231,7 +231,7 @@
                   @foreach($at as $x)
                 <tr>
                   <td>{{$no}}</td>
-                  <td>{{$x->id_barang}}</td>
+                  <td><a href="{{url('alatterapi/'. $x->id_barang.'/edit')}}">{{$x->id_barang}}</td>
                   <td>{{$x->nama_barang}}</td>
                   <td>{{$x->stok_awal}}</td>
                   <td>

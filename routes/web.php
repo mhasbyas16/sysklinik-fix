@@ -1,17 +1,20 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// ---------------------------------------- ADD DINDIN --------------------------------------- //
 
+// Events
+Route::delete('events/destroy', 'EventsController@massDestroy')->name('events.massDestroy');
+Route::get('events/create', 'EventsController@create');
+Route::post('events/store', 'EventsController@store');
+Route::get('events/show/{event}', 'EventsController@show');
+Route::get('events/edit/{event}', 'EventsController@edit');
+Route::get('events/destroy/{event}', 'EventsController@destroy');
+Route::post('events/update/{event}', 'EventsController@update');
+   
+// Calendar 
+Route::get('system-calendar', 'SystemCalendarController@index')->name('admin.systemCalendar');
 
+// ------------------------------------------- MAIN ------------------------------------------ //
 
 //Dashboard
 Route::get('/', 'Controller@index');
@@ -46,6 +49,8 @@ Route::post('/jterapi_pasien','mainmenuController@jterapiPasien')->name("ajaxReq
 //jadwal Evaluasi
 Route::get('/jadwal-evaluasi','mainmenuController@jadwalevaluasi');
 Route::post('/jadwal-evaluasi/filter-date','mainmenuController@jadwalevaluasifilter');
+Route::get('/edit-eval/{id}','mainmenuController@editeval');
+Route::post('/jadwal-evaluasi/update/{id}','mainmenuController@jadwalevaluasiupdate');
 //Data Pasien
 Route::get('/data-pasien','datamasterController@datapasien');
 Route::get('/data-pasien/view/{id}','mainmenuController@datapasiendata');
@@ -96,6 +101,8 @@ Route::resource('setting', 'setting');
 Route::get('/print/billing/{id}', 'printpage@printBilling');
 Route::get('/send/billing/{id}', 'printpage@sendBilling');
 Route::get('/send/email/{id}', 'printpage@sendEmail');
+Route::get('/terima/asses/{id}', 'printpage@sendEmail_terimaasses');
+Route::get('/tolak/asses/{id}', 'printpage@sendEmail_tolakasses');
 Route::get('/print/laporan/{id}', 'printpage@printLaporanKeuangan');
 
 

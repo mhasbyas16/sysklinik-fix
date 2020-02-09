@@ -39,8 +39,11 @@
           </span>
         </a>
         <ul class="treeview-menu">
+          <li class="{{Request::is('absensi','absensi/*')?'active':''}}">
+            <a href="{{url('/absensi')}}"><i class="fa fa-circle-o"></i> Absensi</a>
+          </li>
           <li class="{{Request::is('register-list','register-list/*')?'active':''}}">
-            <a href="{{url('/register-list')}}"><i class="fa fa-circle-o"></i> Register List
+            <a href="{{url('/register-list')}}"><i class="fa fa-circle-o"></i> Request & Assesment
               @php
                 $h_regist = \DB::table('assessment')->where('status', 'Baru')->count();
               @endphp
@@ -51,13 +54,17 @@
               @endif</a>
             </a>
           </li>
-          <li class="{{Request::is('absensi','absensi/*')?'active':''}}">
-            <a href="{{url('/absensi')}}"><i class="fa fa-circle-o"></i> Absensi</a>
-          </li>
-          <li class="{{Request::is('jadwal-terapi')?'active':''}}">
+          <!-- <li class="{{Request::is('jadwal-terapi')?'active':''}}">
             <a href="{{url('/jadwal-terapi')}}"><i class="fa fa-circle-o"></i> Jadwal Terapi</a>
           </li>
-          <li class="{{Request::is('jadwal-evaluasi','jadwal-evaluasi/*')?'active':''}}">
+           -->
+           <li class="{{request()->is('admin/system-calendar') || request()->is('admin/system-calendar/*') ? 'active' : '' }}">
+            <a href="{{ route('admin.systemCalendar') }}" class="nav-link"><i class="fa fa-circle-o"></i> Jadwal Terapi</a>
+          </li>
+          <!-- <li class="">
+            <a href="{{ url('/events') }}" class="nav-link"><i class="fa fa-circle-o"></i> Event</a>
+          </li>
+           --><li class="{{Request::is('jadwal-evaluasi','jadwal-evaluasi/*')?'active':''}}">
             <a href="{{url('/jadwal-evaluasi')}}"><i class="fa fa-circle-o"></i> Jadwal Evaluasi 
             @php
               $h_jadwal = \DB::table('jadwal_terapis')->where('status', 'Baru')->count();

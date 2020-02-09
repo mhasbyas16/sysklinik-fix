@@ -44,14 +44,13 @@
                   </tr>
                 </tbody></table>
                 <br>
-                <table id="absensiPasien" class="display text-center" style="width:100%;" >
+                <table id="absen1" class="display text-center" style="width:100%;" >
                   <thead>
                     <tr>
                       <th>No</th>
                       <th>Nama</th>
-                      <th>Tanggal</th>
-                      <th>Jam Masuk</th>
-                      <th>Jam Keluar</th>
+                      <th>Tanggal & Jam Masuk</th>
+                      <th>Tanggal & Jam Keluar</th>
                       <th>ID Jadwal</th>
                       <th>Status</th>
                     </tr>
@@ -66,7 +65,6 @@
                         <td>{{$isi->nama}}</td>
                         <td>{{$isi->tgl}}</td>
                         <td>{{$isi->jam_masuk}}</td>
-                        <td>{{$isi->jam_keluar}}</td>
                         <td>{{$isi->id_jadwal}}</td>
                         <td>{{$isi->status_pasien}}</td>
                       </tr>
@@ -79,9 +77,8 @@
                     <tr>
                       <th>No</th>
                       <th>Nama</th>
-                      <th>Tanggal</th>
-                      <th>Jam Masuk</th>
-                      <th>Jam Keluar</th>
+                      <th>Tanggal & Jam Masuk</th>
+                      <th>Tanggal & Jam Keluar</th>
                       <th>ID Jadwal</th>
                       <th>Status</th>
                     </tr>

@@ -119,11 +119,7 @@
                         </div>                      
                       
                         <div class = "col-sm-3">
-                            <input type = "time" class="form-control pull-right" value="{{$tabel->jam_masuk}}" placeholder="jam Masuk" name="jam_masuk" required>
-                        </div>
-
-                        <div class = "col-sm-3">
-                            <input type = "time" class="form-control pull-right" value="{{$tabel->jam_keluar}}" placeholder="jam keluar" name="jam_keluar" required>
+                            <input type = "text" class="form-control pull-right" value="{{$tabel->jam_masuk}}" placeholder="jam Masuk" name="jam_masuk" required>
                         </div>
                         
                         <div class = "col-sm-3">
@@ -147,7 +143,7 @@
     </form>
 
       <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-      <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
       <script>
           $(document).ready(function() {

@@ -251,4 +251,9 @@ class Controller extends BaseController
 		return view('setting.setting');
 	}
 
+	
+    public function create()
+    {
+        return view('admin.events.create');
+    }
 }

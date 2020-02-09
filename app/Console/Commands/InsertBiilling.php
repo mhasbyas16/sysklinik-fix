@@ -52,7 +52,7 @@ class InsertBiilling extends Command
         $bill_header = DB::table('d_billing')->select('*')->get();
         foreach ($jadwal_header as $jh) {
             $id_bill = 'B'.date('YmdHis'); 
-            $h_pasien = DB::table('h_pasien')->select('h_pasien.keterangan', 'assessment.uang_pangkal', 'assessment.status_pasien', 'asses', 'evaluasi')->join('assessment', 'h_pasien.id_pasien', '=', 'assessment.id_pasien')->where('id_asses', $jh->id_asses)->first();
+            $h_pasien = DB::table('h_pasien')->select('assessment.uang_pangkal', 'assessment.status_pasien', 'asses', 'evaluasi')->join('assessment', 'h_pasien.id_pasien', '=', 'assessment.id_pasien')->where('id_asses', $jh->id_asses)->first();
 
 
             $bill_headerCount = DB::table('h_billing')->select('id_asses')->where('id_asses', $jh->id_asses)->count();
@@ -64,7 +64,7 @@ class InsertBiilling extends Command
                     'tgl' => date('Y-m-d'),
                     'id_bill' => $id_bill,
                     'id_asses' => $jh->id_asses,
-                    'uang_pangkal' => $uang_pangkal,
+                    'uang_pangkal' => $h_pasien->uang_pangkal,
                     'assessment' => $h_pasien->asses,
                     'evaluasi' => $h_pasien->evaluasi,
                     'biaya' => 0,

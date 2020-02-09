@@ -1,15 +1,12 @@
-<div role="tabpanel" class="tab-pane active" id="home">
+<!-- <div role="tabpanel" class="tab-pane active" id="home">
   <section class="content">
       <div class="row">
         <div class="col-xs-12">
-          <!-- jQuery Knob -->
           <div class="box box-solid">
             <div class="box-header">
               <i class="fa fa-bar-chart-o"></i>
               <h3 class="box-title">Tabel Jadwal Keseluruhan</h3>
             </div>
-
-            <!-- /.box-header -->
             <div class="box-body">
               <table id="pegawais" class="table table-bordered table-striped text-center">
                 <thead>
@@ -19,7 +16,6 @@
                   <th>Jam</th>
                   <th>Terapis</th>
                   <th>Pasien</th>
-                  <!-- <th>Jenis Terapi</th> -->
                   <th>Keterangan</th>
                   <th>Aksi</th>
                 </tr>
@@ -32,10 +28,9 @@
                   <tr>
                     <td>{{$no}}</td>
                     <td>{{$data->tgl}}</td>
-                    <td>{{$data->jam_masuk}} - {{$data->jam_keluar}}</td>
+                    <td>{{$data->jam_masuk}}</td>
                     <td>{{$data->nama}}</td>
                     <td>{{$data->namaP}}</td>
-                    <!-- <td>{{$data->id_terapi}}</td> -->
                     <td>{{$data->keterangan}}</td>
                     <td>
                       <div class="inline">
@@ -60,7 +55,6 @@
                   <th>Jam</th>
                   <th>Terapis</th>
                   <th>Pasien</th>
-                  <!-- <th>Jenis Terapi</th> -->
                   <th>Keterangan</th>
                   <th>Aksi</th>
                 </tr>
@@ -72,10 +66,64 @@
                 </a>
               </div>
             </div>
-            <!-- /.box-body -->
           </div>
         </div>
       </div><div class="container">
       </div>
+  </section>
+</div> -->
+
+<div role="tabpanel" class="tab-pane active" id="home">
+  <section class="content">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box box-solid">
+              <div class="box-header">
+                <i class="fa fa-bar-chart-o"></i>
+                <h3 class="box-title">Tabel Daftar Registrasi</h3>
+              </div>
+              <div class="box-body">
+                <br>
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>ID Pasien</th>
+                    <th>ID Asses</th>
+                    <th>Status</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    @php
+                      $no=1;
+                    @endphp
+                    @foreach($isi as $data)
+                    <tr>
+                      <td>{{$no}}</td>
+                      <td>{{$data->nama}}</td>
+                      <td>{{$data->id_pasien}}</td>
+                      <td>{{$data->id_asses}}</td>
+                      <td><a href="{{url('/register-list')}}/{{$data->id_pasien}}">{{$data->status_pasien}}</a></td>
+                    </tr>
+                    @php
+                      $no++;
+                    @endphp
+                    @endforeach
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                      <th>No</th>
+                      <th>Nama</th>
+                      <th>ID Pasien</th>
+                      <th>ID Asses</th>
+                      <th>Status</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
   </section>
 </div>

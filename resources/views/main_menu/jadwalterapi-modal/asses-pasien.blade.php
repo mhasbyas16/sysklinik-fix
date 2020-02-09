@@ -29,7 +29,7 @@
                     <td>{{$no}}</td>
                     <td><a href="{{url('/jadwal-terapi/asses')}}/{{$asses->id_asses}}">{{$asses->namaP}}</a></td>
                     <td>{{$asses->namaA}}</td>
-                    <td><a href="{{url('/register-list')}}/{{$asses->id_pasien}}">{{$asses->status_pasien}}</a></td>
+                    <td><!-- <a href="{{url('/register-list')}}/{{$asses->id_pasien}}"> -->{{$asses->status_pasien}}</a></td>
                   </tr>
                   @php
                     $no++;

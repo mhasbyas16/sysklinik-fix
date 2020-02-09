@@ -137,16 +137,16 @@ class printpage extends Controller
                 $message->to($dt->email)->subject('File Kuesioner Klinik Liliput');
                 
                 if ($dt->jenis_terapi == 'OT') {
-                    $message->attachData(asset('kuisioner/KUISIONER_FISIOTERAPI.pdf'), 'Kuesioner 1');
+                    $message->attachData(asset('/kuisioner/KUISIONER_FISIOTERAPI.pdf'), 'KUISIONER_FISIOTERAPI.pdf');
                 }
                 if ($dt->jenis_terapi == 'TW') {
-                    $message->attachData(asset('kuisioner/KUISIONER_OP.pdf'), 'Kuesioner 2');
+                    $message->attachData(asset('/kuisioner/KUISIONER_OP.pdf'), 'KUISIONER_OP.pdf');
                 }
                 if ($dt->jenis_terapi == 'FT') {
-                    $message->attachData(asset('kuisioner/KUISIONER_OTSI.pdf'), 'Kuesioner 3');
+                    $message->attachData(asset('/kuisioner/KUISIONER_OTSI.pdf'), 'KUISIONER_OTSI.pdf');
                 }
                 if ($dt->jenis_terapi == 'OP') {
-                    $message->attachData(asset('kuisioner/KUISIONER_WICARA.pdf'), 'Kuesioner 4');
+                    $message->attachData(asset('/kuisioner/KUISIONER_WICARA.pdf'), 'KUISIONER_WICARA.pdf');
                 }
             });
 
@@ -159,34 +159,58 @@ class printpage extends Controller
         }
     }
 
-    public function sendEmaill($id){
+    public function sendEmail_tolakasses($id){
         if (Session::get('login')) {
             
-            $data = DB::table('request_dash')->select('*')->where('keterangan','Kuesioner')->where('status','Request')->where('id', $id)->groupBy('id_pasien', 'tgl');
+            $data = DB::table('request_dash')
+            ->select('request_dash.*')
+            ->where('keterangan','Asses')
+            ->where('status','Request')
+            ->where('request_dash.id', $id)
+            ->groupBy('id_pasien', 'tgl');
+
             $dt = $data->first();
             $data = $data->get();
 
-            Mail::send('sendemail', compact('data'), function($message) use($dt){
+            Mail::send('emailtolak_asses', compact('data'), function($message) use($dt){
                 $message->priority('importance');
 
-                $message->to($dt->email)->subject('Your Kuesioner');
-                
-                if ($d->jenis_terapi == 'OT') {
-                    $message->attachData(asset('/kuesioner/KUISIONER FISIOTERAPI.docx'), 'Kuesioner 1');
-                }
-                if ($d->jenis_terapi == 'TW') {
-                    $message->attachData(asset('/kuesioner/KUISIONER OP.docx'), 'Kuesioner 2');
-                }
-                if ($d->jenis_terapi == 'FT') {
-                    $message->attachData(asset('/kuesioner/KUISIONER OTSI.docx'), 'Kuesioner 3');
-                }
-                if ($d->jenis_terapi == 'OP') {
-                    $message->attachData(asset('/kuesioner/KUISIONER WICARA.docx'), 'Kuesioner 4');
-                }
+                $message->to($dt->email)->subject('Assessment Request Responses');
             });
-            redirect('/');
+
+            DB::table('request_dash')->where('id', $id)->update(['status' =>'Terkirim']);
+            Alert::success('Kuisioner sudah terkirim!')->autoclose(1500);
+            return redirect('/');
         }else{
-            Alert::error('Silahkan login terlebih dahulu!')->autoclose(1500);
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(2000);
+            return redirect('/login');
+        }
+    }
+
+    public function sendEmail_terimaasses($id){
+        if (Session::get('login')) {
+            
+            $data = DB::table('request_dash')
+            ->select('request_dash.*')
+            ->where('keterangan','Asses')
+            ->where('status','Request')
+            ->where('request_dash.id', $id)
+            ->groupBy('id_pasien', 'tgl');
+
+            $dt = $data->first();
+            $data = $data->get();
+
+            Mail::send('emailterima_asses', compact('data'), function($message) use($dt){
+                $message->priority('importance');
+
+                $message->to($dt->email)->subject('Assessment Request Responses');
+            });
+
+            DB::table('request_dash')->where('id', $id)->update(['status' =>'Terkirim']);
+            Alert::success('Kuisioner sudah terkirim!')->autoclose(1500);
+            return redirect('/');
+        }else{
+            Alert::error('Silahkan login terlebih dahulu!')->autoclose(2000);
             return redirect('/login');
         }
     }

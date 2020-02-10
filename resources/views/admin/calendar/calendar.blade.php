@@ -53,7 +53,7 @@
                         <br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class=" table table-bordered table-striped table-hover datatable datatable-Event">
+                                <table id="tabb" class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th class="text-center">id</th>
@@ -177,4 +177,24 @@
     })
 
 </script>
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#tabb').DataTable({
+        dom: 'Bfrtip',
+        buttons:[
+          {extend:'excelHtml5',
+           title:'Assesment Export'},
+          {extend:'pdfHtml5',
+           title:'Assesment Export'},
+           'print'],
+           select:true
+      });
+      function goBack() {
+        window.history.back();
+      }
+      $('#max').on('keyup click change', function() {
+          table.draw();
+      } );
+  });
+  </script>
 @endsection

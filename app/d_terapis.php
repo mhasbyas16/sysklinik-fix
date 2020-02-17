@@ -4,12 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class assesment extends Model
+class d_terapis extends Model
 {
-    protected $table = 'assessment';
+    protected $table = 'd_pegawai';
 
     public function Event()
     {
         return $this->belongsTo('App\Event');
-    } 
+    }
 }

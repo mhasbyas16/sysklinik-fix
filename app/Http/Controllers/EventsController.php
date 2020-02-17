@@ -167,7 +167,15 @@ class EventsController extends Controller
     {
         /*abort_if(Gate::denies('event_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');*/
 
-        $event->load('event');
+        $events = Event::withCount('events')
+        ->select('jadwal_terapis.*','d_pasien.nama as namaP','d_pegawai.nama','terapi_pasien.id_terapi')
+        ->join('terapi_pasien','terapi_pasien.id_terapipasien','=','jadwal_terapis.id_terapipasien')
+        ->join('d_pegawai','d_pegawai.id_pegawai','=','jadwal_terapis.id_pegawai')
+        ->join('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
+        ->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
+        ->get();
+        
+        $event->load('events');
 
         return view('admin.events.show', compact('event'));
     }

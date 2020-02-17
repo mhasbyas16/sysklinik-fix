@@ -42,6 +42,21 @@ class Event extends Model
         'deleted_at',
     ];
 
+    public function assesment()
+    {
+        return $this->hasMany('App\assesment');
+    }
+
+    public function d_pasien()
+    {
+        return $this->hasMany('App\d_pasien');
+    }
+
+    public function d_terapis()
+    {
+        return $this->hasMany('App\d_terapis');
+    }    
+
     public function events()
     {
         return $this->hasMany(Event::class, 'jadwal_id', 'id_jadwal');

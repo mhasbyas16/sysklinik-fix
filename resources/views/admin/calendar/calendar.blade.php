@@ -31,7 +31,9 @@
               <div class="panel panel-default pt-3">
                 <div class="panel-heading">Kalender Baru</div>
                 <div class="panel-body">
-                  <div id='calendar'></div>
+                  <!-- <div id='calendar'></div> -->
+                  {!! $calendar->calendar() !!}
+                  {!! $calendar->script() !!}
                 </div>
               </div>
             </div>
@@ -104,19 +106,81 @@
     </div>
     <!-- /.content -->
   </div>
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css' />
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css' />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css' />
+    
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
+      -->   
+    
+    <link href='node_modules/@fullcalendar/core/main.css' rel='stylesheet' />
+    <link href='node_modules/@fullcalendar/daygrid/main.css' rel='stylesheet' />
+    <link href='node_modules/@fullcalendar/timegrid/main.css' rel='stylesheet' />
+    <link href='node_modules/@fullcalendar/list/main.css' rel='stylesheet' />
+    <script src='dist/example.js'></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        events={!! json_encode($events) !!};
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new _fullcalendar_core__WEBPACK_IMPORTED_MODULE_0__["Calendar"](calendarEl, {
+            plugins: [ _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_2__["default"], _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_3__["default"], _fullcalendar_list__WEBPACK_IMPORTED_MODULE_4__["default"] ],
+            header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            /*defaultDate: '2018-01-12',
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            */events: events,
+        });
+        calendar.render();
+    });
+    </script>                       
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          events={!! json_encode($events) !!};
+
+          var calendarEl = document.getElementById('calendar');
+
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
+            defaultView: 'dayGridMonth',
+            header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: events,
+          });
+
+          calendar.render();
+        });
+    </script>    -->
+
+    <!-- <script>
         $(document).ready(function () {
           events={!! json_encode($events) !!};
           $('#calendar').fullCalendar({
             // put your options and callbacks here
+            plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
+            defaultView: 'dayGridMonth',
+            header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
             events: events,
           })
         });
-    </script>
+    </script> -->
 
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
@@ -133,68 +197,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 
     <script>
-    $(function () {
-        let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-        
-            let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-            let deleteButton = {
-                text: deleteButtonTrans,
-                url: "{{ url('events.massDestroy') }}",
-                className: 'btn-danger',
-                action: function (e, dt, node, config) {
-                    var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-                    return $(entry).data('entry-id')
-                    });
+        $(function () {
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            
+                let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
+                let deleteButton = {
+                    text: deleteButtonTrans,
+                    url: "{{ url('events.massDestroy') }}",
+                    className: 'btn-danger',
+                    action: function (e, dt, node, config) {
+                        var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+                        return $(entry).data('entry-id')
+                        });
 
-                    if (ids.length === 0) {
-                        alert('{{ trans('global.datatables.zero_selected') }}')
-                        return
-                    }
+                        if (ids.length === 0) {
+                            alert('{{ trans('global.datatables.zero_selected') }}')
+                            return
+                        }
 
-                    if (confirm('{{ trans('global.areYouSure') }}')) {
-                        $.ajax({
-                          headers: {'x-csrf-token': _token},
-                          method: 'POST',
-                          url: config.url,
-                          data: { ids: ids, _method: 'DELETE' }
-                        })
-                        .done(function () { location.reload() })
+                        if (confirm('{{ trans('global.areYouSure') }}')) {
+                            $.ajax({
+                              headers: {'x-csrf-token': _token},
+                              method: 'POST',
+                              url: config.url,
+                              data: { ids: ids, _method: 'DELETE' }
+                            })
+                            .done(function () { location.reload() })
+                        }
                     }
                 }
-            }
-            dtButtons.push(deleteButton)
-       
-
-    $.extend(true, $.fn.dataTable.defaults, {
-        order: [[ 1, 'asc' ]],
-        pageLength: 100,
-    });
-    $('.datatable-Event:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-            $($.fn.dataTable.tables(true)).DataTable()
-                .columns.adjust();
+                dtButtons.push(deleteButton)
+           
+        $.extend(true, $.fn.dataTable.defaults, {
+            order: [[ 1, 'asc' ]],
+            pageLength: 100,
         });
-    })
 
-</script>
-<script type="text/javascript">
-  $(document).ready(function() {
-      $('#tabb').DataTable({
-        dom: 'Bfrtip',
-        buttons:[
-          {extend:'excelHtml5',
-           title:'Assesment Export'},
-          {extend:'pdfHtml5',
-           title:'Assesment Export'},
-           'print'],
-           select:true
+        $('.datatable-Event:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $('#tabb').DataTable({
+            dom: 'Bfrtip',
+            buttons:[
+              {extend:'excelHtml5',
+               title:'Assesment Export'},
+              {extend:'pdfHtml5',
+               title:'Assesment Export'},
+               'print'],
+               select:true
+          });
+          function goBack() {
+            window.history.back();
+          }
+          $('#max').on('keyup click change', function() {
+              table.draw();
+          } );
       });
-      function goBack() {
-        window.history.back();
-      }
-      $('#max').on('keyup click change', function() {
-          table.draw();
-      } );
-  });
-  </script>
+    </script>
 @endsection

@@ -25,8 +25,16 @@
                                 <td>{{ $event->id_asses }}</td>
                             </tr>
                             <tr>
+                                <th>Nama Pasien</th>
+                                <td>{{ $sqll->namaP }}</td>
+                            </tr>
+                            <tr>
                                 <th>ID Terapis</th>
                                 <td>{{ $event->id_pegawai }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nama Terapis</th>
+                                <td>{{ $sqll->nama }}</td>
                             </tr>
                             <tr>
                                 <th>Tanggal & Jam Masuk</th>

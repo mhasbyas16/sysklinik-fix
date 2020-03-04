@@ -77,7 +77,7 @@ class SystemCalendarController extends Controller
                     //'url'   => route($source['route'], $model->id),
                 ];*/
                 $events[] = Calendar::event(
-                    $model->nama.' - '.$model->namaP,
+                    $model->namaP.' - '.$model->nama,
                     false,
                     new \DateTime($crudFieldValue),
                     new \DateTime($model->{$source['end_field']}),

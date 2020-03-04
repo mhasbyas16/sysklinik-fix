@@ -166,6 +166,8 @@ class EventsController extends Controller
     public function show(Event $event)
     {
         /*abort_if(Gate::denies('event_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');*/
+        
+        $event->load('events');
 
         $sqll = DB::table('jadwal_terapis')
         ->select('jadwal_terapis.*','d_pasien.nama as namaP','d_pegawai.nama','terapi_pasien.id_terapi')
@@ -173,9 +175,8 @@ class EventsController extends Controller
         ->join('d_pegawai','d_pegawai.id_pegawai','=','jadwal_terapis.id_pegawai')
         ->join('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
         ->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
+        ->where('jadwal_terapis.id_jadwal',$event->id_jadwal)
         ->first();
-        
-        $event->load('events');
 
         return view('admin.events.show', compact('event','sqll'));
     }

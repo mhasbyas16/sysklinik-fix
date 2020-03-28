@@ -15,21 +15,21 @@
         <br>
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active">
-          <a href="#masuk" aria-controls="Masuk" role="tab" data-toggle="tab">Kalendar</a>
+          <a href="#cal" aria-controls="cal" role="tab" data-toggle="tab">Kalendar</a>
         </li>
         <li role="presentation">
-          <a href="#keluar" aria-controls="keluar" role="tab" data-toggle="tab">Atur Penjadwalan</a>
+          <a href="#jadwal" aria-controls="jadwal" role="tab" data-toggle="tab">Atur Penjadwalan</a>
         </li>
       </ul>
 
       <!-- Tab panes -->
       <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="masuk">
+        <div role="tabpanel" class="tab-pane active" id="cal">
           <div class="row">
-            <div class="col-md-10 col-xs-offset-1 ">
+            <div class="col-md-12">
               <br>
               <div class="panel panel-default pt-3">
-                <div class="panel-heading">Kalender Baru</div>
+                <div class="panel-heading">Kalender Jadwal</div>
                 <div class="panel-body">
                   <!-- <div id='calendar'></div> -->
                   {!! $calendar->calendar() !!}
@@ -39,9 +39,9 @@
             </div>
           </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="keluar">
+        <div role="tabpanel" class="tab-pane" id="jadwal">
             <div class="row">
-                <div class="col-md-11">
+                <div class="col-md-12">
                     <div class="box box-solid col-md-12">
                         <br>
                         <br>
@@ -81,14 +81,23 @@
                                                 <td class="text-center">{{ App\Event::RECURRENCE_RADIO[$event->recurrence] ?? '' }}</td>
                                                 <td class="text-center">{{ $event->keterangan ?? '' }}</td>
                                                 <td class="text-center">
-                                                    <a class="fa fa-eye btn btn-xs btn-primary" href="{{url('events/show')}}/{{$event->id_jadwal}}">
+                                                    <a class="fa fa-eye btn btn-xs btn-success" href="{{url('events/show')}}/{{$event->id_jadwal}}">
                                                     </a>
 
-                                                    <a class="fa fa-edit btn btn-xs btn-warning" href="{{url('events/edit')}}/{{$event->id_jadwal}}">
+                                                    <a class="fa fa-edit btn btn-xs btn-primary" href="{{url('events/edit')}}/{{$event->id_jadwal}}">
                                                     </a>
+                                                    
+                                                    <form action="{{url('events/destroy')}}/{{$event->id_jadwal}}" method="POST" onsubmit="return confirm('Yakin menghapus data {{$event->id_jadwal}} ini?');">
+                                                        @csrf
+                                                        @method("DELETE")
+                                                        <input type="submit" class="btn btn-xs btn-warning" href="{{$event->id_jadwal}}" value="Del">
+                                                    </form>
 
-                                                    <a class="fa fa-trash btn btn-xs btn-danger" href="{{url('events/destroy')}}/{{$event->id_jadwal}}" onclick="return confirm('Data yang lain akan ikut terhapus, Anda Yakin Menghapus Data Ini?')">
-                                                    </a>
+                                                    <!-- <form action="{{route('events.massdestroy')}}/{{$event->id_jadwal}}" method="POST" onsubmit="return confirm('Apakah anda ingin menghapus jadwal yang berkaitan {{$event->id_jadwal}} lainnya?');">
+                                                        @csrf
+                                                        @method("DELETE")
+                                                        <input type="submit" class="btn btn-xs btn-danger" href="{{$event->id_jadwal}}" value="Relate Del">
+                                                    </form> -->
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -112,12 +121,6 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css' />
     
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
-      -->   
-    
     <link href='node_modules/@fullcalendar/core/main.css' rel='stylesheet' />
     <link href='node_modules/@fullcalendar/daygrid/main.css' rel='stylesheet' />
     <link href='node_modules/@fullcalendar/timegrid/main.css' rel='stylesheet' />
@@ -126,62 +129,25 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        events={!! json_encode($events) !!};
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new _fullcalendar_core__WEBPACK_IMPORTED_MODULE_0__["Calendar"](calendarEl, {
-            plugins: [ _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_2__["default"], _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_3__["default"], _fullcalendar_list__WEBPACK_IMPORTED_MODULE_4__["default"] ],
-            header: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-            },
-            /*defaultDate: '2018-01-12',
-            navLinks: true, // can click day/week names to navigate views
-            editable: true,
-            eventLimit: true, // allow "more" link when too many events
-            */events: events,
+            events={!! json_encode($events) !!};
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new _fullcalendar_core__WEBPACK_IMPORTED_MODULE_0__["Calendar"](calendarEl, {
+                plugins: [ _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_2__["default"], _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_3__["default"], _fullcalendar_list__WEBPACK_IMPORTED_MODULE_4__["default"] ],
+                header: {
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                /*defaultDate: '2018-01-12',
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                */events: events,
+            });
+            calendar.render();
         });
-        calendar.render();
-    });
     </script>                       
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          events={!! json_encode($events) !!};
-
-          var calendarEl = document.getElementById('calendar');
-
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-            plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
-            defaultView: 'dayGridMonth',
-            header: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            events: events,
-          });
-
-          calendar.render();
-        });
-    </script>    -->
-
-    <!-- <script>
-        $(document).ready(function () {
-          events={!! json_encode($events) !!};
-          $('#calendar').fullCalendar({
-            // put your options and callbacks here
-            plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
-            defaultView: 'dayGridMonth',
-            header: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            events: events,
-          })
-        });
-    </script> -->
-
+    
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
@@ -195,51 +161,6 @@
     <script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-
-    <script>
-        $(function () {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            
-                let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-                let deleteButton = {
-                    text: deleteButtonTrans,
-                    url: "{{ url('events.massDestroy') }}",
-                    className: 'btn-danger',
-                    action: function (e, dt, node, config) {
-                        var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-                        return $(entry).data('entry-id')
-                        });
-
-                        if (ids.length === 0) {
-                            alert('{{ trans('global.datatables.zero_selected') }}')
-                            return
-                        }
-
-                        if (confirm('{{ trans('global.areYouSure') }}')) {
-                            $.ajax({
-                              headers: {'x-csrf-token': _token},
-                              method: 'POST',
-                              url: config.url,
-                              data: { ids: ids, _method: 'DELETE' }
-                            })
-                            .done(function () { location.reload() })
-                        }
-                    }
-                }
-                dtButtons.push(deleteButton)
-           
-        $.extend(true, $.fn.dataTable.defaults, {
-            order: [[ 1, 'asc' ]],
-            pageLength: 100,
-        });
-
-        $('.datatable-Event:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
-        })
-    </script>
 
     <script type="text/javascript">
       $(document).ready(function() {

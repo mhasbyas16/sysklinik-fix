@@ -9,18 +9,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MassDestroyEventRequest extends FormRequest
 {
-    public function authorize()
-    {
-        abort_if(Gate::denies('event_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function authorize()
+    // {
+    //     abort_if(Gate::denies('event_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return true;
-    }
+    //     return true;
+    // }
 
     public function rules()
     {
         return [
-            'ids'   => 'required|array',
-            'ids.*' => 'exists:events,id',
+            'id_jadwals'   => 'required|array',
+            'id_jadwals.*' => 'exists:events,id_jadwal',
         ];
     }
 }

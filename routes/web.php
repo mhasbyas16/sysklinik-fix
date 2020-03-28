@@ -3,12 +3,12 @@
 // ---------------------------------------- ADD DINDIN --------------------------------------- //
 
 // Events
-Route::delete('events/destroy', 'EventsController@massDestroy')->name('events.massDestroy');
+Route::delete('events/massdestroy', 'EventsController@massDestroy')->name('events.massdestroy');
 Route::get('events/create', 'EventsController@create');
 Route::post('events/store', 'EventsController@store');
 Route::get('events/show/{event}', 'EventsController@show')->name('admin.events.show');
 Route::get('events/edit/{event}', 'EventsController@edit');
-Route::get('events/destroy/{event}', 'EventsController@destroy');
+Route::delete('events/destroy/{event}', 'EventsController@destroy');
 Route::post('events/update/{event}', 'EventsController@update');
    
 // Calendar 

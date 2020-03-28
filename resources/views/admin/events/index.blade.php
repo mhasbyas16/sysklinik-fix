@@ -1,4 +1,4 @@
-@extends('template.style')
+<!-- @extends('template.style')
 @section('isi')
 
 <div class="content-wrapper">
@@ -79,13 +79,11 @@
                                     <td>
                                         @can('event_show')
                                             <a class="btn btn-xs btn-primary" href="{{ route('admin.events.show', $event->id) }}">
-                                                {{ trans('global.view') }}
                                             </a>
                                         @endcan
 
                                         @can('event_edit')
                                             <a class="btn btn-xs btn-info" href="{{ route('admin.events.edit', $event->id) }}">
-                                                {{ trans('global.edit') }}
                                             </a>
                                         @endcan
 
@@ -159,4 +157,4 @@
     })
 
 </script>
-@endsection
+@endsection -->

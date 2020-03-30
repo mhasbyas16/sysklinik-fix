@@ -66,6 +66,7 @@
                                             <th class="text-center">Tgl & Jam Keluar</th>
                                             <th class="text-center">Perulangan Jadwal</th>
                                             <th class="text-center">Keterangan</th>
+                                            <th class="text-center">Event Pasien</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -80,6 +81,7 @@
                                                 <td class="text-center">{{ $event->jam_masuk ?? '' }}</td>
                                                 <td class="text-center">{{ App\Event::RECURRENCE_RADIO[$event->recurrence] ?? '' }}</td>
                                                 <td class="text-center">{{ $event->keterangan ?? '' }}</td>
+                                                <td class="text-center">{{ $event->namaP2 ?? '' }}</td>
                                                 <td class="text-center">
                                                     <a class="fa fa-eye btn btn-xs btn-success" href="{{url('events/show')}}/{{$event->id_jadwal}}">
                                                     </a>
@@ -93,11 +95,11 @@
                                                         <input type="submit" class="btn btn-xs btn-warning" href="{{$event->id_jadwal}}" value="Del">
                                                     </form>
 
-                                                    <!-- <form action="{{route('events.massdestroy')}}/{{$event->id_jadwal}}" method="POST" onsubmit="return confirm('Apakah anda ingin menghapus jadwal yang berkaitan {{$event->id_jadwal}} lainnya?');">
+                                                    <form action="{{url('/events', $event->id_jadwal)}}" method="POST" onsubmit="return confirm('Apakah anda ingin menghapus jadwal yang berkaitan {{$event->id_jadwal}} lainnya?');">
                                                         @csrf
                                                         @method("DELETE")
                                                         <input type="submit" class="btn btn-xs btn-danger" href="{{$event->id_jadwal}}" value="Relate Del">
-                                                    </form> -->
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach

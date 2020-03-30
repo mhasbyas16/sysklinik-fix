@@ -184,20 +184,18 @@ class EventsController extends Controller
     public function destroy(Event $event)
     {
         /*abort_if(Gate::denies('event_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');*/
-
         //$res=Event::where('id_jadwal',$event->id_jadwal)->delete();
-        $blog = DB::table('jadwal_terapis')->where('id_jadwal',$event->id_jadwal)->delete();
+        $event->delete();
         return back();
     }
 
     public function massDestroy(Event $event)
     {
-        //Event::whereIn('id_jadwal', request('id_jadwals'))->delete();
-        
-        //$blog = DB::table('jadwal_terapis')->whereIn('id_jadwal', $request->id_jadwals)->delete();
-        $event=DB::table('jadwal_terapis')->get();
-        $event->delete();
-        return back();
+        //$event->event()->find($event->id_jadwal)->each(function($event){
+        //$blog = DB::table('jadwal_terapis')->where('id_jadwal', $event->id_jadwal || 'jadwal_id', $event->id_jadwal)->delete();
+        //});
+        $blog = DB::table('jadwal_terapis')->where('id_jadwal',$event->id_jadwal)->delete();
+        return redirect()->back();
     }
 
     /*public function storee(Request $req)

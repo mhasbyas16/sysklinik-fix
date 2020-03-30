@@ -25,7 +25,7 @@ class SystemCalendarController extends Controller
     public function index()
     {
         $coba = DB::table('jadwal_terapis')
-        ->select('assessment.*','d_pasien.nama as namaP', 'd_pasien.id_pasien as idpasien','jadwal_terapis.*', 'd_pegawai.nama')
+        ->select('assessment.*','d_pasien.nama as namaP', 'd_pasien.id_pasien as idpasien','jadwal_terapis.*', 'd_pegawai.nama', 'jadwal_terapis.jadwal_id as namaP2')
         ->join('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
         ->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
         ->join('d_pegawai', 'd_pegawai.id_pegawai','=','jadwal_terapis.id_pegawai')
@@ -40,25 +40,8 @@ class SystemCalendarController extends Controller
         ->Join('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
         ->Join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
         ->get();
-        
-        /*$events = [];
-        foreach ($sql as $value) {//
-            $color = dechex(rand(0x000000, 0xFFFFFF));//
-              $events[] = Calendar::event(
-                  $value->nama.' - '.$value->namaP,
-                  false,
-                  $value->tgl,
-                  false,
-                  null,
-                  // Add color and link on event
-                [
-                    'color' => '#'.$color,
-                    'url' => '#',
-                ]
-              );
-          }*/
+
         $events = [];
-        //$users = Event::with('assesment', 'd_pasien', 'd_terapis')->get();
 
         foreach ($this->sources as $source) {
             foreach ($sql as $model) {
@@ -68,14 +51,7 @@ class SystemCalendarController extends Controller
                 if (!$crudFieldValue) {
                     continue;
                 }
-                /*$events[] = [
-                    'title' => trim($source['prefix'] . " " . $model->{$source['field']} . " " . $source['suffix']),
-                    'start' => $crudFieldValue,
-                    'end'   => $model->{$source['end_field']},
-                    'color' => '#'.$color,
-                    'url'   => '#',
-                    //'url'   => route($source['route'], $model->id),
-                ];*/
+
                 $events[] = Calendar::event(
                     $model->namaP.' - '.$model->nama,
                     false,
@@ -97,5 +73,18 @@ class SystemCalendarController extends Controller
             'events2'=>$events2,
             'coba'=>$coba
         ]);
+    }
+
+    public function destroy($id_jadwal)
+    {
+        $coba = DB::table('jadwal_terapis')
+        ->select('assessment.*','d_pasien.nama as namaP', 'd_pasien.id_pasien as idpasien','jadwal_terapis.*', 'd_pegawai.nama')
+        ->join('assessment','assessment.id_asses','=','jadwal_terapis.id_asses')
+        ->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
+        ->join('d_pegawai', 'd_pegawai.id_pegawai','=','jadwal_terapis.id_pegawai')
+        ->where('jadwal_id', $id_jadwal)
+        ->delete();
+
+        return back();
     }
 }

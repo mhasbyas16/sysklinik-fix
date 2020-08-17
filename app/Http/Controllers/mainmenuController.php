@@ -983,6 +983,155 @@ class mainmenuController extends Controller
       
     return redirect('/register-list');
   }
+
+  public function toregist(){
+    return view('main_menu.registerlist_new');
+  }
+
+  public function simpantoregist(request $req){
+    //pasien
+    $id_pasien=$req->id_pasien;
+    $nama_P=$req->nama_P;
+    $jk=$req->jk;
+    $alamat_P=$req->alamat_P;
+    $alamatsekolah_P=$req->alamatsekolah_P;
+    $tempat_lahir=$req->tempat_lahir;
+    $tanggal_lahir=$req->tanggal_lahir;
+    $notelp_P=$req->notelp_P;
+    $tanggal_daftar=$req->tanggal_daftar;
+    $agama=$req->agama;
+    $keluhan=$req->keluhan;
+    //foto
+    if ($req->file('foto')=='') {
+      $Nfoto=$id_pasien;
+    }else{
+    $foto=$req->file('foto');
+    $size=$foto->getSize();
+    $tipe=$foto->getClientOriginalExtension();
+    if ($size>=1024000) {
+      return redirect('/register-list'.'/'.$id_pasien)->with('alert','file foto tidak boleh melebihi dari 1MB');
+    }
+    $Nfoto=$id_pasien;
+    $idfoto=$req->$Nfoto;
+      if ($idfoto==$id_pasien) {
+
+      }elseif($idfoto!=$id_pasien) {
+          $data=DB::table('d_pasien')->select('foto')->where('id_pasien',$id_pasien)->first();
+          File::delete('foto/pasien/'.$data->foto);
+          $pict=$req->file('foto');
+          $pict->move(public_path().'/foto/pasien',$Nfoto);
+      }
+    }
+    //Ayah
+    $nama_A=$req->nama_A;
+    $nik_A=$req->nik_A;
+    $agama_A=$req->agama_A;
+    $alamat_A=$req->alamat_A;
+    $pekerjaan_A=$req->pekerjaan_A;
+    $pendTerakhir_A=$req->pendTerakhir_A;
+    $noTelp_A=$req->noTelp_A;
+    $email_A=$req->email_A;
+    //ibu
+    $nama_I=$req->nama_I;
+    $nik_I=$req->nik_I;
+    $agama_I=$req->agama_I;
+    $alamat_I=$req->alamat_I;
+    $pekerjaan_I=$req->pekerjaan_I;
+    $pendTerakhir_I=$req->pendTerakhir_I;
+    $noTelp_I=$req->noTelp_I;
+    $email_I=$req->email_I;
+    //pelengkap
+    $iq=$req->iq;
+    $mapel=$req->mapel;
+    $ulang=$req->ulang;
+    //PENGISI KUESIONER
+    $isinama=$req->isinama;
+    $isiselaku=$req->isiselaku;
+    $isipendidikan=$req->isipendidikan;
+    $isipekerjaan=$req->isipekerjaan;
+    $isialamat=$req->isialamat;
+
+    $now=date('ymd');
+    
+    $data_DP=[
+      'id_pasien'=>$,
+      'nama'=>$nama_P,
+      'tempat_lahir'=>$tempat_lahir,
+      'tgl_lahir'=>$tanggal_lahir,
+      $tanggal_daftar,
+      'jk'=>$jk,
+      'agama'=>$agama,
+      'alamat'=>$alamat_P,
+      'alamatsekolah'=>$alamatsekolah_P,
+      'tlp'=>$notelp_P,
+      'keluhan'=>$keluhan,
+      'foto'=>$Nfoto,
+
+      'nama_ayah'=>$nama_A,
+      'nik_ayah'=>$nik_A,
+      'agama_ayah'=>$agama_A,
+      'alamat_ayah'=>$alamat_A,
+      'pend_ayah'=>$pendTerakhir_A,
+      'tlp_ayah'=>$noTelp_A,
+      'pekerjaan'=>$pekerjaan_A,
+      'email_ayah'=>$email_A,
+
+      'nama_ibu'=>$nama_I,
+      'nik_ibu'=>$nik_I,
+      'agama_ibu'=>$agama_I,
+      'alamat_ibu'=>$alamat_I,
+      'pend_ibu'=>$pendTerakhir_I,
+      'pekerjaan_ibu'=>$pekerjaan_I,
+      'tlp_ibu'=>$noTelp_I,
+      'email_ibu'=>$email_I,
+
+      'total_iq'=>$iq,
+      'mapel'=>$mapel,
+      'kelas'=>$ulang,
+
+      'namapengisi'=>$isinama,
+      'selaku'=>$isiselaku,
+      'pendidikan'=>$isipendidikan,
+      'kerja'=>$isipekerjaan,
+      'alamatpengisi'=>$isialamat,
+    ];
+
+    //simpan data
+    $now = date('ymd');
+    $dataakhir = \App\m_daftarpasien::max('id_pasien');
+    $no = $dataakhir;
+    $noo = $no++;
+    $lama = substr($no, 0, 6);
+    $rplc = str_replace($lama, $now, $noo);
+    $idasses=$rplc;
+
+    $header_pasien=[      
+      'id_pasien'=>,
+      'email'=>,
+      'username'=>,
+      'password'=>,
+      'konfirmasi'=>'Belum',
+    ];
+    $asses=[
+      'id_pasien'=> $id,
+      'id_asses'=> $idasses,
+      'status_pasien'=> 'Daftar'
+    ];
+
+    $recstatus=[       
+      'id_pasien'=> $id,
+      'id_asses'=> $idasses,
+      'keterangan' => 'Daftar',
+      'tgl' => $now
+    ];
+
+    DB::table('h_pasien')->insert($header_pasien);
+    DB::table('d_pasien')->insert($data_DP);
+    DB::table('assessment')->insert($asses);
+    DB::table('record_status_pasien')->insert($recstatus);
+    
+    return redirect('/register-list');
+  }
 //AKHIR DETAIL EDIT DATA PASIEN & UPDATE, STATUS ASSES
 
 //AWAL DETAIL EDIT DATA PASIEN & UPDATE, STATUS PASIEN

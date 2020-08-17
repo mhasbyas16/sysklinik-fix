@@ -24,6 +24,7 @@ Route::get('/', 'Controller@index');
 
 //main menu
 //Register list
+Route::get('/toregist','mainmenuController@toregist');
 Route::get('/register-list','mainmenuController@registerlist');
 Route::get('/register-list/{id}','mainmenuController@registerlistdata');
 Route::post('/register-list/update','mainmenuController@registerlistupdate');

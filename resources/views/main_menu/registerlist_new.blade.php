@@ -75,17 +75,7 @@
                   $rplc = str_replace($lama, $now, $id_asses);
                   $idnew = $now.$rplc;
                 ?>
-                <div class="row">
-                  <div class="col-xs-7 col-md-8 text-center">
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">ID Pasien</label>
-
-                        <div class="col-sm-10">
-                            <input type="text" name="id_pasien" value="{{$idnew}}"/>
-                        </div>
-                      </div>
-                  </div>
-                </div>
+                <input type="text" name="id_pasien" value="{{$idnew}}" hidden />
 
                 <div class="row">
                   <div class="col-xs-7 col-md-8 text-center">

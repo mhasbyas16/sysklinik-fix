@@ -1,6 +1,22 @@
 @extends('template.style')
 @section('isi')
 
+  <script type="text/javascript">
+    window.onload=function(){
+        $("#datepicker").on("change", function() {
+            var dob = new Date(this.value);
+            var today = new Date();
+            var age = Math.floor((today-dob)/(365.25 * 24 * 60 * 60 * 1000));
+            $("#umur").val(age+" tahun");
+        });
+        $('#alamatrumah').on('change', function() {
+            var alamat = document.getElementById("alamatrumah").value;
+            $('#alamatA').val(alamat);
+            $('#alamatI').val(alamat);
+        });
+    }
+  </script>
+
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -24,7 +40,7 @@
           <!-- jQuery Knob -->
           <div class="box box-solid">
             <!-- /.box-header -->
-            <form method="post"  action="" enctype="multipart/form-data" class="form-horizontal">
+            <form method="post" action="{{url('/toregist/save')}}" enctype="multipart/form-data" class="form-horizontal">
               {{csrf_field()}}
               <div class="box-body">
                 @if(\Session::has('alert'))
@@ -44,14 +60,28 @@
                         </div>
                         <!-- ./col -->
                 </div>
+                <?php
+                  $angka=range(0,9);
+                  shuffle($angka);
+                  $id=array_rand($angka,3);
+                  $idstring=implode($id);
+                  $id_asses=$idstring;
 
+                  $now = date('ymd');
+                  $datenow = date('yy-m-d');
+                  $dataakhir = \App\m_Hpasien::max('id_pasien');
+                  $no = $dataakhir;
+                  $lama = substr($no, 0, 6);
+                  $rplc = str_replace($lama, $now, $id_asses);
+                  $idnew = $now.$rplc;
+                ?>
                 <div class="row">
                   <div class="col-xs-7 col-md-8 text-center">
                       <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">ID Pasien</label>
 
                         <div class="col-sm-10">
-                            <input class="form-control" type="text" name="keluhan" disabled></input>
+                            <input type="text" name="id_pasien" value="{{$idnew}}"/>
                         </div>
                       </div>
                   </div>
@@ -116,7 +146,7 @@
                         <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Umur</label>
 
                         <div class="col-sm-6">
-                          <input type="text" class="form-control" name="umur" maxlength="3" required>
+                          <input type="text" class="form-control" name="umur" id="umur" maxlength="3" required>
                         </div>
                       </div>
                   </div>
@@ -143,7 +173,7 @@
                               <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                               </div>
-                              <input type="text" class="form-control pull-right" id="datedaftar" name="tanggal_daftar" required>
+                              <input type="text" class="form-control pull-right" id="datedaftar" name="tanggal_daftar" disabled="true" value="{{$datenow}}">
                             </div>
                             <!-- /.input group -->
                           </div>
@@ -176,7 +206,7 @@
                           <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Alamat Rumah</label>
 
                           <div class="col-sm-10">
-                              <textarea class="form-control" rows="3" name="keluhan"></textarea>
+                              <textarea class="form-control" rows="3" name="alamatrumah" id="alamatrumah" required></textarea>
                           </div>
                         </div>
                     </div>
@@ -188,7 +218,7 @@
                           <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Alamat Sekolah</label>
 
                           <div class="col-sm-10">
-                              <textarea class="form-control" rows="3" name="keluhan"></textarea>
+                              <textarea class="form-control" rows="3" name="alamatsekolah"></textarea>
                           </div>
                         </div>
                     </div>
@@ -201,7 +231,7 @@
                         <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Keluhan</label>
 
                         <div class="col-sm-10">
-                            <textarea class="form-control" rows="3" name="keluhan"></textarea>
+                            <textarea class="form-control" rows="3" name="keluhan" required></textarea>
                         </div>
                       </div>
                   </div>
@@ -273,7 +303,7 @@
                                 <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt">Agama</label>
 
                                 <div class="col-sm-9" style="padding-left: 30pt">
-                                    <select class="form-control select2" style="width: 100%;" name="agama" value=" ">
+                                    <select class="form-control select2" style="width: 100%;" name="agama_A" value=" ">
                                       <option value="Pilih">Pilih</option>
                                       <option value="Islam">Islam</option>
                                       <option value="Kristen">Kristen</option>
@@ -315,7 +345,7 @@
                                 <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Pendidikan</label>
 
                                 <div class="col-sm-9">
-                                  <input type="email" class="form-control" name="pendTerakhir_A" required>
+                                  <input type="text" class="form-control" name="pendTerakhir_A" required>
                                 </div>
                               </div>
                           </div>
@@ -388,7 +418,7 @@
                                 <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt">Agama</label>
 
                                 <div class="col-sm-9" style="padding-left: 30pt">
-                                    <select class="form-control select2" style="width: 100%;" name="agama" value=" ">
+                                    <select class="form-control select2" style="width: 100%;" name="agama_I" value=" ">
                                       <option value="Pilih">Pilih</option>
                                       <option value="Islam">Islam</option>
                                       <option value="Kristen">Kristen</option>
@@ -430,7 +460,7 @@
                                 <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Pendidikan</label>
 
                                 <div class="col-sm-9">
-                                  <input type="email" class="form-control" name="pendTerakhir_I" required>
+                                  <input type="text" class="form-control" name="pendTerakhir_I" required>
                                 </div>
                               </div>
                           </div>
@@ -557,7 +587,7 @@
                                 <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Alamat</label>
 
                                 <div class="col-sm-9" style="padding-left: 30pt">
-                                  <<textarea name="isialamat" rows="3" class="form-control"></textarea>
+                                  <textarea name="isialamat" rows="3" class="form-control"></textarea>
                                 </div>
                               </div>
                           </div>

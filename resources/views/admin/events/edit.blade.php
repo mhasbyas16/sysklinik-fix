@@ -14,6 +14,9 @@
             <div class="col-md-11">
                 <div class="box box-solid col-md-12">
                     <div class="card">
+                        <a style="margin-top:20px;" class="btn btn-danger" href="{{ url()->previous() }}">
+                        {{ trans('global.back_to_list') }}
+                        </a>
                         <div class="card-body">
                             <br>
                             <form action="{{url('events/update')}}/{{$event->id_jadwal}}" 

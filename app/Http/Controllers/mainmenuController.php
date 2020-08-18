@@ -15,6 +15,7 @@ use DB;
 use File;
 use App\RekamMedis;
 use App\Event;
+use App\m_Hpasien;
 
 class mainmenuController extends Controller
 {
@@ -521,7 +522,7 @@ class mainmenuController extends Controller
     $tgl_mulai_terapi=$req->tgl_mulai_terapi;
     $tgl_selesai_terapi=$req->tgl_selesai_terapi;
     $status=$req->status;
-    $diagnosa='';
+    $diagnosa='-';
 
     $angka=range(0,9);
     shuffle($angka);
@@ -983,6 +984,158 @@ class mainmenuController extends Controller
       
     return redirect('/register-list');
   }
+
+  public function toregist(){
+    return view('main_menu.registerlist_new');
+  }
+
+  public function simpantoregist(Request $req){
+    //pasien
+    $id=$req->id_pasien;
+    $nama_P=$req->nama_P;
+    $jk=$req->jk;
+    $alamat_P=$req->alamatrumah;
+    $alamatsekolah_P=$req->alamatsekolah;
+    $tempat_lahir=$req->tempat_lahir;
+    $tanggal_lahir=$req->tanggal_lahir;
+    $notelp_P=$req->notelp_P;
+    $agama=$req->agama;
+    $keluhan=$req->keluhan;
+    //foto
+    if ($req->file('foto')=='') {
+      $Nfoto=$id;
+    }else{
+    $foto=$req->file('foto');
+    $size=$foto->getSize();
+    $tipe=$foto->getClientOriginalExtension();
+    if ($size>=1024000) {
+      return redirect('/register-list'.'/'.$id)->with('alert','file foto tidak boleh melebihi dari 1MB');
+    }
+    $Nfoto=$id;
+    $idfoto=$req->$Nfoto;
+      if ($idfoto==$id) {
+
+      }elseif($idfoto!=$id) {
+          $data=DB::table('d_pasien')->select('foto')->where('id_pasien',$id)->first();
+          File::delete('foto/pasien/'.$data->foto);
+          $pict=$req->file('foto');
+          $pict->move(public_path().'/foto/pasien',$Nfoto);
+      }
+    }
+    //Ayah
+    $nama_A=$req->nama_A;
+    $nik_A=$req->nik_A;
+    $agama_A=$req->agama_A;
+    $alamat_A=$req->alamat_A;
+    $pekerjaan_A=$req->pekerjaan_A;
+    $pendTerakhir_A=$req->pendTerakhir_A;
+    $noTelp_A=$req->noTelp_A;
+    $email_A=$req->email_A;
+    //ibu
+    $nama_I=$req->nama_I;
+    $nik_I=$req->nik_I;
+    $agama_I=$req->agama_I;
+    $alamat_I=$req->alamat_I;
+    $pekerjaan_I=$req->pekerjaan_I;
+    $pendTerakhir_I=$req->pendTerakhir_I;
+    $noTelp_I=$req->noTelp_I;
+    $email_I=$req->email_I;
+    //pelengkap
+    $iq=$req->iq;
+    $mapel=$req->mapel;
+    $ulang=$req->ulang;
+    //PENGISI KUESIONER
+    $isinama=$req->isinama;
+    $isiselaku=$req->isiselaku;
+    $isipendidikan=$req->isipendidikan;
+    $isipekerjaan=$req->isipekerjaan;
+    $isialamat=$req->isialamat;
+
+    $now=date('yy-m-d');
+    
+    $header_pasien=[      
+      'id_pasien' => $id,
+      'email'     => $email_A,
+      'username'  => $id,
+      'password'  => 'liliput12345',
+      'konfirmasi'=> 'Belum'
+    ];
+
+    $data_DP=[
+      'id_pasien'     =>$id,
+      'nama'          =>$nama_P,
+      'tempat_lahir'  =>$tempat_lahir,
+      'tgl_lahir'     =>$tanggal_lahir,
+      'jk'            =>$jk,
+      'agama'         =>$agama,
+      'alamat'        =>$alamat_P,
+      'alamatsekolah' =>$alamatsekolah_P,
+      'tlp'           =>$notelp_P,
+      'keluhan'       =>$keluhan,
+      'foto'          =>$Nfoto,
+      'nama_ayah'     =>$nama_A,
+      'nik_ayah'      =>$nik_A,
+      'agama_ayah'    =>$agama_A,
+      'alamat_ayah'   =>$alamat_A,
+      'pend_ayah'     =>$pendTerakhir_A,
+      'tlp_ayah'      =>$noTelp_A,
+      'pekerjaan'     =>$pekerjaan_A,
+      'email_ayah'    =>$email_A,
+      'nama_ibu'      =>$nama_I,
+      'nik_ibu'       =>$nik_I,
+      'agama_ibu'     =>$agama_I,
+      'alamat_ibu'    =>$alamat_I,
+      'pend_ibu'      =>$pendTerakhir_I,
+      'pekerjaan_ibu' =>$pekerjaan_I,
+      'tlp_ibu'       =>$noTelp_I,
+      'email_ibu'     =>$email_I,
+      'total_iq'      =>$iq,
+      'mapel'         =>$mapel,
+      'kelas'         =>$ulang,
+      'namapengisi'   =>$isinama,
+      'selaku'        =>$isiselaku,
+      'pendidikan'    =>$isipendidikan,
+      'kerja'         =>$isipekerjaan,
+      'alamatpengisi' =>$isialamat
+    ];
+
+    $daftar=[
+      'id_pasien' => $id,
+      'tgl'       => $now,
+      'keluhan'   => $keluhan,
+      'status'    => 0
+    ];
+
+    $now = date('ymd');
+    $dataakhir = \App\m_Hpasien::max('id_pasien');
+    $no = $dataakhir;
+    $noo = $no++;
+    $lama = substr($no, 0, 6);
+    $rplc = str_replace($lama, $now, $noo);
+    $idasses=$rplc;
+
+    $asses=[
+      'id_pasien'     => $id,
+      'id_asses'      => $idasses,
+      'diagnosa'      => '-',
+      'status_pasien' => 'Daftar'
+    ];
+
+    $recstatus=[       
+      'id_pasien' => $id,
+      'keterangan'=> 'Daftar',
+      'tgl'       => $now
+    ];
+    
+    m_Hpasien::insert($header_pasien);
+    DB::table('d_pasien')->insert($data_DP);
+    DB::table('assessment')->insert($asses);
+    DB::table('daftar')->insert($daftar);
+    DB::table('record_status_pasien')->insert($recstatus);
+    
+    return redirect('/register-list');
+  }
+
 //AKHIR DETAIL EDIT DATA PASIEN & UPDATE, STATUS ASSES
 
 //AWAL DETAIL EDIT DATA PASIEN & UPDATE, STATUS PASIEN

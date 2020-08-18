@@ -91,29 +91,7 @@ class EventsController extends Controller
     {
         
         Event::create($request->all());
-
-        /*$events = Event::withCount('events')->get();
-
-            DB::table('assessment')->where('id_asses',$events->id_asses)->update(['status_pasien'=>'Pasien']);
-            DB::table('terapi_pasien')->where('id_asses',$events->id_asses)->update(['keterangan'=>'Pasien']);
-
-            $now=date('ymd');
-            $id_pasien=DB::table('assessment')->where('id_asses',$events->id_asses)->first();
-            $record=[
-              'id_asses'=>$events->id_asses,
-              'id_pasien'=>$id_pasien->id_pasien,
-              'keterangan'=>'Pasien',
-              'tgl'=>$now
-            ];
-            DB::table('record_status_pasien')->insert($record);
-
-            $data = [
-              'id_rm' => 'RM'.date('YmdHis'),
-              'id_pasien' => $id_pasien->id_pasien,
-              'id_asses' => $events->id_asses,
-              'diagnosa' => $id_pasien->diagnosa
-            ];
-            DB::table('h_rekam_medis')->insert($data);*/
+        
 
         return redirect()->route('admin.systemCalendar');
     }
@@ -198,66 +176,5 @@ class EventsController extends Controller
         return redirect()->back();
     }
 
-    /*public function storee(Request $req)
-    {
-        $id_terapi=$req->id_terapi;
-        $jam_masuk=$req->jam_masuk;
-        $jam_keluar=$req->jam_keluar;
-        $id_asses=$req->id_asses;
-        $tgl=$req->tgl;
-        $terapis=$req->terapis;
-        $id_terapipasien=$req->id_terapipasien;
-        $biaya=$req->biaya;
-        $id_asses=$req->id_asses;
-        $recur=$req->recurrence;
-        $no=-1;
-        foreach ($id_terapi as $id_terapi) {
-          $no++;
-          $id=$id_terapi;
-          $masuk=$jam_masuk[$no];
-          $keluar=$jam_keluar[$no];
-          $tgls=$tgl[$no];
-          $terps=$terapis[$no];
-          $id_terapiP=$id_terapipasien[$no];
-          $cost=$biaya[$no];
-          $sql=[
-            'id_pegawai'=>$terps,
-            'id_asses'=>$id_asses,
-            'id_terapipasien'=>$id_terapiP,
-            'biaya'=>$cost,
-            'tgl'=>$tgls,
-            'jam_masuk'=>$masuk,
-            'jam_keluar'=>$keluar,
-            'keterangan'=>'Terapi',
-            'status_pasien'=>'Alpha',
-            'status_terapis'=>'Alpha',
-            'status'=>'Baru',
-            'recurrence'=>$recur
-          ];
-
-          DB::table('assessment')->where('id_asses',$id_asses)->update(['status_pasien'=>'Pasien']);
-          DB::table('terapi_pasien')->where('id_asses',$id_asses)->update(['keterangan'=>'Pasien']);
-          DB::table('jadwal_terapis')->insert($sql);
-        }
-        $now=date('ymd');
-        $id_pasien=DB::table('assessment')->where('id_asses',$id_asses)->first();
-        $record=[
-          'id_asses'=>$id_asses,
-          'id_pasien'=>$id_pasien->id_pasien,
-          'keterangan'=>'Pasien',
-          'tgl'=>$now
-        ];
-        DB::table('record_status_pasien')->insert($record);
-        $data = [
-          'id_rm' => 'RM'.date('YmdHis'),
-          'id_pasien' => $id_pasien->id_pasien,
-          'id_asses' => $id_asses,
-          'diagnosa' => $id_pasien->diagnosa
-        ];
-        DB::table('h_rekam_medis')->insert($data);
-
-        //return redirect()->back();
-        return redirect('/admin.systemCalendar');
-    }
-*/
+    
 }

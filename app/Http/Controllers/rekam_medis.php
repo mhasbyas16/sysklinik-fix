@@ -25,7 +25,7 @@ class rekam_medis extends Controller
         if (Session::get('login')) {
             
             $rekam_medis = DB::table('h_rekam_medis')
-            ->select('assessment.*', 'h_rekam_medis.id_rm', 'terapi_pasien.id_terapi', 'd_pasien.nama')
+            ->select('assessment.*', 'h_rekam_medis.*', 'terapi_pasien.id_terapi', 'd_pasien.nama')
             ->join('assessment', 'h_rekam_medis.id_asses', '=', 'assessment.id_asses')
             ->join('d_pasien', 'h_rekam_medis.id_pasien', '=', 'd_pasien.id_pasien')
             ->join('terapi_pasien', 'h_rekam_medis.id_asses', '=', 'terapi_pasien.id_asses')
@@ -140,6 +140,11 @@ class rekam_medis extends Controller
      */
     public function update(Request $r, $id)
     {
+        /*$rekam_medis = DB::table('h_rekam_medis')
+            ->select('assessment.*', 'h_rekam_medis.*')
+            ->join('assessment', 'h_rekam_medis.id_asses', '=', 'assessment.id_asses')
+            ->get();*/
+
         if (Session::get('login')) {
             
             $id_asses = $r->id_asses;
@@ -150,6 +155,7 @@ class rekam_medis extends Controller
             $update = RekamMedis::where('id_rm', $id);
             $update->update($data);
 
+            DB::table('assessment')->where('id_asses', $id_asses)->update(['diagnosa' => $r->diagnosa]);
 
             Alert::success('Data berhasil diupdate')->autoclose(3500);
             return redirect('rekam_medis');

@@ -29,6 +29,13 @@
                 <div class="col-xs-12">
                   <!-- jQuery Knob -->
                   <div class="box box-solid">
+                    <div style="padding-bottom: 20px; padding-top: 20px; padding-left: 10px" class="row">
+                      <div class="col-lg-12">
+                        <a class="btn btn-danger" href="{{ url('/data-pasien') }}">
+                          Kembali
+                        </a>
+                      </div>
+                    </div>
                     <div class="box-header">
                       <i class="fa fa-bar-chart-o"></i>
                       <h3 class="box-title">Record Pasien</h3>

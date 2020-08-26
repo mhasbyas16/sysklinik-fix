@@ -50,7 +50,7 @@
                     $rplc = str_replace($lama, $now, $id_asses);
                     $idnew = $now.$rplc;
                 ?>
-                <input type="text" name="id_asses" value="{{$idnew}}" />
+                <input type="text" name="id_asses" value="{{$idnew}}" hidden />
 
                 <div class="row">
                   <div class="col-xs-7 col-md-6 text-center">
@@ -59,7 +59,7 @@
                         <div class="col-sm-5" style="margin-left: 1pt">
                             <select class="form-control select2" style="width: 100%;" name="pasien" value="" required>
                               @foreach ($pasien as $item)
-                            <option value="{{$item->id_pasien}}">{{$item->id_pasien}}</option>
+                            <option value="{{$item->id_pasien}}">{{$item->nama}}</option>
                               @endforeach
                             </select>
                         </div>

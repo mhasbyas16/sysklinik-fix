@@ -2,9 +2,14 @@
   <section class="content">
       <div class="row">
         <div class="col-xs-12">
-          <!-- jQuery Knob -->
           <div class="box box-solid">
-            <br>
+            <div style="padding-bottom: 20px; padding-top: 20px; padding-left: 10px" class="row">
+                <div class="col-md-3">
+                <a href="{{url('/tambah_asses')}}" class="btn btn-block btn-social btn-linkedin">
+                  <i class="fa fa-user-plus"></i>Tambah Assessment
+                </a>
+                </div>
+            </div>
             <div class="box-header">
               <i class="fa fa-bar-chart-o"></i>
               <h3 class="box-title">Tabel Daftar Assessment</h3>
@@ -46,12 +51,6 @@
                 </tr>
                 </tfoot>
               </table>
-              <div class="col-xs-3">
-                <a href="{{url('/tambah_asses')}}" class="btn btn-block btn-social btn-linkedin">
-                  <i class="fa fa-user-plus"></i>Tambah Assessment
-                </a>
-              </div>
-              <br>
             </div>
             <!-- /.box-body -->
           </div>

@@ -502,7 +502,8 @@ class mainmenuController extends Controller
     ->whereIn('status_pasien',['Pasien','Lulus'])
     /*->where('status_pasien','Pasien')
     ->where('status_pasien','Lulus')*/
-    ->groupBy('assessment.id_asses')
+    ->groupBy('assessment.id_pasien')
+    ->orderBy('d_pasien.nama','asc')
     ->get();
     $kar=DB::table('d_pegawai')->orderBy('nama','asc')->get();
     $j_terapi=DB::table('jenis_terapi')->orderBY('terapi','asc')->get();

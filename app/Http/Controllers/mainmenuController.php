@@ -226,7 +226,7 @@ class mainmenuController extends Controller
       'id_rm' => 'RM'.date('YmdHis'),
       'id_pasien' => $id_pasien->id_pasien,
       'id_asses' => $id_asses,
-      'diagnosa' => $id_pasien->diagnosa
+      'diagnosa' => '-'
     ];
     DB::table('h_rekam_medis')->insert($data);
 
@@ -499,8 +499,10 @@ class mainmenuController extends Controller
     $pasien=DB::table('assessment')
     ->join('d_pasien','d_pasien.id_pasien','=','assessment.id_pasien')
     ->join('record_status_pasien','record_status_pasien.id_pasien','=','assessment.id_pasien')
-    ->where('status_pasien','Pasien')
-    ->where('status_pasien','Lulus')
+    ->whereIn('status_pasien',['Pasien','Lulus'])
+    /*->where('status_pasien','Pasien')
+    ->where('status_pasien','Lulus')*/
+    ->groupBy('assessment.id_asses')
     ->get();
     $kar=DB::table('d_pegawai')->orderBy('nama','asc')->get();
     $j_terapi=DB::table('jenis_terapi')->orderBY('terapi','asc')->get();
@@ -516,6 +518,7 @@ class mainmenuController extends Controller
   }
 
   public function store_asses(Request $req){
+    $id=$req->id_asses;
     $id_pasien=$req->pasien;
     $assesor=$req->assesor;
     $j_terapi=$req->J_terapi;
@@ -524,23 +527,25 @@ class mainmenuController extends Controller
     $status=$req->status;
     $diagnosa='-';
 
-    $angka=range(0,9);
+    /*$angka=range(0,9);
     shuffle($angka);
     $id=array_rand($angka,3);
     $idstring=implode($id);
     $random=$idstring;
     $date=date('ymd');
-    $id=$date.$random;
+    $id=$date.$random;*/
 
+    $date=date('ymd');
 
-    $data_A=[
-      'id_asses'=>$id,
-      'id_pasien'=>$id_pasien,
-      'id_pegawai'=>$assesor,
-      'tgl_mulai_terapi'=>$tgl_mulai_terapi,
-      'tgl_selesai_terapi'=>$tgl_selesai_terapi,
-      'diagnosa'=>$diagnosa,
-      'status_pasien'=>$status];
+      $data_A=[
+        'id_asses'=>$id,
+        'id_pasien'=>$id_pasien,
+        'id_pegawai'=>$assesor,
+        'tgl_mulai_terapi'=>$tgl_mulai_terapi,
+        'tgl_selesai_terapi'=>$tgl_selesai_terapi,
+        'diagnosa'=>$diagnosa,
+        'status_pasien'=>$status
+      ];
 
       $record=[
         'id_asses'=>$id,
@@ -558,7 +563,7 @@ class mainmenuController extends Controller
         'status'=>'0',
         'keterangan'=>'Asses'
       ];
-      DB::table('terapi_pasien')->insert($T_pasien);
+    DB::table('terapi_pasien')->insert($T_pasien);
     }
 
     return redirect('/register-list');
@@ -1124,7 +1129,7 @@ class mainmenuController extends Controller
     $recstatus=[       
       'id_pasien' => $id,
       'keterangan'=> 'Daftar',
-      'tgl'       => $now
+      'tgl'       => $now,
     ];
     
     m_Hpasien::insert($header_pasien);
@@ -1135,7 +1140,6 @@ class mainmenuController extends Controller
     
     return redirect('/register-list');
   }
-
 //AKHIR DETAIL EDIT DATA PASIEN & UPDATE, STATUS ASSES
 
 //AWAL DETAIL EDIT DATA PASIEN & UPDATE, STATUS PASIEN

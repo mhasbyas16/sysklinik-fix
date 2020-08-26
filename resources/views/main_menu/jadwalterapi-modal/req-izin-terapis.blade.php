@@ -4,11 +4,12 @@
         <div class="col-xs-12">
           <!-- jQuery Knob -->
           <div class="box box-solid">
+            <br>
             <div class="box-header">
               <i class="fa fa-bar-chart-o"></i>
-              <h3 class="box-title">Tabel Request Jadwal Terapis</h3>
+              <h3 class="box-title">Tabel Request Izin Terapis</h3>
             </div>
-
+            <br>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="pegawais" class="table table-bordered table-striped">

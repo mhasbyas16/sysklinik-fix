@@ -61,21 +61,22 @@
                         <!-- ./col -->
                 </div>
                 <?php
+                  $datenow = date('yy-m-d');
+                  
                   $angka=range(0,9);
                   shuffle($angka);
                   $id=array_rand($angka,3);
                   $idstring=implode($id);
                   $id_asses=$idstring;
 
-                  $now = date('ymd');
-                  $datenow = date('yy-m-d');
+                  $now = date('dmy');
                   $dataakhir = \App\m_Hpasien::max('id_pasien');
                   $no = $dataakhir;
                   $lama = substr($no, 0, 6);
                   $rplc = str_replace($lama, $now, $id_asses);
                   $idnew = $now.$rplc;
                 ?>
-                <input type="text" name="id_pasien" value="{{$idnew}}" hidden />
+                <input type="text" name="id_pasien" value="{{$idnew}}"  />
 
                 <div class="row">
                   <div class="col-xs-7 col-md-8 text-center">
@@ -269,7 +270,7 @@
                               <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Nama</label>
 
-                                <div class="col-sm-9" style="padding-left: 30pt">
+                                <div class="col-sm-9" style="padding-left: 45pt">
                                   <input type="text" class="form-control" name="nama_A" required>
                                 </div>
                               </div>
@@ -292,7 +293,7 @@
                               <div class="form-group">
                                 <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt">Agama</label>
 
-                                <div class="col-sm-9" style="padding-left: 30pt">
+                                <div class="col-sm-9" style="padding-left: 45pt">
                                     <select class="form-control select2" style="width: 100%;" name="agama_A" value=" ">
                                       <option value="Pilih">Pilih</option>
                                       <option value="Islam">Islam</option>
@@ -308,11 +309,10 @@
                           <!-- ./col -->
                           <div class="col-xs-7 col-md-6 text-center">
                               <div class="form-group">
-                                <label class="col-sm-2 control-label" style="text-align: left; padding-left: 155pt">Alamat</label>
+                                <label class="col-sm-2 control-label" style="text-align: left; padding-left: 175pt">Alamat</label>
 
-                                <div class="col-sm-7" style="padding-left: 47pt; padding-right: 0pt">
+                                <div class="col-sm-7" style="padding-left: 55pt; padding-right: 0pt">
                                     <textarea class="form-control" id="alamatA" rows="3" name="alamat_A"></textarea>
-                                    <input type="checkbox" name="a" value="alamatA" id="cekboxA" style="padding-left: 47pt"/>  Alamat sama dengan pasien
                                 </div>
                               </div>
                           </div>
@@ -384,7 +384,7 @@
                               <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Nama</label>
 
-                                <div class="col-sm-9" style="padding-left: 30pt">
+                                <div class="col-sm-9" style="padding-left: 45pt">
                                   <input type="text" class="form-control" name="nama_I" required>
                                 </div>
                               </div>
@@ -407,7 +407,7 @@
                               <div class="form-group">
                                 <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt">Agama</label>
 
-                                <div class="col-sm-9" style="padding-left: 30pt">
+                                <div class="col-sm-9" style="padding-left: 45pt">
                                     <select class="form-control select2" style="width: 100%;" name="agama_I" value=" ">
                                       <option value="Pilih">Pilih</option>
                                       <option value="Islam">Islam</option>
@@ -423,11 +423,10 @@
                           <!-- ./col -->
                           <div class="col-xs-7 col-md-6 text-center">
                               <div class="form-group">
-                                <label class="col-sm-2 control-label" style="text-align: left; padding-left: 153pt">Alamat</label>
+                                <label class="col-sm-2 control-label" style="text-align: left; padding-left: 175pt">Alamat</label>
 
-                                <div class="col-sm-7" style="padding-left: 47pt; padding-right: 0pt">
+                                <div class="col-sm-7" style="padding-left: 55pt; padding-right: 0pt">
                                     <textarea class="form-control" id="alamatI" rows="3" name="alamat_I"></textarea>
-                                    <input type="checkbox" name="a" value="alamatI" id="cekboxI" style="padding-left: 47pt"/>  Alamat sama dengan pasien
                                 </div>
                               </div>
                           </div>

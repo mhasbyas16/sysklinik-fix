@@ -184,16 +184,10 @@
                 </div>
               </div>
 
-              <div class="row col-md-12">
-                <div class="col-xs-1 col-md-1 text-left">
-                      <div class="form-group">
-                        <label class="col-sm-1" style="text-align: left;">Besar Nominal:</label>
-                      </div>
-                </div>
-              
-                <div class="col-xs-4 col-md-4 text-left">
-                      <div class="form-group">
-                        <label class="col-sm-5 control-label">Uang Pangkal</label>
+              <div class="row">
+                <div class="col-xs-7 col-md-4 text-center">
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label" style="text-align: left; padding-left: 20pt">Uang Pangkal</label>
 
                         <div class="col-sm-7">
                             <input type="text" class="form-control" name="b_pangkal" value="0" required="">
@@ -201,7 +195,7 @@
                       </div>
                 </div>
 
-                <div class="col-xs-4 col-md-4 text-left">
+                <div class="col-xs-7 col-md-4 text-left">
                       <div class="form-group">
                         <label class="col-sm-5 control-label">Assessment</label>
 
@@ -211,11 +205,11 @@
                       </div>
                 </div>
 
-                <div class="col-xs-3 col-md-3 text-left">
+                <div class="col-xs-7 col-md-4 text-left">
                       <div class="form-group">
-                        <label class="col-sm-5 control-label">Evaluasi</label>
+                        <label class="col-sm-5 control-label" style="text-align: left; padding-left: 20pt">Evaluasi</label>
 
-                        <div class="col-sm-7">
+                        <div class="col-sm-6">
                             <input type="text" class="form-control" name="b_eval" value="0" required="">
                         </div>
                       </div>
@@ -261,9 +255,9 @@
                       <div class="row">
                         <div class="col-xs-7 col-md-6 text-center">
                             <div class="form-group">
-                              <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Nama</label>
+                              <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt">Nama</label>
 
-                              <div class="col-sm-9" style="padding-left: 30pt">
+                              <div class="col-sm-9" style="padding-left: 5pt">
                                 <input type="text" class="form-control" name="nama_A" value="{{$data->nama_ayah}}" required>
                               </div>
                             </div>
@@ -286,7 +280,7 @@
                             <div class="form-group">
                               <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt">Agama</label>
 
-                              <div class="col-sm-9" style="padding-left: 30pt">
+                              <div class="col-sm-9" style="padding-left: 45pt">
                                   <select class="form-control select2" style="width: 100%;" name="agama_A" value=" ">
                                     <option value="{{$data->agama_ayah}}" hidden>{{$data->agama_ayah}}</option>
                                     @foreach($agama as $isi)
@@ -299,9 +293,9 @@
                         <!-- ./col -->
                         <div class="col-xs-7 col-md-6 text-center">
                             <div class="form-group">
-                              <label class="col-sm-2 control-label" style="text-align: left; padding-left: 155pt">Alamat</label>
+                              <label class="col-sm-2 control-label" style="text-align: left; padding-left: 175pt">Alamat</label>
 
-                              <div class="col-sm-7" style="padding-left: 47pt; padding-right: 0pt">
+                              <div class="col-sm-7" style="padding-left: 55pt; padding-right: 0pt">
                                   <textarea class="form-control" id="alamatA" rows="3" name="alamat_A">{{$data->alamat_ayah}}</textarea>
                                   <input type="checkbox" name="a" value="alamatA" id="cekboxA" style="padding-left: 47pt"/>  Alamat sama dengan pasien
                               </div>
@@ -311,22 +305,21 @@
                       </div>
 
                       <div class="row">
-                         <div class="col-xs-7 col-md-4 text-center">
+                         <div class="col-xs-7 col-md-6 text-center">
                             <div class="form-group">
-                              <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt; padding-top: 0pt">Pekerjaan
+                              <label class="col-sm-3 control-label" style="text-align: left; padding-left: 20pt">Pekerjaan
                               </label>
-                              <div class="col-sm-9" style="padding-left: 30pt">
+                              <div class="col-sm-9" style="padding-left: 5pt">
                                 <input type="text" class="form-control" name="pekerjaan_A" value="{{$data->pekerjaan}}">
                               </div>
                             </div>
                         </div>
                         <!-- ./col -->
-                        <div class="col-xs-7 col-md-4 text-center">
+                        <div class="col-xs-7 col-md-6 text-center">
                             <div class="form-group">
-                              <label class="col-sm-3 control-label" style="text-align: left; padding-left: 153pt">Pend. Terakhir
-                              </label>
-                              <div class="col-sm-4" style="padding-left: 47pt; padding-top: 0pt">
-                                <input type="text" class="form-control" value="{{$data->pend_ayah}}" name="pendTerakhir_A" maxlength="3" required>
+                              <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Pend. Terakhir</label>
+                              <div class="col-sm-6">
+                                <input type="text" class="form-control" value="{{$data->pend_ayah}}" name="pendTerakhir_A" required>
                               </div>
                         </div>
                       </div>
@@ -337,7 +330,7 @@
                             <div class="form-group">
                               <label class="col-sm-3 control-label" style="text-align: left; padding-left: 30pt">No. Telepon</label>
 
-                              <div class="col-sm-9" style="padding-left: 5pt">
+                              <div class="col-sm-9" style="padding-left: 12pt">
                                 <input type="text" class="form-control" name="noTelp_A" value="{{$data->tlp_ayah}}" maxlength="15" required>
                               </div>
                             </div>
@@ -407,9 +400,9 @@
                         <!-- ./col -->
                         <div class="col-xs-7 col-md-6 text-center">
                             <div class="form-group">
-                              <label class="col-sm-2 control-label" style="text-align: left; padding-left: 153pt">Alamat</label>
+                              <label class="col-sm-2 control-label" style="text-align: left; padding-left: 170pt">Alamat</label>
 
-                              <div class="col-sm-7" style="padding-left: 47pt; padding-right: 0pt">
+                              <div class="col-sm-7" style="padding-left: 55pt; padding-right: 0pt">
                                   <textarea class="form-control" id="alamatI" rows="3" name="alamat_I">{{$data->alamat_ibu}}</textarea>
                                   <input type="checkbox" name="a" value="alamatI" id="cekboxI" style="padding-left: 47pt"/>  Alamat sama dengan pasien
                               </div>
@@ -429,11 +422,11 @@
                             </div>
                         </div>
                         <!-- ./col -->
-                        <div class="col-xs-7 col-md-8 text-center">
+                        <div class="col-xs-7 col-md-6 text-center">
                             <div class="form-group">
-                              <label class="col-sm-3 control-label" style="text-align: left; padding-left: 153pt">Pend. Terakhir
+                              <label class="col-sm-2 control-label" style="text-align: left; padding-left: 170pt">Pend. Terakhir
                               </label>
-                              <div class="col-sm-4" style="padding-left: 47pt; padding-top: 0pt">
+                              <div class="col-sm-7" style="padding-left: 55pt; padding-top: 0pt">
                                 <input type="text" class="form-control" value="{{$data->pend_ibu}}" name="pendTerakhir_I" maxlength="3" required>
                               </div>
                         </div>
@@ -444,14 +437,14 @@
                             <div class="form-group">
                               <label class="col-sm-3 control-label" style="text-align: left; padding-left: 30pt">No. Telepon</label>
 
-                              <div class="col-sm-9" style="padding-left: 5pt">
+                              <div class="col-sm-8" style="padding-left: 5pt">
                                 <input type="text" class="form-control" value="{{$data->tlp_ibu}}" name="noTelp_I" maxlength="15" required>
                               </div>
                             </div>
                         </div>
                         <!-- ./col -->
                         <div class="col-xs-7 col-md-6 text-center">
-                            <div class="form-group">
+                            <<div class="form-group">
                               <label class="col-sm-2 control-label" style="text-align: left; padding-left: 20pt">Email</label>
 
                               <div class="col-sm-9">

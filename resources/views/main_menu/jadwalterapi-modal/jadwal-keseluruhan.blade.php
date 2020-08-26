@@ -79,11 +79,11 @@
           <div class="col-xs-12">
             <div class="box box-solid">
               <div style="padding-bottom: 20px; padding-top: 20px; padding-left: 10px" class="row">
-                <div class="col-lg-12">
-                  <a class="btn btn-success" href="{{ url('/toregist') }}">
-                    Pendaftaran Baru
-                  </a>
-                </div>
+                <div class="col-md-3">
+                <a href="{{url('/toregist')}}" class="btn btn-block btn-social btn-linkedin">
+                  <i class="fa fa-user-plus"></i>Pendaftaran Baru
+                </a>
+              </div>
               </div>
               <div class="box-header">
                 <i class="fa fa-bar-chart-o"></i>

@@ -125,7 +125,5 @@ Route::get('/ambil/{id}','alatterapi@merkAjax');
 Route::get('/terima/{id}','Controller@ubahstatusterima');
 Route::get('/tolak/{id}','Controller@ubahstatustolak');
 Route::get('/hapus/{id}','Controller@hapus');
-Route::get('/hapusreqkue/{id}','Controller@hapusreqkue');
-
 
 // ------------------------------------ DINDIN PART END ---------------------------------- //

@@ -136,16 +136,16 @@ class printpage extends Controller
 
                 $message->to($dt->email)->subject('File Kuesioner Klinik Liliput');
                 
-                if ($dt->jenis_terapi == 'FT') {
+                if ($dt->jenis_terapi == 'OT') {
                     $message->attachData(asset('/kuisioner/KUISIONER_FISIOTERAPI.pdf'), 'KUISIONER_FISIOTERAPI.pdf');
                 }
-                if ($dt->jenis_terapi == 'OP') {
+                if ($dt->jenis_terapi == 'TW') {
                     $message->attachData(asset('/kuisioner/KUISIONER_OP.pdf'), 'KUISIONER_OP.pdf');
                 }
-                if ($dt->jenis_terapi == 'OT') {
+                if ($dt->jenis_terapi == 'FT') {
                     $message->attachData(asset('/kuisioner/KUISIONER_OTSI.pdf'), 'KUISIONER_OTSI.pdf');
                 }
-                if ($dt->jenis_terapi == 'TW') {
+                if ($dt->jenis_terapi == 'OP') {
                     $message->attachData(asset('/kuisioner/KUISIONER_WICARA.pdf'), 'KUISIONER_WICARA.pdf');
                 }
             });
@@ -178,7 +178,7 @@ class printpage extends Controller
                 $message->to($dt->email)->subject('Assessment Request Responses');
             });
 
-            DB::table('request_dash')->where('id', $id)->update(['status' =>'Terkirim Tolak']);
+            DB::table('request_dash')->where('id', $id)->update(['status' =>'Terkirim']);
             Alert::success('Kuisioner sudah terkirim!')->autoclose(1500);
             return redirect('/');
         }else{
@@ -206,7 +206,7 @@ class printpage extends Controller
                 $message->to($dt->email)->subject('Assessment Request Responses');
             });
 
-            DB::table('request_dash')->where('id', $id)->update(['status' =>'Terkirim Terima']);
+            DB::table('request_dash')->where('id', $id)->update(['status' =>'Terkirim']);
             Alert::success('Kuisioner sudah terkirim!')->autoclose(1500);
             return redirect('/');
         }else{

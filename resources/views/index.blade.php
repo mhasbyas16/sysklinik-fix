@@ -164,9 +164,7 @@
                                     Kirim E-Mail
                                   </a>
                                 @else
-                                    <a class="btn btn-danger btn-sm" href="{{url('/hapusreqkue')}}/{{$xx->id}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data {{$xx->nama}}?')">
-                                      Hapus
-                                    </a>
+                                  Telah {{ $xx->status }}
                                 @endif
                               </td>
                               <td>{{$xx->status}}</td>
@@ -219,8 +217,8 @@
                             <th>ID Pasien</th>
                             <th>Nama Pasien</th>
                             <th>E-Mail</th>
-                            <th>Aksi</th>
                             <th>Status</th>
+                            <th>Aksi</th>
                           </tr>
                           </thead>
                           <tbody>
@@ -230,6 +228,7 @@
                               <td>{{$x->id_pasien}}</td>
                               <td>{{$x->nama}}</td>
                               <td>{{$x->email}}</td>
+                              <td>{{$x->status}}</td>
                               <td>
                                 <div class="inline">
                                   @if ($x->status == "Request")
@@ -240,13 +239,12 @@
                                     Tolak
                                   </a>
                                   @else
-                                    <a class="btn btn-danger btn-sm" href="{{url('/hapus')}}/{{$x->id}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data {{$x->nama}}?')">
+                                    <a class="btn btn-danger btn-sm" href="{{url('/hapus')}}/{{$x->id}}" onclick="return confirm('Apakah Anda Yakin Menghapus Data Ini?')">
                                       Hapus
                                     </a>
                                   @endif
                                 </div>
                               </td>
-                              <td>{{$x->status}}</td>
                             </tr>
                             @endforeach
                           </tbody>
@@ -256,8 +254,8 @@
                             <th>ID Pasien</th>
                             <th>Nama Pasien</th>
                             <th>E-Mail</th>
-                            <th>Aksi</th>
                             <th>Status</th>
+                            <th>Aksi</th>
                           </tr>
                           </tfoot>
                         </table>

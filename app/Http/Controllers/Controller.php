@@ -118,16 +118,31 @@ class Controller extends BaseController
 
 	}
 
-	public function hapus($id_pasien){
+	public function hapus($id){
 		$data=DB::table('request_dash')
-	    ->select('id_pasien')
-	    ->where(['id_pasien'=>$id_pasien])->first();
+	    ->select('id','keterangan')
+	    ->where(['id'=>$id])->first();
 
-	    $cek=DB::table('request_dash')->where('id_pasien',$id_pasien)->count();
+	    $cek=DB::table('request_dash')->where('id',$id)->count();
 	    if ($cek==0) {
 	        return redirect('/')->with('alertwarn','Data tidak ditemukan');
 	    }else {
-	      DB::table('request_dash')->where('id_pasien',$id_pasien)->delete();
+	      DB::table('request_dash')->where('id',$id)->delete();
+	      return redirect('/')->with('alertwarn','Berhasil Menghapus Data');
+	    }
+
+	}
+
+	public function hapusreqkue($id){
+		$data=DB::table('request_dash')
+	    ->select('id')
+	    ->where(['id'=>$id, 'keterangan'=>'Kuesioner'])->first();
+
+	    $cek=DB::table('request_dash')->where('id',$id)->count();
+	    if ($cek==0) {
+	        return redirect('/')->with('alertwarn','Data tidak ditemukan');
+	    }else {
+	      DB::table('request_dash')->where('id',$id)->delete();
 	      return redirect('/')->with('alertwarn','Berhasil Menghapus Data');
 	    }
 
